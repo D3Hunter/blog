@@ -1,0 +1,46 @@
+gnome-session-fallback
+dconf-editor
+卸载wine×后倒在Unity不可用，gnome界面也出不来，重装gnome
+
+tar -xzf出错 先看看是否仅仅是tar而没有zip
+export LANG=en_US
+xdg-user-dirs-gtk-update
+export LANG=zh_CN
+
+command直接执行，不使用alias
+
+# install following library
+sqlite
+libpcre3
+php5-fpm
+php5-sqlite
+
+/etc/php5/fpm/pool.d/www
+catch_workers_output = yes
+/etc/php5/fpm/php.ini
+log_errors = On
+在php中使用error_log
+public array PDOStatement::errorInfo ( void )
+
+sudo chown www-data:www-data OpenNote/
+
+
+OpenNote 已保存密码不会设置到$scope中的相应字段中，必须每次都输入（loginController.js）
+且可用chrome打开，但是不能使用firefox打开
+
+license key
+a73d5c5f9c9db539882b6fd022b3ea2edd07f146
+
+wget -O - http://download.newrelic.com/548C16BF.gpg | sudo apt-key add -
+sudo sh -c 'echo "deb http://apt.newrelic.com/debian/ newrelic non-free" > /etc/apt/sources.list.d/newrelic.list'
+
+sudo apt-get update
+sudo apt-get install newrelic-php5
+sudo newrelic-install install
+
+
+sudo dpkg -i *.dep
+
+打开的文件（加载的库）lsof -p <pid> 或者直接看/proc/<pid>/maps|fd|exe|cwd|exe 等文件
+
+newrelic在/usr/lib/php5/20121212下注册了一个动态库，实现代码注入
