@@ -1,6 +1,7 @@
 #! /bin/sh
+# reside in /etc/init.d/
 set -e
-#PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
 DESC="nginx daemon"
 NAME=nginx
 DAEMON=/usr/local/nginx/sbin/$NAME
