@@ -34,6 +34,20 @@ emacs：indent-region format code
     没有redo的概念，可以按任意建使undo也可以undo，即时redo
     ctrl-q 加tab就可以输入tab
 
+(setq x-select-enable-clipboard t)同时yank到剪切板，console无效
+
+
+矩形操作
+C-x r k Kill 
+C-x r M-w Copy 
+C-x r d Delete
+C-x r y Yank
+C-x r o Insert blank space
+C-x r N Insert line numbers
+C-x r c Clear with spaces
+C-x r t string <RET> Replace 
+M-x string-insert-rectangle <RET> string <RET> Insert string on each line of the rectangle. 
+
 #############################################################
 # git && SSH
 #############################################################
@@ -42,6 +56,8 @@ ssh即可：
     1. git remote rm origin
     2. git remote add origin git@github.com:username/projectname.git
     3. git push origin 
+
+git mv重命名
 
 为github生成公钥
     ssh-keygen -t rsa -C "youemail@email.email"
