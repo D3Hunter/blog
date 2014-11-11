@@ -12,19 +12,21 @@ xwininfo xprop查看当前窗口信息
     export LANG=en_US
     xdg-user-dirs-gtk-update
     export LANG=zh_CN
+
 tar -xzf出错 先看看是否仅仅是tar而没有zip
 command直接执行，不使用alias
 打开的文件（加载的库）lsof -p <pid> 或者直接看/proc/<pid>/maps|fd|exe|cwd|exe 等文件
 
 ## dep包相关
+
 安装dep包 sudo dpkg -i *.dep
 apt-get download 下载dep包，安装过程可参考man dpkg主要执行特定脚本，然后复制文件（和/目录结构类似）
 ar -x pakname.deb解压deb包
 
 ## emacs相关
-emacs：indent-region format code
-    没有redo的概念，可以按任意建使undo也可以undo，即时redo
-    ctrl-q 加tab就可以输入tab
+indent-region format code
+没有redo的概念，可以按任意建使undo也可以undo，即时redo
+ctrl-q 加tab就可以输入tab
 
 ## linux自启动程序
 service需要root才能看的所有service的状态
