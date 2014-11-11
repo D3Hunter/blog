@@ -8,10 +8,10 @@
 卸载wine×后倒在Unity不可用，gnome界面也出不来，重装gnome
 xwininfo xprop查看当前窗口信息
 中文目录转成英文
+
     export LANG=en_US
     xdg-user-dirs-gtk-update
     export LANG=zh_CN
-
 tar -xzf出错 先看看是否仅仅是tar而没有zip
 command直接执行，不使用alias
 打开的文件（加载的库）lsof -p <pid> 或者直接看/proc/<pid>/maps|fd|exe|cwd|exe 等文件
