@@ -5,13 +5,9 @@
     gnome-session-fallback
     dconf-editor
 
-
 卸载wine×后倒在Unity不可用，gnome界面也出不来，重装gnome
-
 xwininfo xprop查看当前窗口信息
-
 中文目录转成英文
-
     export LANG=en_US
     xdg-user-dirs-gtk-update
     export LANG=zh_CN
