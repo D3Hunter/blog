@@ -1,11 +1,17 @@
-# Linux命令相关
+## Linux命令相关
+
 传统gnome桌面，可用Super+Alt+RB弹出任务条菜单
+
     gnome-session-fallback
     dconf-editor
+
+
 卸载wine×后倒在Unity不可用，gnome界面也出不来，重装gnome
+
 xwininfo xprop查看当前窗口信息
 
 中文目录转成英文
+
     export LANG=en_US
     xdg-user-dirs-gtk-update
     export LANG=zh_CN
@@ -14,17 +20,17 @@ tar -xzf出错 先看看是否仅仅是tar而没有zip
 command直接执行，不使用alias
 打开的文件（加载的库）lsof -p <pid> 或者直接看/proc/<pid>/maps|fd|exe|cwd|exe 等文件
 
-# dep包相关
+## dep包相关
 安装dep包 sudo dpkg -i *.dep
 apt-get download 下载dep包，安装过程可参考man dpkg主要执行特定脚本，然后复制文件（和/目录结构类似）
 ar -x pakname.deb解压deb包
 
-# emacs相关
+## emacs相关
 emacs：indent-region format code
     没有redo的概念，可以按任意建使undo也可以undo，即时redo
     ctrl-q 加tab就可以输入tab
 
-# linux自启动程序
+## linux自启动程序
 service需要root才能看的所有service的状态
 自启动方法
     1. use update-rc: Start in serial at boot time, make boot slow
@@ -37,10 +43,10 @@ service需要root才能看的所有service的状态
     edit /etc/init/filename.conf to disable service or add manual to /etc/init/filename.override
 Ref:http://askubuntu.com/questions/19320/how-to-enable-or-disable-services
 
-# bash相关
+## bash相关
 让bash配置对所有用户生效：可在/etc/profile.d/中添加脚本，重启后则会生效，或者source /etc/profile && source ~/.bashrc让设置对当前终端生效
 
-# 一些软件安装
+## 一些软件安装
 部署OpenNote
     sqlite
     php5-fpm
@@ -69,7 +75,7 @@ tomcat
 	 <user username="admin" password="admin" roles="admin-gui,manager-gui"/>
 	在tomcat管理界面里可以reload工程以加载修改后的serverlet
 
-# java相关
+## java相关
 unsupported major.minor version：高版本编译的class尝试用低版本jvm运行
 JVM内存介绍
 	Heap Memory
