@@ -157,4 +157,7 @@ OpenNote 已保存密码不会设置到$scope中的相应字段中，必须每�
 cellular automaton Game of Life
 
 看一下书签中的链接
+学下sed，读install脚本特定部分，github
+绑定移动窗口快捷键 和当前窗口环境.
+replace-regexp
 
