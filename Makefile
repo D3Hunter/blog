@@ -35,6 +35,7 @@ all:
 	@echo "    make release"
 	@echo
 
+# 在makefile中调用其他target
 release:
 	make release32
 	make release64
@@ -97,6 +98,9 @@ release64: $(release64_obj_dir) ${release64_objs} $(EXTERNAL_LIBS)
 
 # other
 # 多个target可以使用相同的rule $@会指向正确的target
+# $@ target
+# $< first prerequisite
+# $^ all prerequisite
 $(debug32_obj_dir) $(debug64_obj_dir) $(release32_obj_dir) $(release64_obj_dir):
 	mkdir -p $@ >/dev/null 2>&1
 

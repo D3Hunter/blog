@@ -20,6 +20,8 @@ command直接执行，不使用alias
 	gedit -g 955x1027+964+28
 	gnome-terminal --geometry 103x55+0+0
 
+ls -il 显示i节点号
+
 #############################################################
 # dep包相关
 #############################################################
@@ -47,6 +49,13 @@ C-x r N Insert line numbers
 C-x r c Clear with spaces
 C-x r t string <RET> Replace 
 M-x string-insert-rectangle <RET> string <RET> Insert string on each line of the rectangle. 
+
+replace-regexp 类似于M-%，支持正则
+
+etags *.c 写入TAGS for emacs
+M-. 查找first tag  M-*返回
+C-u M-. 下一个符合的tag
+C-u - M-. 返回上一个符合的tag
 
 #############################################################
 # git && SSH
