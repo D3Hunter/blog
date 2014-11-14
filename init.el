@@ -1,8 +1,10 @@
-(global-linum-mode 1);
-(setq make-backup-files nil);
-(menu-bar-mode -1);
-(setq default-tab-width 4);
-;;(c-basic-offset 4);
+(global-linum-mode 1)
+(setq make-backup-files nil)
+(menu-bar-mode -1)
+(setq default-tab-width 4)
+(setq-default c-basic-offset 4)
+
+(setq c-default-style "linux" c-basic-offset 4)
 
 ;; Move window in a fast way
 (global-set-key (kbd "C-<up>") 'windmove-up)
@@ -10,7 +12,7 @@
 (global-set-key (kbd "C-<right>") 'windmove-right)
 (global-set-key (kbd "C-<left>") 'windmove-left)
 
-(setq inhibit-splash-screen t);
+(setq inhibit-splash-screen t)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -4,109 +4,100 @@ LD := $(CC)
 AR := ar
 
 BASEDIR= ./php_daemon
-
+PROGNAME=oneapm-daemon
 SOURCEFILES := banner.c cache.c cJSON.c command.c config.c connector.c harvest.c listener.c main.c minIni.c oa_app.c oa_buf.c oa_cond.c oa_errno.c forkdaemon.c log.c oa_json.c oa_mutex.c oa_daemon.c oa_obj.c oa_ssl.c oa_str.c oa_util.c param.c proc.c rpm.c sig.c thread.c
 
 all_source_files := $(SOURCEFILES)
-source_obj1 := $(all_source_files:.cpp=.o) #这里是makefile里的替换字符串方法
+source_obj1 := $(all_source_files:.cpp=.o)
 source_obj2 := $(source_obj1:.c=.o)
 source_obj3 := $(source_obj2:.s=.o)
-source_objs := $(source_obj3:.S=.o)
+SOURCE_OBJS := $(source_obj3:.S=.o)
 
-CFLAGS := -I/usr/include/x86_64-linux-gnu/ -I$(BASEDIR)
-CXXFLAGS :=
-ASFLAGS :=
-LDFLAGS := -lm -Lthird_part/curl-7.37.1/lib -lcurl -Lthird_part/openssl-1.0.0c/lib -lssl -Lthird_part/openssl-1.0.0c/lib -lcrypto  -Lthird_part/zlib1.2.8/lib -lz  -lrt -ldl -lpthread
-EXTERNAL_LIBS=
+DEBUG ?= 1
+ifeq ($(DEBUG), 1)
+	BUILD_TYPE=debug
+	PROG_FLAGS=-g -ggdb -rdynamic
+	PROG_LDFLAGS= -O0
+	ALL_MAKE_FILES := Makefile
+else
+	BUILD_TYPE=release
+	PROG_FLAGS=
+	PROG_LDFLAGS= -O3
+	ALL_MAKE_FILES := Makefile
+endif
 
-all_make_files := Makefile
+CFLAGS := $(PROG_FLAGS)
+CXXFLAGS := $(PROG_FLAGS)
+LDFLAGS := $(PROG_FLAGS) -lm -lrt -ldl -lpthread
 
-# 使用前置@取消命令写到console
+##############################
+# x86
+##############################
+INCLUDE_DIR_X86=-Ithird_part/x86/curl-7.37.1/include -Ithird_part/x86/openssl-1.0.0c/include -Ithird_part/x86/zlib1.2.8/include -I/usr/include/x86_64-linux-gnu/ -I$(BASEDIR)
+COMMON_FLAGS_X86=-m32
+
+PROG_FLAGS_X86=$(COMMON_FLAGS_X86) $(INCLUDE_DIR_X86)
+LDFLAGS_X86= $(COMMON_FLAGS_X86) -Lthird_part/x86/curl-7.37.1/lib -lcurl -Lthird_part/x86/openssl-1.0.0c/lib -lssl -lcrypto  -Lthird_part/x86/zlib1.2.8/lib -lz -ldl
+
+PROG_X86_OBJ_DIR=${BASEDIR}/$(BUILD_TYPE)-x86
+PROG_X86_OBJS := $(addprefix $(PROG_X86_OBJ_DIR)/, $(SOURCE_OBJS))
+
+##############################
+# x64
+##############################
+INCLUDE_DIR_X64=-Ithird_part/x64/curl-7.37.1/include -Ithird_part/x64/openssl-1.0.0c/include -Ithird_part/x64/zlib1.2.8/include -I/usr/include/x64_64-linux-gnu/ -I$(BASEDIR)
+COMMON_FLAGS_X64=-m64
+
+PROG_FLAGS_X64=$(COMMON_FLAGS_X64) $(INCLUDE_DIR_X64)
+LDFLAGS_X64= $(COMMON_FLAGS_X64) -Lthird_part/x64/curl-7.37.1/lib -lcurl -Lthird_part/x64/openssl-1.0.0c/lib -lssl -lcrypto  -Lthird_part/x64/zlib1.2.8/lib -lz -ldl
+
+PROG_X64_OBJ_DIR=${BASEDIR}/$(BUILD_TYPE)-x64
+PROG_X64_OBJS := $(addprefix $(PROG_X64_OBJ_DIR)/, $(SOURCE_OBJS))
+
 # Print help on no message
 all:
-	@echo
+	@echo "Default DEBUG version is build"
+	@echo "To build release version add 'DEBUG=0' to the end of the following command"
 	@echo "Use the following command:"
-	@echo "    make debug32"
-	@echo "    make debug64"
-	@echo "    make release32"
-	@echo "    make release64"
+	@echo "    make $(PROGNAME)32"
+	@echo "    make $(PROGNAME)64"
 	@echo "    make clean   cleanup everything"
+	@echo
 	@echo "To make release version for distribution run:"
-	@echo "    make release"
+	@echo "    make $(PROGNAME) DEBUG=0"
 	@echo
 
-# 在makefile中调用其他target
-release:
-	make release32
-	make release64
+$(PROGNAME):
+	make $(PROGNAME)32
+	make $(PROGNAME)64
 
-COMMON_FLAGS32=-m32
-COMMON_FLAGS64=-m64
-##################################################
-# debug
-##################################################
-DEBUG_LDFLAGS= -O0
+$(PROGNAME)32:
+	make prog-x86
+$(PROGNAME)64:
+	make prog-x64
 
-# 32 bit
-DEBUG_FLAGS32=$(COMMON_FLAGS32) -ggdb
-debug32_obj_dir=${BASEDIR}/debug-32
-debug32_objs := $(addprefix $(debug32_obj_dir)/, $(source_objs)) # addprefix为make内置函数，添加前缀
-debug32: CFLAGS += $(DEBUG_FLAGS32) # 相同target会被合并
-debug32: CXXFLAGS += $(DEBUG_FLAGS32) # 修改变量值：默认情况下，makefile中的变量都是静态的
-debug32: LDFLAGS += $(COMMON_FLAGS32) $(DEBUG_LDFLAGS)
-debug32: target=daemon-debug32
-debug32: $(debug32_obj_dir) ${debug32_objs} $(EXTERNAL_LIBS)
-	$(LD) -o ${target} ${debug32_objs} ${LDFLAGS}
+prog-x86: CFLAGS += $(PROG_FLAGS_X86)
+prog-x86: CXXFLAGS += $(PROG_FLAGS_X86)
+prog-x86: LDFLAGS += $(LDFLAGS_X86)
+prog-x86: target=$(PROGNAME)-$(BUILD_TYPE)-x86
+prog-x86: $(PROG_X86_OBJ_DIR) ${PROG_X86_OBJS}
+	$(LD) -o ${target} ${PROG_X86_OBJS} ${LDFLAGS}
 
-# 64 bit
-DEBUG_FLAGS64=$(COMMON_FLAGS64) -ggdb
-debug64_obj_dir=${BASEDIR}/debug-64
-debug64_objs := $(addprefix $(debug64_obj_dir)/, $(source_objs))
-debug64: CFLAGS += $(DEBUG_FLAGS64)
-debug64: CXXFLAGS += $(DEBUG_FLAGS64)
-debug64: LDFLAGS += $(COMMON_FLAGS64) $(DEBUG_LDFLAGS)
-debug64: target=daemon-debug64
-debug64: $(debug64_obj_dir) ${debug64_objs} $(EXTERNAL_LIBS)
-	$(LD) -o ${target} ${debug64_objs} ${LDFLAGS}
+prog-x64: CFLAGS += $(PROG_FLAGS_X64)
+prog-x64: CXXFLAGS += $(PROG_FLAGS_X64)
+prog-x64: LDFLAGS += $(LDFLAGS_X64)
+prog-x64: target=$(PROGNAME)-$(BUILD_TYPE)-x64
+prog-x64: $(PROG_X64_OBJ_DIR) ${PROG_X64_OBJS}
+	$(LD) -o ${target} ${PROG_X64_OBJS} ${LDFLAGS}
 
-##################################################
-# release
-##################################################
-RELEASE_LDFLAGS= -O3
-
-# 32 bit
-RELEASE_FLAGS32=$(COMMON_FLAGS32)
-release32_obj_dir=${BASEDIR}/release-32
-release32_objs := $(addprefix $(release32_obj_dir)/, $(source_objs))
-release32: CFLAGS += $(RELEASE_FLAGS32)
-release32: CXXFLAGS += $(RELEASE_FLAGS32)
-release32: LDFLAGS += $(COMMON_FLAGS32) $(RELEASE_LDFLAGS)
-release32: target=daemon-release32
-release32: $(release32_obj_dir) ${release32_objs} $(EXTERNAL_LIBS)
-	$(LD) -o ${target} ${release32_objs} ${LDFLAGS}
-
-# 64 bit
-RELEASE_FLAGS64=$(COMMON_FLAGS64)
-release64_obj_dir=${BASEDIR}/release-64
-release64_objs := $(addprefix $(release64_obj_dir)/, $(source_objs))
-release64: CFLAGS += $(RELEASE_FLAGS64)
-release64: CXXFLAGS += $(RELEASE_FLAGS64)
-release64: LDFLAGS += $(COMMON_FLAGS64) $(RELEASE_LDFLAGS)
-release64: target=daemon-release64
-release64: $(release64_obj_dir) ${release64_objs} $(EXTERNAL_LIBS)
-	$(LD) -o ${target} ${release64_objs} ${LDFLAGS}
 
 # other
-# 多个target可以使用相同的rule $@会指向正确的target
-# $@ target
-# $< first prerequisite
-# $^ all prerequisite
-$(debug32_obj_dir) $(debug64_obj_dir) $(release32_obj_dir) $(release64_obj_dir):
+$(PROG_X86_OBJ_DIR) $(PROG_X64_OBJ_DIR) :
 	mkdir -p $@ >/dev/null 2>&1
 
-$(debug32_obj_dir)/%.o $(debug64_obj_dir)/%.o $(release32_obj_dir)/%.o $(release64_obj_dir)/%.o : ${BASEDIR}/%.c $(all_make_files)
+$(PROG_X86_OBJ_DIR)/%.o $(PROG_X64_OBJ_DIR)/%.o : ${BASEDIR}/%.c $(ALL_MAKE_FILES)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(debug32_obj_dir) $(debug64_obj_dir) $(release32_obj_dir) $(release64_obj_dir) > /dev/null 2>&1
-	rm -f daemon-debug32 daemon-debug64 daemon-release32 daemon-release64 > /dev/null 2>&1
+	rm -rf $(BASEDIR)/release-x86 $(BASEDIR)/debug-x86 $(BASEDIR)/release-x64 $(BASEDIR)/debug-x64 > /dev/null 2>&1
+	rm -f $(PROGNAME)-debug-x86 $(PROGNAME)-debug-x64 $(PROGNAME)-release-x86 $(PROGNAME)-release-x64 > /dev/null 2>&1

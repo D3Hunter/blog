@@ -22,6 +22,18 @@ command直接执行，不使用alias
 
 ls -il 显示i节点号
 
+sudo apt-get install libgtk2.0-0:i386 
+
+tm2013
+/usr/lib/i386-linux-gnu
+/usr/lib/x86_64-linux-gnu/
+
+sudo apt-get install software-properties-common安装下面的程序
+sudo add-apt-repository ppa:ubuntu-wine/ppa
+
+统计C代码行
+cat *.c | sed '/^\s*$/d;/^\s*\/\/$/d;/^\s*{\s*$/d;/^\s*}\s*$/d' | wc -l
+
 #############################################################
 # dep包相关
 #############################################################
@@ -74,6 +86,10 @@ git mv重命名
     将id_rsa.pub保存到github上
     ssh -T git@github.com 测试是否可用
 
+查看本地改动
+git diff <remote-tracking branch> <local branch> 
+跟前一版本比较
+git diff HEAD@{1} filename
 #############################################################
 # linux自启动程序
 #############################################################
@@ -158,9 +174,9 @@ document.getElementById('login').getElementsByTagName('input')[1].value
 jQuery中可以按id class 和标签类型获取对象，分别为$('#id') $('.class') $('input:text')之类的
 还可按属性选择，获取其值用val()函数，而不能使用上面的value
 
-OneAPM外部服务中不包含访问外部css或js，其实这个只能在浏览器端抓取
-OneAPM对java7-8都不支持
-
+#############################################################
+# 其他
+#############################################################
 OpenNote 已保存密码不会设置到$scope中的相应字段中，必须每次都输入（loginController.js）
 且可用chrome打开，但是不能使用firefox打开
 cellular automaton Game of Life

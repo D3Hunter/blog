@@ -1,0 +1,13 @@
+#############################################################
+# C
+#############################################################
+libc中提供backtrace*方法，可访问当前函数栈信息（在程序中直接得到）
+在windows下可使用CaptureStackBackTrace或者StackWalk*来访问.
+    使用gcc编译除了要加-g -ggdb外，还要添加-rdynamic使ld将所有符号都添加到动态符号表中
+    此外还可以使用addr2line将函数地址转成函数名，或libunwind
+
+snprintf会自动加null字符
+
+LIBRARY_PATH is used by gcc before compilation to search for directories containing libraries that need to be linked to your program.
+
+LD_LIBRARY_PATH is used by your program to search for directories containing the libraries after it has been successfully compiled and linked.
