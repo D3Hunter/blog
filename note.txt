@@ -30,6 +30,7 @@ tm2013
 
 sudo apt-get install software-properties-common安装下面的程序
 sudo add-apt-repository ppa:ubuntu-wine/ppa
+sudo apt-get build-dep package安装package的依赖
 
 统计C代码行
 cat *.c | sed '/^\s*$/d;/^\s*\/\/$/d;/^\s*{\s*$/d;/^\s*}\s*$/d' | wc -l
@@ -90,6 +91,9 @@ git mv重命名
 git diff <remote-tracking branch> <local branch> 
 跟前一版本比较
 git diff HEAD@{1} filename
+
+git add的反操作
+git reset filename.txt
 #############################################################
 # linux自启动程序
 #############################################################
@@ -119,14 +123,6 @@ Ref:http://askubuntu.com/questions/19320/how-to-enable-or-disable-services
     php5-sqlite
     libpcre3 for nginx
     sudo chown www-data:www-data OpenNote/（更改数据库权限）
-
-配置php输出Debug错误
-    /etc/php5/fpm/pool.d/www
-    catch_workers_output = yes
-    /etc/php5/fpm/php.ini
-    log_errors = On
-    在php中使用error_log
-    public array PDOStatement::errorInfo ( void )
 
 安装mysql
 	sudo apt-get install mysql-server
@@ -173,6 +169,34 @@ CSS使用相对于应用根目录用/xx.css，但这样需要设置web能访问�
 document.getElementById('login').getElementsByTagName('input')[1].value
 jQuery中可以按id class 和标签类型获取对象，分别为$('#id') $('.class') $('input:text')之类的
 还可按属性选择，获取其值用val()函数，而不能使用上面的value
+
+#############################################################
+# PHP
+#############################################################
+配置php输出Debug错误
+    catch_workers_output = yes
+    php.ini中log_errors = On
+    在.php文件中使用error_log打印输出
+    public array PDOStatement::errorInfo ( void )
+
+php开启zts
+--enable-maintainer-zts
+php的扩展放到扩展目录不会自动加载，需要在php.ini中配置或者添加自己的ini
+php-fpm是PHP代码的一个补丁，旨在将FastCGI进程管理整合进PHP包中
+编译php使其包含fpm，--enable-fpm
+/usr/local/sbin/php-fpm 默认conf文件为/usr/local/etc/php-fpm.conf
+php5.3以后的版本默认会将sqlite3静态编译进去，--with-sqlite=shared可将其作为动态库
+echo '<?php print ini_get("extension_dir"); ?>' | php -q
+echo '<?php print PHP_CONFIG_FILE_SCAN_DIR; ?>' | php -q
+echo '<?php print PHP_CONFIG_FILE_PATH; ?>'    | php -q 
+echo '<?php phpinfo(); ?>'     | php -q
+
+PHP 4.3.34
+PHP Api Version: 20100412
+Zend Module Api No: 20100525
+Zend Extension Api No: 220100525
+
+./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd  --enable-maintainer-zts --with-openssl
 
 #############################################################
 # 其他
