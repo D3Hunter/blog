@@ -35,6 +35,12 @@ sudo apt-get build-dep package安装package的依赖
 统计C代码行
 cat *.c | sed '/^\s*$/d;/^\s*\/\/$/d;/^\s*{\s*$/d;/^\s*}\s*$/d' | wc -l
 
+为什么会有127.0.1.1
+Some software (e.g., GNOME) expects the system hostname to be resolvable to an IP address with a canonical fully qualified domain name. This is really improper because system hostnames and domain names are two very different things; but there you have it. In order to support that software, it is necessary to ensure that the system hostname can be resolved. Most often this is done by putting a line in /etc/hosts containing some IP address and the system hostname. If your system has a permanent IP address then use that; otherwise use the address 127.0.1.1.
+
+
+port 53 为DNS服务端口
+
 #############################################################
 # dep包相关
 #############################################################
@@ -103,6 +109,9 @@ cd /path/to/repo.git
 chgrp -R groupname .
 chmod -R g+rwX .
 find . -type d -exec chmod g+s '{}' +
+
+更改remote地址
+git remote set-url origin git://new.url.here
 
 #############################################################
 # linux自启动程序
@@ -224,3 +233,6 @@ replace-regexp
 
 Valgrind  Splint
 python -m json.tool
+
+strace git发现会解析\377\343\1\0\0\1\0\0\0\0\0\0\00281\0011\003168\003192\7in-add
+导致会等待30多秒

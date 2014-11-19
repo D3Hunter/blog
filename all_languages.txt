@@ -44,3 +44,26 @@ Don't link statically.
 Select the oldest release you wish to support, and build on that release.
 Alternatively, use LSB (http://freestandards.org/en/LSB) or
 Apptools (http://autopackage.org/apbuild-apgcc.php)
+
+#############################################################
+# GDB
+#############################################################
+list
+break
+info
+run/attach/kill/continue
+next/step
+print
+bt/where
+set/show args
+cd/pwd
+info program
+display
+watch
+call
+layout src.
+quit
+info threads
+thread
+frame
+print mutex可查看那个线程拥有mutex
