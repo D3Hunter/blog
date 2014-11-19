@@ -70,6 +70,8 @@ M-. 查找first tag  M-*返回
 C-u M-. 下一个符合的tag
 C-u - M-. 返回上一个符合的tag
 
+M-x imenu 可定位函数，可自动补齐
+
 #############################################################
 # git && SSH
 #############################################################
@@ -88,12 +90,20 @@ git mv重命名
     ssh -T git@github.com 测试是否可用
 
 查看本地改动
-git diff <remote-tracking branch> <local branch> 
+git diff origin/master
 跟前一版本比较
 git diff HEAD@{1} filename
 
 git add的反操作
 git reset filename.txt
+
+Git Push Error: insufficient permission for adding an object to repository database
+git config core.sharedRepository group
+cd /path/to/repo.git
+chgrp -R groupname .
+chmod -R g+rwX .
+find . -type d -exec chmod g+s '{}' +
+
 #############################################################
 # linux自启动程序
 #############################################################
@@ -196,7 +206,9 @@ PHP Api Version: 20100412
 Zend Module Api No: 20100525
 Zend Extension Api No: 220100525
 
-./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd  --enable-maintainer-zts --with-openssl
+./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd  --enable-maintainer-zts --with-openssl --enable-debug
+
+./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd  --enable-maintainer-zts --with-openssl --with-apm --enable-debug
 
 #############################################################
 # 其他
@@ -210,3 +222,5 @@ cellular automaton Game of Life
 绑定移动窗口快捷键 和当前窗口环境.
 replace-regexp
 
+Valgrind  Splint
+python -m json.tool

@@ -11,3 +11,36 @@ snprintf会自动加null字符
 LIBRARY_PATH is used by gcc before compilation to search for directories containing libraries that need to be linked to your program.
 
 LD_LIBRARY_PATH is used by your program to search for directories containing the libraries after it has been successfully compiled and linked.
+
+完全静态链接libc libc++避免出现GLIBC_2.14 not found等错误
+-static-libgcc -static-libstdc++ -static
+
+直接运行/lib/libc.so.6可查看其信息
+
+编译C程序，如果函数没声明就使用，编译器会设置默认返回int，在32位环境下没问题，在64位环境下可能会导致严重错误
+    比如返回一个64位指针，则会被强转成32位int，导致错误
+    所以在编译程序时，要特别注意警告，最好设置成存在警告则编译失败
+
+gcc会按命令行从左往右的顺序扫描符号，使用gcc编译程序时一定注意链接库指定顺序，否则可能出现明明指定了正确的库，但是仍然报找不到符号的问题。
+
+-static 和 -ldl是冲突的，但是gcc允许同时指定，只有-static有效
+-Werror使所有警告变成错误
+
+This is mis-guided.
+
+Statically linked binaries are significantly *less* portable then
+the dynamically linked ones (on UNIX in general and Linux in
+particular).
+
+Here is one thread that discusses/explains the issue:
+http://groups.google.com/group/comp.os.linux.development.apps/browse_frm/thread/f664f8f7c19a4a7b
+
+You may also wish to read this:
+http://people.redhat.com/~drepper/no_static_linking.html
+Post by Olaf van der Spek
+What can I do about this?
+Don't link statically.
+
+Select the oldest release you wish to support, and build on that release.
+Alternatively, use LSB (http://freestandards.org/en/LSB) or
+Apptools (http://autopackage.org/apbuild-apgcc.php)

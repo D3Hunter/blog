@@ -16,19 +16,19 @@ SOURCE_OBJS := $(source_obj3:.S=.o)
 DEBUG ?= 1
 ifeq ($(DEBUG), 1)
 	BUILD_TYPE=debug
-	PROG_FLAGS=-g -ggdb -rdynamic
+	PROG_FLAGS=-g -ggdb -rdynamic -Werror
 	PROG_LDFLAGS= -O0
 	ALL_MAKE_FILES := Makefile
 else
 	BUILD_TYPE=release
-	PROG_FLAGS=
+	PROG_FLAGS=-Werror
 	PROG_LDFLAGS= -O3
 	ALL_MAKE_FILES := Makefile
 endif
 
 CFLAGS := $(PROG_FLAGS)
 CXXFLAGS := $(PROG_FLAGS)
-LDFLAGS := $(PROG_FLAGS) -lm -lrt -ldl -lpthread
+LDFLAGS := -static-libgcc -static-libstdc++ -static $(PROG_FLAGS) -lm -lrt -ldl -lpthread
 
 ##############################
 # x86
