@@ -28,7 +28,8 @@ endif
 
 CFLAGS := $(PROG_FLAGS)
 CXXFLAGS := $(PROG_FLAGS)
-LDFLAGS := -static-libgcc -static-libstdc++ -static $(PROG_FLAGS) -lm -lrt -ldl -lpthread
+# -static-libgcc -static-libstdc++ -static
+LDFLAGS := $(PROG_LDFLAGS) -lm -lrt -ldl -lpthread
 
 ##############################
 # x86
@@ -37,7 +38,7 @@ INCLUDE_DIR_X86=-Ithird_part/x86/curl-7.37.1/include -Ithird_part/x86/openssl-1.
 COMMON_FLAGS_X86=-m32
 
 PROG_FLAGS_X86=$(COMMON_FLAGS_X86) $(INCLUDE_DIR_X86)
-LDFLAGS_X86= $(COMMON_FLAGS_X86) -Lthird_part/x86/curl-7.37.1/lib -lcurl -Lthird_part/x86/openssl-1.0.0c/lib -lssl -lcrypto  -Lthird_part/x86/zlib1.2.8/lib -lz -ldl
+LDFLAGS_X86= $(COMMON_FLAGS_X86) -Lthird_part/x86/curl-7.37.1/lib -lcurl -Lthird_part/x86/openssl-1.0.0c/lib -lssl -lcrypto  -Lthird_part/x86/zlib1.2.8/lib -lz -ldl -lrt
 
 PROG_X86_OBJ_DIR=${BASEDIR}/$(BUILD_TYPE)-x86
 PROG_X86_OBJS := $(addprefix $(PROG_X86_OBJ_DIR)/, $(SOURCE_OBJS))
@@ -49,7 +50,7 @@ INCLUDE_DIR_X64=-Ithird_part/x64/curl-7.37.1/include -Ithird_part/x64/openssl-1.
 COMMON_FLAGS_X64=-m64
 
 PROG_FLAGS_X64=$(COMMON_FLAGS_X64) $(INCLUDE_DIR_X64)
-LDFLAGS_X64= $(COMMON_FLAGS_X64) -Lthird_part/x64/curl-7.37.1/lib -lcurl -Lthird_part/x64/openssl-1.0.0c/lib -lssl -lcrypto  -Lthird_part/x64/zlib1.2.8/lib -lz -ldl
+LDFLAGS_X64= $(COMMON_FLAGS_X64) -Lthird_part/x64/curl-7.37.1/lib -lcurl -Lthird_part/x64/openssl-1.0.0c/lib -lssl -lcrypto  -Lthird_part/x64/zlib1.2.8/lib -lz -ldl -lrt
 
 PROG_X64_OBJ_DIR=${BASEDIR}/$(BUILD_TYPE)-x64
 PROG_X64_OBJS := $(addprefix $(PROG_X64_OBJ_DIR)/, $(SOURCE_OBJS))
@@ -67,14 +68,10 @@ all:
 	@echo "    make $(PROGNAME) DEBUG=0"
 	@echo
 
-$(PROGNAME):
-	make $(PROGNAME)32
-	make $(PROGNAME)64
+$(PROGNAME):$(PROGNAME)32 $(PROGNAME)64
 
-$(PROGNAME)32:
-	make prog-x86
-$(PROGNAME)64:
-	make prog-x64
+$(PROGNAME)32:prog-x86
+$(PROGNAME)64:prog-x64
 
 prog-x86: CFLAGS += $(PROG_FLAGS_X86)
 prog-x86: CXXFLAGS += $(PROG_FLAGS_X86)

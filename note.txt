@@ -41,6 +41,19 @@ Some software (e.g., GNOME) expects the system hostname to be resolvable to an I
 
 port 53 为DNS服务端口
 
+/etc/security/limits.conf可设置对所有用户有效，需要logout
+ulimit -c 仅对当前所在的用户有效
+
+解压指定文件  -C可指定输出目录
+tar -zxvf config.tar.gz etc/default/sysstat
+
+diff -au可得到patch
+
+ctrl-r ctrl-s（不管用可执行stty -ixon） 在shell中搜索
+
+curl HTTP层请求
+netcat/nc TCP/UDP协议层请求
+
 #############################################################
 # dep包相关
 #############################################################
@@ -78,6 +91,42 @@ C-u - M-. 返回上一个符合的tag
 
 M-x imenu 可定位函数，可自动补齐
 
+align对齐 align-regex
+
+toggle-truncate-lines (line wrap)
+or (setq-default truncate-lines 1)
+
+M-u/l/c 大小写
+
+M-|在区域上执行命令
+
+M-x column-number-mode
+(setq column-number-mode t)
+set-mark-command
+
+C-q C-j C-q C-m输入^J ^M
+
+load-file
+
+nhexl-mode去掉overwrite即可插入
+插入特殊字符
+http://www.gnu.org/software/emacs/manual/html_node/emacs/Inserting-Text.html
+
+‘M-x list-charset-chars’
+
+为1小端 否则大端
+echo -n I | od -to2 | head -n1 | cut -f2 -d" " | cut -c6
+
+int转二进制
+int=65534
+printf "0: %.8x" $int | xxd -r -g0 >>file
+printf "0: %.8x" $int | sed -E 's/0: (..)(..)(..)(..)/0: \4\3\2\1/' | xxd -r -g0 >>file
+
+echo -n -e \\x30 
+
+http://stackoverflow.com/questions/2746707/using-bash-write-bit-representation-of-integer-to-file
+
+od file的结果很奇怪，研究下
 #############################################################
 # git && SSH
 #############################################################
@@ -112,6 +161,10 @@ find . -type d -exec chmod g+s '{}' +
 
 更改remote地址
 git remote set-url origin git://new.url.here
+
+git协议很慢 https很快
+git config --global credential.helper store
+git help credentials
 
 #############################################################
 # linux自启动程序
