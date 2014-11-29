@@ -1,248 +1,4 @@
 #############################################################
-# Linux命令相关
-#############################################################
-传统gnome桌面，可用Super+Alt+RB弹出任务条菜单
-    gnome-session-fallback
-    dconf-editor
-卸载wine×后倒在Unity不可用，gnome界面也出不来，重装gnome
-xwininfo xprop查看当前窗口信息
-
-中文目录转成英文
-    export LANG=en_US
-    xdg-user-dirs-gtk-update
-    export LANG=zh_CN
-
-tar -xzf出错 先看看是否仅仅是tar而没有zip
-command直接执行，不使用alias
-打开的文件（加载的库）lsof -p <pid> 或者直接看/proc/<pid>/maps|fd|exe|cwd|exe 等文件
-
-设置能够在特定位置打开应用程序,然后更改/usr/share/applications/defaults.list中对应.desktop
-	gedit -g 955x1027+964+28
-	gnome-terminal --geometry 103x55+0+0
-
-ls -il 显示i节点号
-
-sudo apt-get install libgtk2.0-0:i386 
-
-tm2013
-/usr/lib/i386-linux-gnu
-/usr/lib/x86_64-linux-gnu/
-
-sudo apt-get install software-properties-common安装下面的程序
-sudo add-apt-repository ppa:ubuntu-wine/ppa
-sudo apt-get build-dep package安装package的依赖
-
-统计C代码行
-cat *.c | sed '/^\s*$/d;/^\s*\/\/$/d;/^\s*{\s*$/d;/^\s*}\s*$/d' | wc -l
-
-为什么会有127.0.1.1
-Some software (e.g., GNOME) expects the system hostname to be resolvable to an IP address with a canonical fully qualified domain name. This is really improper because system hostnames and domain names are two very different things; but there you have it. In order to support that software, it is necessary to ensure that the system hostname can be resolved. Most often this is done by putting a line in /etc/hosts containing some IP address and the system hostname. If your system has a permanent IP address then use that; otherwise use the address 127.0.1.1.
-
-
-port 53 为DNS服务端口
-
-/etc/security/limits.conf可设置对所有用户有效，需要logout
-ulimit -c 仅对当前所在的用户有效
-
-解压指定文件  -C可指定输出目录
-tar -zxvf config.tar.gz etc/default/sysstat
-
-diff -au可得到patch
-
-ctrl-r ctrl-s（不管用可执行stty -ixon） 在shell中搜索
-
-curl HTTP层请求
-netcat/nc TCP/UDP协议层请求
-
-#############################################################
-# dep包相关
-#############################################################
-安装dep包 sudo dpkg -i *.dep
-apt-get download 下载dep包，安装过程可参考man dpkg主要执行特定脚本，然后复制文件（和/目录结构类似）
-ar -x pakname.deb解压deb包
-
-#############################################################
-# emacs相关
-#############################################################
-emacs：indent-region format code
-    没有redo的概念，可以按任意建使undo也可以undo，即时redo
-    ctrl-q 加tab就可以输入tab
-
-(setq x-select-enable-clipboard t)同时yank到剪切板，console无效
-
-
-矩形操作
-C-x r k Kill 
-C-x r M-w Copy 
-C-x r d Delete
-C-x r y Yank
-C-x r o Insert blank space
-C-x r N Insert line numbers
-C-x r c Clear with spaces
-C-x r t string <RET> Replace 
-M-x string-insert-rectangle <RET> string <RET> Insert string on each line of the rectangle. 
-
-replace-regexp 类似于M-%，支持正则
-
-etags *.c 写入TAGS for emacs
-M-. 查找first tag  M-*返回
-C-u M-. 下一个符合的tag
-C-u - M-. 返回上一个符合的tag
-
-M-x imenu 可定位函数，可自动补齐
-
-align对齐 align-regex
-
-toggle-truncate-lines (line wrap)
-or (setq-default truncate-lines 1)
-
-M-u/l/c 大小写
-
-M-|在区域上执行命令
-
-M-x column-number-mode
-(setq column-number-mode t)
-set-mark-command
-
-C-q C-j C-q C-m输入^J ^M
-
-load-file
-
-nhexl-mode去掉overwrite即可插入
-插入特殊字符
-http://www.gnu.org/software/emacs/manual/html_node/emacs/Inserting-Text.html
-
-‘M-x list-charset-chars’
-
-为1小端 否则大端
-echo -n I | od -to2 | head -n1 | cut -f2 -d" " | cut -c6
-
-int转二进制
-int=65534
-printf "0: %.8x" $int | xxd -r -g0 >>file
-printf "0: %.8x" $int | sed -E 's/0: (..)(..)(..)(..)/0: \4\3\2\1/' | xxd -r -g0 >>file
-
-echo -n -e \\x30 
-
-http://stackoverflow.com/questions/2746707/using-bash-write-bit-representation-of-integer-to-file
-
-od file的结果很奇怪，研究下
-#############################################################
-# git && SSH
-#############################################################
-git push每次都要密码，git remote -v可看到使用的时https协议，改成
-ssh即可：
-    1. git remote rm origin
-    2. git remote add origin git@github.com:username/projectname.git
-    3. git push origin 
-
-git mv重命名
-
-为github生成公钥
-    ssh-keygen -t rsa -C "youemail@email.email"
-    输入github密码
-    将id_rsa.pub保存到github上
-    ssh -T git@github.com 测试是否可用
-
-查看本地改动
-git diff origin/master
-跟前一版本比较
-git diff HEAD@{1} filename
-
-git add的反操作
-git reset filename.txt
-
-Git Push Error: insufficient permission for adding an object to repository database
-git config core.sharedRepository group
-cd /path/to/repo.git
-chgrp -R groupname .
-chmod -R g+rwX .
-find . -type d -exec chmod g+s '{}' +
-
-更改remote地址
-git remote set-url origin git://new.url.here
-
-git协议很慢 https很快
-git config --global credential.helper store
-git help credentials
-
-#############################################################
-# linux自启动程序
-#############################################################
-service需要root才能看的所有service的状态
-自启动方法
-    1. use update-rc: Start in serial at boot time, make boot slow
-    add filename ad /etc/init.d/filename
-    add execute privldge to that filename
-    update-rc.d filename defaults
-    2. Ubuntu use Upstart to manage upstart services: can run in parallel
-    add /etc/init/filename.conf, then filename will start on boot
-    initctl list ; list state of all upstart services
-    edit /etc/init/filename.conf to disable service or add manual to /etc/init/filename.override
-Ref:http://askubuntu.com/questions/19320/how-to-enable-or-disable-services
-
-#############################################################
-# bash相关
-#############################################################
-让bash配置对所有用户生效：可在/etc/profile.d/中添加脚本，重启后则会生效，或者source /etc/profile && source ~/.bashrc让设置对当前终端生效
-
-#############################################################
-# 一些软件安装
-#############################################################
-部署OpenNote
-    sqlite
-    php5-fpm
-    php5-sqlite
-    libpcre3 for nginx
-    sudo chown www-data:www-data OpenNote/（更改数据库权限）
-
-安装mysql
-	sudo apt-get install mysql-server
-	sudo apt-get install mysql-client
-	grant select,insert,update,delete on mikehogue.* to adminSLMrZdy@localhost Identified by "M9wH6K-IlmtY";
-tomcat
-	$ sudo apt-get install tomcat7-admin
-	$ sudo apt-get install tomcat7
-	Tomcat bin folder is created in /usr/share/tomcat7
-	Tomcat conf and logs folders are created in /var/lib/tomcat7
-	创建可用manager ： conf/tomcat-users.xml
-	 <user username="admin" password="admin" roles="admin-gui,manager-gui"/>
-	在tomcat管理界面里可以reload工程以加载修改后的serverlet
-
-部署MySQLMyNotes要改名为MyNotes，修改MySQLConnection.jsp后需重新编译
-export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib:${CATALINA_HOME}/lib/servlet-api.jar
-
-#############################################################
-# java\tomcat相关
-#############################################################
-unsupported major.minor version：高版本编译的class尝试用低版本jvm运行
-JVM内存介绍
-	Heap Memory
-	Eden Space: The pool from which memory is initially allocated for most objects.
-	Survivor Space: The pool containing objects that have survived the garbage collection of the Eden space.
-	Tenured Generation: The pool containing objects that have existed for some time in the survivor space.
-
-	Non-heap memory
-	Permanent Generation: The pool containing all the reflective data of the virtual machine itself, such as class and method objects. With Java VMs that use class data sharing, this generation is divided into read-only and read-write areas.
-	Code Cache: The HotSpot Java VM also includes a code cache, containing memory that is used for compilation and storage of native code.
-
-tomcat中在</Host>前加以下控制访问权限（全局）
-	<Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="192.168.1.10" deny=""/>
-	<Valve className="org.apache.catalina.valves.RemoteHostValve" allow="abc.com" deny=""/>
-
-#############################################################
-# WEB
-#############################################################
-chrome F12 Network 看pending可以看什么在阻塞网页的显示（比如访问被墙的google服务）
-
-CSS使用相对于应用根目录用/xx.css，但这样需要设置web能访问该文件
-
-可使用javascript获取保存的密码（OpenNote）
-document.getElementById('login').getElementsByTagName('input')[1].value
-jQuery中可以按id class 和标签类型获取对象，分别为$('#id') $('.class') $('input:text')之类的
-还可按属性选择，获取其值用val()函数，而不能使用上面的value
-
-#############################################################
 # PHP
 #############################################################
 配置php输出Debug错误
@@ -273,19 +29,27 @@ Zend Extension Api No: 220100525
 ./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd  --enable-maintainer-zts --with-openssl --with-apm --enable-debug
 
 #############################################################
-# 其他
-#############################################################
-OpenNote 已保存密码不会设置到$scope中的相应字段中，必须每次都输入（loginController.js）
-且可用chrome打开，但是不能使用firefox打开
 cellular automaton Game of Life
 
 看一下书签中的链接
 学下sed，读install脚本特定部分，github
-绑定移动窗口快捷键 和当前窗口环境.
-replace-regexp
 
 Valgrind  Splint
-python -m json.tool
 
 strace git发现会解析\377\343\1\0\0\1\0\0\0\0\0\0\00281\0011\003168\003192\7in-add
 导致会等待30多秒
+
+#############################################################
+为1小端 否则大端
+echo -n I | od -to2 | head -n1 | cut -f2 -d" " | cut -c6
+
+int转二进制
+int=65534
+printf "0: %.8x" $int | xxd -r -g0 >>file
+printf "0: %.8x" $int | sed -E 's/0: (..)(..)(..)(..)/0: \4\3\2\1/' | xxd -r -g0 >>file
+
+echo -n -e \\x30 
+
+http://stackoverflow.com/questions/2746707/using-bash-write-bit-representation-of-integer-to-file
+
+od file的结果很奇怪，研究下

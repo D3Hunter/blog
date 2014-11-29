@@ -1,0 +1,70 @@
+#############################################################
+# Linux命令相关
+#############################################################
+传统gnome桌面，可用Super+Alt+RB弹出任务条菜单
+    gnome-session-fallback
+    dconf-editor
+卸载wine×后倒在Unity不可用，gnome界面也出不来，重装gnome
+xwininfo xprop查看当前窗口信息
+
+中文目录转成英文
+    export LANG=en_US
+    xdg-user-dirs-gtk-update
+    export LANG=zh_CN
+
+tar -xzf出错 用file看看是否仅仅是tar而没有zip
+command直接执行，不使用alias
+打开的文件（加载的库）lsof -p <pid> 或者直接看/proc/<pid>/maps|fd|exe|cwd|exe 等文件
+
+设置能够在特定位置打开应用程序,然后更改/usr/share/applications/defaults.list中对应.desktop
+	gedit -g 955x1027+964+28
+	gnome-terminal --geometry 103x55+0+0
+
+ls -il 显示i节点号
+port 53 为DNS服务端口
+diff -au可得到patch
+ctrl-r ctrl-s（不管用可执行stty -ixon） 在shell中搜索
+
+sudo apt-get install libgtk2.0-0:i386 加冒号指定特定arch
+sudo apt-get install software-properties-common安装下面的程序
+sudo add-apt-repository ppa:ubuntu-wine/ppa
+sudo apt-get build-dep package安装package的依赖
+
+统计C代码行
+cat *.c | sed '/^\s*$/d;/^\s*\/\/$/d;/^\s*{\s*$/d;/^\s*}\s*$/d' | wc -l
+
+为什么会有127.0.1.1
+Some software (e.g., GNOME) expects the system hostname to be resolvable to an IP address with a canonical fully qualified domain name. This is really improper because system hostnames and domain names are two very different things; but there you have it. In order to support that software, it is necessary to ensure that the system hostname can be resolved. Most often this is done by putting a line in /etc/hosts containing some IP address and the system hostname. If your system has a permanent IP address then use that; otherwise use the address 127.0.1.1.
+
+
+/etc/security/limits.conf可设置对所有用户有效，需要logout
+ulimit -c 仅对当前所在的用户有效
+
+解压指定文件  -C可指定输出目录
+tar -zxvf config.tar.gz etc/default/sysstat
+
+curl HTTP层请求
+netcat/nc TCP/UDP协议层请求
+
+安装dep包 sudo dpkg -i *.dep
+apt-get download 下载dep包，安装过程可参考man dpkg主要执行特定脚本，然后复制文件（和/目录结构类似）
+ar -x pakname.deb解压deb包
+
+让bash配置对所有用户生效：可在/etc/profile.d/中添加脚本，重启后则会生效，或者source /etc/profile && source ~/.bashrc让设置对当前终端生效
+
+#############################################################
+# linux自启动程序
+#############################################################
+service需要root才能看的所有service的状态
+自启动方法
+    1. use update-rc: Start in serial at boot time, make boot slow
+    add filename ad /etc/init.d/filename
+    add execute privldge to that filename
+    update-rc.d filename defaults
+    2. Ubuntu use Upstart to manage upstart services: can run in parallel
+    add /etc/init/filename.conf, then filename will start on boot
+    initctl list ; list state of all upstart services
+    edit /etc/init/filename.conf to disable service or add manual to /etc/init/filename.override
+Ref:http://askubuntu.com/questions/19320/how-to-enable-or-disable-services
+
+
