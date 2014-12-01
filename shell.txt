@@ -39,7 +39,6 @@ $1～$n 位置变量
 set  a b c 设置到位置变量中
 set -x 类似与verbose
 
-IFS(Internal Field Seprator) 会影响set设置位置变量，及echo是否使用”扩起来，比如$@ $*
 
 cat多行导入
 cat <<EOF 读入标准输入直到遇到EOF为止，可包含变量。也可不使用终止符,而用Ctrl-D
@@ -50,9 +49,18 @@ cat <<EOF 读入标准输入直到遇到EOF为止，可包含变量。也可不�
     ad
     sd
 
+IFS(Internal Field Seprator) 会影响set设置位置变量，及echo是否使用”扩起来，比如$@ $*
 : 是no-op,可接受参数
-
 if中用-a -o 表示 AND OR
-
 -bash: [: too many arguments  使用的变量被IFS拆分为多个参数 需要用双引号扩起来
+shell的实际解释器为#!设置的,要注意控制台shell(bash)与实际脚本使用shell(sh或叫做dash)的不同
+
+shell引号:
+    单引号内容表示literal意思,即不能包含单引号
+    双引号内容除了$`\外表示literal意思,且\能够转义$ ` " \ <newline>,若\跟其他字符\会被当作literal
+    所以:
+        echo "\\n"  dash传给echo的字符串为[\n]    echo再转义则会输出换行
+        echo "\\\n" dash传给echo的字符串为[\\n]   echo再转义则会输出\n
+        echo '"\n"' dash传给echo的字符串为["\n"]  echo再转义则会输出"<换行>"
+    sh(dash)的echo基本等于bash的echo -e
 
