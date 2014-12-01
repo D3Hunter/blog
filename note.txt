@@ -124,6 +124,8 @@ printf "0: %.8x" $int | sed -E 's/0: (..)(..)(..)(..)/0: \4\3\2\1/' | xxd -r -g0
 
 echo -n -e \\x30 
 
+stat --printf="%s" file.any
+
 http://stackoverflow.com/questions/2746707/using-bash-write-bit-representation-of-integer-to-file
 
 od file的结果很奇怪，研究下
