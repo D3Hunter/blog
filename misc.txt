@@ -1,0 +1,61 @@
+#############################################################
+# 一些软件安装
+#############################################################
+部署OpenNote
+    sqlite
+    php5-fpm
+    php5-sqlite
+    libpcre3 for nginx
+    sudo chown www-data:www-data OpenNote/（更改数据库权限）
+
+部署MySQLMyNotes要改名为MyNotes，修改MySQLConnection.jsp后需重新编译
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib:${CATALINA_HOME}/lib/servlet-api.jar
+	sudo apt-get install mysql-server
+	sudo apt-get install mysql-client
+	grant select,insert,update,delete on mikehogue.* to adminSLMrZdy@localhost Identified by "M9wH6K-IlmtY";
+tomcat
+	$ sudo apt-get install tomcat7-admin
+	$ sudo apt-get install tomcat7
+	Tomcat bin folder is created in /usr/share/tomcat7
+	Tomcat conf and logs folders are created in /var/lib/tomcat7
+	创建可用manager ： conf/tomcat-users.xml
+	 <user username="admin" password="admin" roles="admin-gui,manager-gui"/>
+	在tomcat管理界面里可以reload工程以加载修改后的serverlet
+
+
+#############################################################
+# java\tomcat相关
+#############################################################
+unsupported major.minor version：高版本编译的class尝试用低版本jvm运行
+JVM内存介绍
+	Heap Memory
+	Eden Space: The pool from which memory is initially allocated for most objects.
+	Survivor Space: The pool containing objects that have survived the garbage collection of the Eden space.
+	Tenured Generation: The pool containing objects that have existed for some time in the survivor space.
+
+	Non-heap memory
+	Permanent Generation: The pool containing all the reflective data of the virtual machine itself, such as class and method objects. With Java VMs that use class data sharing, this generation is divided into read-only and read-write areas.
+	Code Cache: The HotSpot Java VM also includes a code cache, containing memory that is used for compilation and storage of native code.
+
+tomcat中在</Host>前加以下控制访问权限（全局）
+	<Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="192.168.1.10" deny=""/>
+	<Valve className="org.apache.catalina.valves.RemoteHostValve" allow="abc.com" deny=""/>
+
+#############################################################
+# WEB
+#############################################################
+chrome F12 Network 看pending可以看什么在阻塞网页的显示（比如访问被墙的google服务）
+
+CSS使用相对于应用根目录用/xx.css，但这样需要设置web能访问该文件
+
+可使用javascript获取保存的密码（OpenNote）
+document.getElementById('login').getElementsByTagName('input')[1].value
+jQuery中可以按id class 和标签类型获取对象，分别为$('#id') $('.class') $('input:text')之类的
+还可按属性选择，获取其值用val()函数，而不能使用上面的value
+
+#############################################################
+# 其他
+#############################################################
+OpenNote 已保存密码不会设置到$scope中的相应字段中，必须每次都输入（loginController.js）
+且可用chrome打开，但是不能使用firefox打开
+

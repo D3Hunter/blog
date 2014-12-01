@@ -8,50 +8,45 @@ libc中提供backtrace*方法，可访问当前函数栈信息（在程序中直
 
 snprintf会自动加null字符
 
-LIBRARY_PATH is used by gcc before compilation to search for directories containing libraries that need to be linked to your program.
+LIBRARY_PATH 链接时, LD_LIBRARY_PATH 运行时
 
-LD_LIBRARY_PATH is used by your program to search for directories containing the libraries after it has been successfully compiled and linked.
-
-完全静态链接libc libc++避免出现GLIBC_2.14 not found等错误
--static-libgcc -static-libstdc++ -static
-
+提高程序的可移植性:
+    完全静态链接libc libc++可避免出现GLIBC_2.14 not found等错误
+        -static-libgcc -static-libstdc++ -static
+        -static 和 -ldl是冲突的，但是gcc允许同时指定，只有-static有效
+    静态链接不是最好的支持程序可移植的方式, 见下
+        http://people.redhat.com/~drepper/no_static_linking.html
+    较好的方式是获得另一个libc/c++库, 连接时使用-L(或LIBRARY_PATH,但在64上编32位程序时失效,估计跟gcc默认设置有关)指定过去
+        (或者使用--sysroot, 测试发现我的系统不管用)
+    或者在一个支持的最底版本系统上编译(chroot, docker等)
 直接运行/lib/libc.so.6可查看其信息
+
 
 编译C程序，如果函数没声明就使用，编译器会设置默认返回int，在32位环境下没问题，在64位环境下可能会导致严重错误
     比如返回一个64位指针，则会被强转成32位int，导致错误
     所以在编译程序时，要特别注意警告，最好设置成存在警告则编译失败
+    -Werror-implicit-function-declaration
+    -Werror使所有警告变成错误
 
 gcc会按命令行从左往右的顺序扫描符号，使用gcc编译程序时一定注意链接库指定顺序，否则可能出现明明指定了正确的库，但是仍然报找不到符号的问题。
 
--static 和 -ldl是冲突的，但是gcc允许同时指定，只有-static有效
--Werror使所有警告变成错误
+glibc编译后libpthread.so 和libc.so 都是脚本，里面指定实际库所在绝对位置，如果更改了位置需要进行修改
+    上面的问题可能出现加了-L,但是ld找的库却在另一个目录的情况,导致链接失败
 
-This is mis-guided.
+do while(false)可以方便的break（类似goto的效果）
 
-Statically linked binaries are significantly *less* portable then
-the dynamically linked ones (on UNIX in general and Linux in
-particular).
-
-Here is one thread that discusses/explains the issue:
-http://groups.google.com/group/comp.os.linux.development.apps/browse_frm/thread/f664f8f7c19a4a7b
-
-You may also wish to read this:
-http://people.redhat.com/~drepper/no_static_linking.html
-Post by Olaf van der Spek
-What can I do about this?
-Don't link statically.
-
-Select the oldest release you wish to support, and build on that release.
-Alternatively, use LSB (http://freestandards.org/en/LSB) or
-Apptools (http://autopackage.org/apbuild-apgcc.php)
-
-Using a chroot environment is one way of doing it, but you don't need all that work. You can set up an older, reference version of your SDK (including libc and others) somewhere, and then force gcc to link against that rather than the libraries and headers in the standard system directories. The GCC options to do so are: -isystem, -isysroot and --sysroot.
-
-As an example, Apple's gcc does that very often, linking to various SDK versions depending which OS version you're targeting.
-
+gcc -s strip掉符号表
 查看gcc默认的include路径
 gcc -xc -E -v -
 gcc -xc++ -E -v -
+gcc 中 -Wl向ld传参数, 比如-Wl,--verbose查看链接使用的库路径及详细检索过程
+gcc -print-search-dirs | sed 's/:/\n/g' 查看默认库及头文件搜索路径
+gcc -dumpspecs可查看默认的flag等信息, -specs指定使用的specs
+ldd -v 可显示所依赖的库版本
+
+makefile里直接调用make不会继承当前的参数比如-f，导致奇怪的结果
+
+
 #############################################################
 # GDB
 #############################################################
@@ -75,194 +70,5 @@ thread
 frame
 print mutex可查看那个线程拥有mutex
 kill
---pid
-
-
-http://www.trevorpounds.com/blog/?p=111
-http://www.trevorpounds.com/blog/?p=513
-
-../../gcc/unwind-dw2.c: In function `uw_frame_state_for':
-../../gcc/unwind-dw2.c:1031: error: field `info' has incomplete type
-http://stackoverflow.com/questions/26375445/error-compiling-gcc-3-4-6-in-ubuntu-14-04
-grep "struct siginfo" -r . -l | xargs -I{} sed -i 's/struct\ siginfo/siginfo_t/g' {}
-
-/usr/include/bits/fcntl2.h:51: error: call to ‘__open_missing_mode’ declared with attribute error: open with O_CREAT in second argument needs 3 arguments
-CFLAGS=-D_FORTIFY_SOURCE=0 ../gcc-3.4.6/configure
-http://wiki.ubuntu.com/CompilerFlags#-D_FORTIFY_SOURCE=2
-
-./../include/obstack.h:426:30: error: lvalue required as increment operand
-使用gcc3.4.6, 高版本报改错无
-
- ./.libs/libgcj.so: undefined reference to `__cxa_call_unexpected'
-可以只开启c和c++, 即可避免上面的问题(libjava导致）
-CFLAGS=-D_FORTIFY_SOURCE=0 ./configure --prefix=/home/j/chroot_glibc2.3/usr/local/ --host=x86_64-linux-gnu --enable-languages=c,c++
-
-CFLAGS=-D_FORTIFY_SOURCE=0 ./configure --prefix=/home/j/gcc-3.3/ --enable-languages=c,c++
-
- .eh_frame for the crt*S.o objects错误
-diff中CRTSTUFF_T_CFLAGS = -fno-omit-frame-pointer -fno-asynchronous-unwind-tables忘记添加了
-
-/usr/bin/ld: cannot find crti.o: No such file or directory
-sudo ln -s /usr/lib/x86_64-linux-gnu /usr/lib64
-http://stackoverflow.com/questions/6329887/compiling-problems-cannot-find-crt1-o
-没找到怎么更好的设置路径，find到crti.o（32b的）拷贝到当前编译目录下也行
-gcc -print-search-dirs | sed 's/:/\n/g'
-
-编译glibc需要kernel header，高版本的未必能够编译成功，可能出现一堆符号错误，可参考下面的kernel设置正确的头文件路径，以下为kernel2.6.32.64
-*** On GNU/Linux systems it is normal to compile GNU libc with the
-*** `linuxthreads' add-on.  Without that, the library will be
-*** incompatible with normal GNU/Linux systems.
-*** If you really mean to not use this add-on, run configure again
-*** using the extra parameter `--disable-sanity-checks'.
---enable-add-ons=linuxthreads  需要单独下载
-https://sourceware.org/glibc/wiki/FAQ
-
-
-config.h:3:3: error: #error "glibc cannot be compiled without optimization"
-config.make 更改为CFLAGS="-02"
-
-可参考INSTALL文件中关于kernel header的描述
---enable-add-ons=linuxthreads --with-headers=/home/j/Downloads/linux-2.6.32.64/include
-make include/linux/version.h
-
-../sysdeps/unix/sysv/linux/sys/syscall.h:25:24: asm/unistd.h: No such file or directory
-2.6内核的include默认为asm-generic, 导致找不到asm下的文件，拷贝一份即可
-../linuxthreads/sysdeps/x86_64/pt-machine.h:26:23: asm/prctl.h: No such file or directory
-内核内有该头文件，拷贝到指定位置即可
-
-version-info.h:1: error: missing terminating " character
-version-info.h由csu/Makefile生成，echo的问题导致双引号换行
-一个bug，添加该patch
---- aaa/glibc-2.3/csu/Makefile	2002-08-15 15:54:11.000000000 +0800
-+++ glibc-2.3/csu/Makefile	2014-11-25 11:53:21.676369719 +0800
-@@ -210,14 +210,15 @@
- 		   if [ -z "$$os" ]; then \
- 		     os=Linux; \
- 		   fi; \
--		   echo "\"Compiled on a $$os $$version system" \
--			"on `date +%Y-%m-%d`.\\n\"" ;; \
-+		   printf '"Compiled on a %s %s system on %s.\\n"\n' \
-+			"$$os" "$$version" "`date +%Y-%m-%d`" ;; \
- 	   *) ;; \
- 	 esac; \
- 	 files="$(all-Banner-files)";				\
- 	 if test -n "$$files"; then				\
--	   echo "\"Available extensions:\\n\"";			\
-+	   printf '"Available extensions:\\n"';			\
- 	   sed -e '/^#/d' -e 's/^[[:space:]]*/	/'		\
- 	       -e 's/\(^.*$$\)/\"\1\\n\"/' $$files;		\
- 	 fi) > $@T
- 	mv -f $@T $@
-+
-
-sscanf.c:37: error: `va_start' used in function with fixed args
-修改stdio-common/sscanf.c，添加“,...”到函数参数
-
-使用2.6的内核编译，报一堆__NR_系统调用找不到，以下使用kernel2.2.18
-2.2.18不支持x86-64架构，在makefile中强制设置为i386
-# make mrproper
-# make menuconfig (报错）
-# make dep
-glibc2.3至少要求2.4.0的内核（需要使用ia64替代x86_64)
-
-glibc2.9
-mawk: scripts/gen-sorted.awk: line 19: regular expression compile failed (bad class -- [], [^] or [)
-/[^
-http://stackoverflow.com/questions/6396923/error-while-using-make-to-compile-glibc-2-11-1-for-linux-from-scratch
-
-expected identifier before numeric constant
-sudo emacs /lib/modules/3.13.0-32-generic/build/include/linux/stddef.h去掉对应代码
-
-Note compilers (like Debian/Ubuntu) that predefine _FORTIFY_SOURCE also implicitly set -fstack-protector, which I think is also a problem for building libc.
-I can confirm this. My build scripts all have -U_FORTIFY_SOURCE in CFLAGS. I'll have a look at fixing this
-
-make[2]: *** [/home/j/Downloads/glibc-2.12.1/build/sunrpc/xnlm_prot.stmp] 错误 139
-Segmentation fault (core dumped)
--O以上好像会导致该问题，尝试更换binutils不管用
-
-Executive summary: run make -j8 CFLAGS="-U_FORTIFY_SOURCE -O2 -fno-stack-protector"
-In file included from ../sysdeps/unix/sysv/linux/syslog.c:10:0:
-../misc/syslog.c: In function ‘__vsyslog_chk’:
-../misc/syslog.c:123:1: sorry, unimplemented: inlining failed in call to ‘syslog’: function body not available
-../misc/syslog.c:155:9: sorry, unimplemented: called from here
-Solution: add -U_FORTIFY_SOURCE to CFLAGS. Note that -O2 is also required in CFLAGS.
-./src/glibc-2.15/build/libc_pic.a(dl-addr.os): In function `_dl_addr_inside_object':
-dl-addr.c:(.text+0x0): multiple definition of `_dl_addr_inside_object'
-./src/glibc-2.15/build/elf/dl-allobjs.os:(.text+0x10ef0): first defined here
-Solution: this was perhaps the trickiest. Adding -march=* or -DNDEBUG didn't help, eventually adding -fno-stack-protector to CFLAGS did the trick.
-echo libnss_db-2.15.so /home/yonch/lib/libnss_db.so.2 >> /home/yonch/src/glibc-2.15/build/elf/symlink.list
-rm -f /home/yonch/lib/libnss_db.so.new
-/bin/sh ../scripts/rellns-sh /home/yonch/lib/libnss_db.so.2 /home/yonch/lib/libnss_db.so.new
-mv -f /home/yonch/lib/libnss_db.so.new /home/yonch/lib/libnss_db.so
-.././scripts/mkinstalldirs /var/db
-mkdir /var/db
-mkdir: cannot create directory `/var/db': Permission denied
-make[2]: *** [/var/db/Makefile] Error 1
-Solution: nothing - the library seemed to work for me, even with this error. The software I run does not use libnss, though.
-
-编译binutils需要添加--with-sysroot，不然glibc将无法使用--version-script
-this linker was not configured to use sysroots
-
-configure error  compiler must support C cleanup handling 
- /tmp/ccd21eFw.s:13: Error: expecting string instruction after `rep'
-binutils版本太低与gcc版本不匹配导致的
-
-2.13没出现上面的错误139, 使用sysroot后会报其他头文件找不到，用-v输出路径比较一下，并找到相关头文件，复制过来即可，编译时指定$LIBRARY_PATH可找到相关的库
-
-
-ldd -v 可显示所依赖的库版本
-
-makefile里直接调用make不会继承当前的参数比如-f，导致奇怪的结果
-
-glibc编译后libpthread.so 和libc.so 都是脚本，里面指定实际库所在绝对位置，如果更改了位置需要进行修改
-
-ubuntu自带的ld是编译时没有--with-sysroot，导致--sysroot参数无效（测试发现binutils-2.24添加了该参数，同样不识别--sysroot），目前的方法还是使用library_path
-LIBRARY_PATH=/home/j/glibc-2.13/usr/local/lib make这样编译时使用的glibc相关库即是新的版本
-但是在编译32位时，添加LIBRARY_PATH不会将其作为优先，导致链接仍然使用系统内的，估计时发行版的bug，可以在命令行指定-L即可保证优先搜索
-
-编译32位glibc2.13
-../configure  --prefix=/home/j/glibc-2.13-32/ CC="gcc -m32" CXX="g++ -m32" --host=i386-linux-gnu --build=x86_64-linux-gnu
-
-s_frexp.S:66: Error: invalid identifier for ".ifdef"
-Index: sysdeps/unix/sysv/linux/i386/sysdep.h
-===================================================================
---- sysdeps/unix/sysv/linux/i386/sysdep.h	(revision 1469)
-+++ sysdeps/unix/sysv/linux/i386/sysdep.h	(working copy)
-@@ -29,6 +29,10 @@
- #include <dl-sysdep.h>
- #include <tls.h>
- 
-+#if defined __i686 && defined __ASSEMBLER__
-+#undef __i686
-+#define __i686 __i686
-+#endif
- 
- /* For Linux we can use the system call table in the header file
- 	/usr/include/asm/unistd.h
-Index: nptl/sysdeps/pthread/pt-initfini.c
-===================================================================
---- nptl/sysdeps/pthread/pt-initfini.c	(revision 1469)
-+++ nptl/sysdeps/pthread/pt-initfini.c	(working copy)
-@@ -45,6 +45,11 @@
- /* Embed an #include to pull in the alignment and .end directives. */
- asm ("\n#include \"defs.h\"");
- 
-+asm ("\n#if defined __i686 && defined __ASSEMBLER__");
-+asm ("\n#undef __i686");
-+asm ("\n#define __i686 __i686");
-+asm ("\n#endif");
-+
- /* The initial common code ends here. */
- asm ("\n/*@HEADER_ENDS*/");
-
-on x86_64 host to i386 target :
-No rule to make target `/export/crosstool/targets/i386-pc-linux-gnu/build/build-libc/nptl/pthread_spin_trylock.o', needed by `lib-noranlib'.
-x86_54的cpu架构支持i686（兼容386），所以i386报错
-
-
-do while(false)可以方便的break（类似goto的效果）
-gcc -s strip掉符号表
-
+--pid  attch进程
 gdb调动态库，设置函数断点后会提示你加载动态库，适合调使用dlopen打开的动态库（不能用list打印）
-
-emacs paste large mount of data slow
