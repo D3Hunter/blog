@@ -53,3 +53,11 @@ echo -n -e \\x30
 http://stackoverflow.com/questions/2746707/using-bash-write-bit-representation-of-integer-to-file
 
 od file的结果很奇怪，研究下
+
+hd 为hexdump -C
+dd ibs=1 skip=12 status=none
+
+Mac terminal on ubuntu
+export PS1="\033[0;33m\h:\W \u\$ \e[m"
+curl -kL https://raw2.github.com/cstrap/monaco-font/master/install-font-ubuntu.sh | bash
+http://askubuntu.com/questions/384551/mac-os-x-terminal-clone-for-ubuntu

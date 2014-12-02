@@ -51,7 +51,7 @@ makefile里直接调用make不会继承当前的参数比如-f，导致奇怪的
 # GDB
 #############################################################
 list
-break
+break/delete/info break
 info
 run/attach/kill/continue
 next/step
@@ -72,3 +72,11 @@ print mutex可查看那个线程拥有mutex
 kill
 --pid  attch进程
 gdb调动态库，设置函数断点后会提示你加载动态库，适合调使用dlopen打开的动态库（不能用list打印）
+break 403
+commands
+silent
+set x = y + 4
+cont
+end
+
+x系统学习下gdb
