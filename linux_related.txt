@@ -25,6 +25,11 @@ port 53 为DNS服务端口
 diff -au可得到patch
 ctrl-r ctrl-s（不管用可执行stty -ixon） 在shell中搜索
 
+
+CentOS/RHEL 5.x : yum -y install glibc-devel.i386 libstdc++-devel.i386
+CentOS/RHEL 6.x : yum -y install glibc-devel.i686 glibc-devel ibstdc++-devel.i686
+Debian or Ubuntu: sudo apt-get install g++-multilib libc6-dev-i386
+
 sudo apt-get install libgtk2.0-0:i386 加冒号指定特定arch
 sudo apt-get install software-properties-common安装下面的程序
 sudo add-apt-repository ppa:ubuntu-wine/ppa
@@ -53,6 +58,12 @@ ar -x pakname.deb解压deb包
 让bash配置对所有用户生效：可在/etc/profile.d/中添加脚本，重启后则会生效，或者source /etc/profile && source ~/.bashrc让设置对当前终端生效
 
 dd可以指定offset输出
+
+使用ssh或者使用ssh协议的git慢，GSSAPIAuthentication no在ssh_config中
+
+添加用户到组sudo usermod -a -G group username
+
+sources.list  /etc/apt/
 #############################################################
 # linux自启动程序
 #############################################################
@@ -68,4 +79,19 @@ service需要root才能看的所有service的状态
     edit /etc/init/filename.conf to disable service or add manual to /etc/init/filename.override
 Ref:http://askubuntu.com/questions/19320/how-to-enable-or-disable-services
 
+#############################################################
+# 在64b机器上编译32b程序
+#############################################################
+使用gcc的-m32选项，并需要安装对应的32位头文件和库
+error: /usr/include/gnu/stubs.h:7:27: error: gnu/stubs-32.h:
+    To fix this problem, on a CentOS/RHEL 5.x type the following yum command:
+    # yum -y install glibc-devel.i386 libstdc++-devel.i386
 
+    To fix this problem, on a CentOS/RHEL 6.x type the following yum command:
+    # yum -y install glibc-devel.i686 glibc-devel ibstdc++-devel.i686
+
+    To fix this problem on a Debian or Ubuntu Linux type the following apt-get command:
+    $ sudo apt-get install g++-multilib libc6-dev-i386
+
+    To fix this problem on a Suse (SLES) / OpenSUSE Linux type the following zypper command:
+    # zypper in glibc-devel-32bit

@@ -56,7 +56,7 @@ if中用-a -o 表示 AND OR
 shell的实际解释器为#!设置的,要注意控制台shell(bash)与实际脚本使用shell(sh或叫做dash)的不同
 
 shell引号:
-    单引号内容表示literal意思,即不能包含单引号
+    单引号内容表示literal意思,即不能包含单引号, 但可以利用类似C里的"sss" "sss"自动拼接，来添加变量或‘
     双引号内容除了$`\外表示literal意思,且\能够转义$ ` " \ <newline>,若\跟其他字符\会被当作literal
     所以:
         echo "\\n"  dash传给echo的字符串为[\n]    echo再转义则会输出换行

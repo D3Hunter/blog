@@ -18,11 +18,12 @@ echo '<?php print ini_get("extension_dir"); ?>' | php -q
 echo '<?php print PHP_CONFIG_FILE_SCAN_DIR; ?>' | php -q
 echo '<?php print PHP_CONFIG_FILE_PATH; ?>'    | php -q 
 echo '<?php phpinfo(); ?>'     | php -q
+查看已加载的扩展：php -m
 
-PHP 4.3.34
-PHP Api Version: 20100412
-Zend Module Api No: 20100525
-Zend Extension Api No: 220100525
+编译32b添加CC="gcc -m32" CXX="g++ -m32"
+修改5.5.19，configure去掉test "$cross_compiling" = yes;的部分，避免无脑报错
+安装32b的libxml2 sudo apt-get instll xml2:i386(安装后不会自动创建软链接，需要自己设置）
+报找不到dlopen@@GLIBC_2.1：make时CFLAGS=-ldl
 
 ./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd  --enable-maintainer-zts --with-openssl --enable-debug
 
@@ -36,8 +37,26 @@ cellular automaton Game of Life
 
 Valgrind  Splint
 
-strace git发现会解析\377\343\1\0\0\1\0\0\0\0\0\0\00281\0011\003168\003192\7in-add
-导致会等待30多秒
-
 #############################################################
+terminator -m -b最大化无边界，保存layout后修改.config/terminator/config为default
+cd ~/code/misc;bash添加到customize command即可
+仅diff特定文件：find php_daemon/ -name "*.c" -exec git diff ../../php-agent/{} {} \;
 
+clang/llvm 初始目的是作为gcc的替代（apple觉得gcc对GUI IDE的集成麻烦）
+opmock2做单元测试，当多是用来生成mock
+
+编译时除了库一致，头文件也要一样
+
+thunderbird在收取邮件时也慢（DNS解析导致，换成IP就很快）
+
+fetchmail Mail Delivery Agent (mail)
+
+编译curl加上
+--disable-ftp --disable-file --disable-ldap --disable-dict 
+-disable-telnet --disable-tftp --disable-rtsp --disable-pop3 
+-disable-imap --disable-smtp --disable-gopher --disable-ares 
+-disable-debug --without-ssl --without-zlib --without-libidn 
+
+Ubuntu14.04使用-O2编译, 出现undefined reference to __poll_chk，使用-O0就没问题，参考编译glibc的过程，也跟_FORTIFY_SOURCE有关，加上-U即可，最后发现library_path指向的是glibc-2.13的，而头文件却没有做相应设置，导致该问题
+
+编译32b的openssl  ./Configure linux-generic32 然后make时指定make CC="gcc -m32" CXX="g++ -m32"

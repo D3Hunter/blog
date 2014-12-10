@@ -16,6 +16,12 @@
 (global-set-key (kbd "C-<left>") 'windmove-left)
 (global-set-key (kbd "C-2") 'set-mark-command)
 
+(defun on-after-init ()
+  (unless (display-graphic-p (selected-frame))
+    (set-face-background 'default "unspecified-bg" (selected-frame))))
+
+(add-hook 'window-setup-hook 'on-after-init)
+
 (defun toggle-fullscreen ()
   "Toggle full screen on X11"
   (interactive)

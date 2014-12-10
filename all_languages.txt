@@ -44,18 +44,22 @@ gcc -print-search-dirs | sed 's/:/\n/g' 查看默认库及头文件搜索路径
 gcc -dumpspecs可查看默认的flag等信息, -specs指定使用的specs
 ldd -v 可显示所依赖的库版本
 
-makefile里直接调用make不会继承当前的参数比如-f，导致奇怪的结果
+gcc4.1.2(CentOS 5.5)要使用PTHREAD_MUTEX_ERRORCHECK需-D_GNU_SOURCE
 
+makefile里直接调用make不会继承当前的参数比如-f，导致奇怪的结果 ${MFLAGS}为传入的参数
+
+read/write读取socket，返回0表示对方关闭连接
 
 #############################################################
 # GDB
 #############################################################
-list
-break
+list/list -
+break/delete/info break
 info
 run/attach/kill/continue
 next/step
-print
+print/set print elements 0 设置gdb的打印元素上限，0为不限制
+printf "%s\n", some_string 不escape打印
 bt/where
 set/show args
 cd/pwd
@@ -64,11 +68,121 @@ display
 watch
 call
 layout src.
-quit
-info threads
-thread
-frame
+info threads/thread/frame
 print mutex可查看那个线程拥有mutex
-kill
+使用valgrind和gdb一起查mem leak
+call可直接调用函数
 --pid  attch进程
+set follow-fork-mode <mode> 调试child/parent
 gdb调动态库，设置函数断点后会提示你加载动态库，适合调使用dlopen打开的动态库（不能用list打印）
+break 403
+commands
+silent
+set x = y + 4
+cont
+end
+
+x系统学习下gdb
+
+#############################################################
+# SED
+#############################################################
+s/p/n/d/q//N/D/P/w/r/a/i/c/=/y/l/x/h/H/g/G/:/b/t/;/
+
+注意shell会首先做处理，\意味着一条命令被断行
+sed '\
+s/ /\\\\
+/' file
+
+Using & as the matched string
+If the expression starts with a backslash, the next character is the delimiter
+sed '\,^#, s/[0-9][0-9]*//'
+You can specify a range on line numbers by inserting a comma between the numbers
+sed '101,$ s/A/a/'
+命令前可加！将其语义去反（比如p为匹配时打印，！p为不匹配时打印）
+the "!" command "inverts" the address range, operating on the other lines. 可用来做if else的逻辑
+The curly braces, "{" and "}," are used to group the commands.
+{}作为一个整体可取！，并可嵌套
+sed -n '
+	1,100 {
+		/begin/,/end/ {
+		     s/#.*//
+		     s/[ ^I]*$//
+		     /^$/ d
+		     p
+		}
+	}
+'
+If you did not want to make any changes where the word "begin" occurred, you could simple add a new condition to skip over that line:
+
+#!/bin/sh
+sed '
+	/begin/,/end/ {
+	    /begin/n # skip over the line that has "begin" on it
+	    s/old/new/
+	}
+'
+However, skipping over the line that has "end" is trickier. If you use the same method you used for "begin" then the sed engine will not see the "end" to stop the range - it skips over that as well. The solution is to do a substitute on all lines that don't have the "end" by using
+
+#!/bin/sh
+sed '
+    /begin/,/end/ {
+      /begin/n # skip over the line that has "begin" on it
+      /end/ !{
+        s/old/new/
+      }  
+    }
+'
+
+Remember - only one space must follow the command. Anything else will be considered part of the file name. The "w" command also has the same limitation as the "w" flag: only 10 files can be opened in sed
+
+The other subtlety is the "d" command deletes the current data in the pattern space. Once all of the data is deleted, it does make sense that no other action will be attempted. Therefore a "d" command executed in a curly brace also aborts all further actions. 
+
+The main loop of a sed script looks like this:
+
+The next line is read from the input file and places it in the pattern space. If the end of file is found, and if there are additional files to read, the current file is closed, the next file is opened, and the first line of the new file is placed into the pattern space.
+The line count is incremented by one. Opening a new file does not reset this number.
+Each sed command is examined. If there is a restriction placed on the command, and the current line in the pattern space meets that restriction, the command is executed. Some commands, like "n" or "d" cause sed to go to the top of the loop. The "q" command causes sed to stop. Otherwise the next command is examined.
+After all of the commands are examined, the pattern space is output unless sed has the optional "-n" argument.
+
+Since the "=" command only prints to standard output, you cannot print the line number on the same line as the pattern. You need to edit multi-line patterns to do this.
+
+There is one more "location" to be covered: the hold buffer or hold space. Think of it as a spare pattern buffer.
+
+The "b" command branches to the label. The label follows the command. If no label is there, branch to the end of the script. 
+
+Normally, when you specify several files on the command line, sed concatenates the files into one stream, and then operates on that single stream. The '-s' command tells GNU sed to treat the files are independent files.
+
+The -u Unbuffered argument
+
+Normally - Unix and Linux systems apply some intelligence to handling standard output. It's assumed that if you are sending results to a terminal, you want the output as soon as it becomes available. However, if you are sending the output to a file, then it's assumed you want better performance, so it buffers the output until the buffer is full, and then the contents of the buffer is written to the file. Let me elaborate on this. Let's assume for this example you have a very large file, and you are using sed to search for a string, and to print it when it is found:
+
+sed -n '/MATCH/p' <file
+Since the output is the terminal, as soon as a match is found, it is printed. However, if sed pipes its output to another program, it will buffer the results. But there are times when you want immediate results. This is especially true when you are dealing with large files, or files that occasionally generate data. To summarize, you have lots of input data, and you want sed to process it, and then send this to another program that processes the results, but you want the results when it happens, and not delayed. Let me make up a simple example. It's contrived, but it does explain how this works. Here's a program called SlowText that prints numbers from 1 to 60, once a second:
+#!/bin/sh
+for i in `seq 1 60`
+do
+  echo $i
+  sleep 1
+done
+Let's use sed to search for lines that have the character '1', and have it send results to awk, which will calculate the square of that number. This would be the admittedly contrived script:
+SlowText | sed -n '/1/p' | awk '{print $1*$1}'
+This works, but because sed is buffering the results, we have to wait until the buffer fills up, or until the SlowText program exists, before we the results. You can eliminate the buffering, and see the results as soon as SlowText outputs them, by using the "-u" option. With this option, you will see the squares printed as soon as possible:
+SlowText | sed -un '/1/p' | awk '{print $1*$1}'
+The long form of the argument is "--unbuffered".
+
+GNU扩展-z，可使用NULL作为行分隔
+
+
+可在sed命令前指定范围
+    Specifying a line by its number.
+    Specifying a range of lines by number.
+    All lines containing a pattern.
+    All lines from the beginning of a file to a regular expression
+    All lines from a regular expression to the end of the file.
+    All lines between two regular expressions.
+命令后可指定flags(也同名命令一样）
+    /I - Ignore Case
+    /w - filename Write to a file with
+    /g - Global replacement
+    /p - print
