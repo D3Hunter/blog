@@ -64,3 +64,5 @@ shell引号:
         echo '"\n"' dash传给echo的字符串为["\n"]  echo再转义则会输出"<换行>"
     sh(dash)的echo基本等于bash的echo -e
 
+set -e 当任意程序失败（return非0）时，退出
+

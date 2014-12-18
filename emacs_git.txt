@@ -38,6 +38,11 @@ align只替换第一个，C-u M-x align-regex 多次替换
 table-capture/table-release
 
 M-& async shell
+
+C-x s保存所有buffer
+C-x C-w save as
+
+dired使用m/u标记文件，dired-do-query-replace-regexp可在标记的文件内查找替换
 #############################################################
 # git
 #############################################################
@@ -64,3 +69,12 @@ ssh即可：
     git config --global credential.helper store
     git help credentials
 
+git rebase --onto node~3 node~1 node
+删除node~3 到 node~1（不包含）
+git show-ref
+git commit origin HEAD:unittest
+git branch (*标识）
+git branch -d
+push.default=simple 仅提交当前branch
+git checkout unittest切换分支
+git remote set-url origin设置origin地址
