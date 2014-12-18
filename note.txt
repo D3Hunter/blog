@@ -45,31 +45,7 @@ cd ~/code/misc;bash添加到customize command即可
 clang/llvm 初始目的是作为gcc的替代（apple觉得gcc对GUI IDE的集成麻烦）
 opmock2做单元测试，当多是用来生成mock
 
-编译时除了库一致，头文件也要一样
-
-thunderbird在收取邮件时也慢（DNS解析导致，换成IP就很快）
-
-fetchmail Mail Delivery Agent (mail)
-
-编译curl加上
---disable-ftp --disable-file --disable-ldap --disable-dict 
--disable-telnet --disable-tftp --disable-rtsp --disable-pop3 
--disable-imap --disable-smtp --disable-gopher --disable-ares 
--disable-debug --without-ssl --without-zlib --without-libidn 
-
-Ubuntu14.04使用-O2编译, 出现undefined reference to __poll_chk，使用-O0就没问题，参考编译glibc的过程，也跟_FORTIFY_SOURCE有关，加上-U即可，最后发现library_path指向的是glibc-2.13的，而头文件却没有做相应设置，导致该问题
-
 编译32b的openssl  ./Configure linux-generic32 然后make时指定make CC="gcc -m32" CXX="g++ -m32"
 
-信号处理完后（sleep返回），然后调用oa_daemon_cleanup 导致segment fault（下面的位置，format错误）
-运行两次提示用户
-ERROR: 12-16 13:14:57 [php_daemon/connector.c:97][nr_connector_done] nrt_cond_destroy failed: EINTR
-ERROR: 12-16 13:14:57 [php_daemon/connector.c:104][nr_connector_done] nrt_mutex_destroy failed: EBUSY
-有时候不会正确清理，导致pid文件没被删掉
 curl -X POST
 
-ssh root@182.254.159.46 AMAZONsaasTest12
-http://182.254.159.46:7074/index.php?s=/admin/public/login.html
-
-加上agent平均打开时间2s，不使用50-140ms
-index.php?s=/admin/public/verify.html	GET	(failed)		index.php:36	0 B	2.45 s
