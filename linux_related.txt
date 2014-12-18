@@ -57,6 +57,8 @@ ar -x pakname.deb解压deb包
 
 让bash配置对所有用户生效：可在/etc/profile.d/中添加脚本，重启后则会生效，或者source /etc/profile && source ~/.bashrc让设置对当前终端生效
 
+dd可以指定offset输出
+
 使用ssh或者使用ssh协议的git慢，GSSAPIAuthentication no在ssh_config中
 
 添加用户到组sudo usermod -a -G group username
