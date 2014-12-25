@@ -78,3 +78,8 @@ git branch -d
 push.default=simple 仅提交当前branch
 git checkout unittest切换分支
 git remote set-url origin设置origin地址
+git checkout abcde file/to/restore 指定文件checkout
+git commit --amend -m "New commit message" 对已经push的需要force，要与其他人协调好
+git tag -d 12345 删除tag
+git push origin :refs/tags/12345
+git describe --tags --long

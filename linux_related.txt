@@ -66,6 +66,12 @@ dd可以指定offset输出
 sources.list  /etc/apt/
 
 curl -X POST
+
+The readline library accepts \001 and \002 (ASCII SOH and STX) as non-printable text delimiters. 
+You must put \[ and \] around any non-printing escape sequences in your prompt.
+否则再bash history中前一条命令可能会overwrite当前命令，gdb的prompt由于不能使用\[\]故可使用\001\002
+bash颜色表http://misc.flogisoft.com/bash/tip_colors_and_formatting
+
 #############################################################
 # linux自启动程序
 #############################################################

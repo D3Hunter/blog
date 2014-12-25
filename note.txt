@@ -25,9 +25,7 @@ echo '<?php phpinfo(); ?>'     | php -q
 安装32b的libxml2 sudo apt-get instll xml2:i386(安装后不会自动创建软链接，需要自己设置）
 报找不到dlopen@@GLIBC_2.1：make时CFLAGS=-ldl
 
-./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd --with-openssl
-
-./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd  --enable-maintainer-zts --with-openssl --with-apm --enable-debug
+./configure  --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-fpm-systemd  --enable-maintainer-zts --with-openssl --with-mysql --enable-mbstring --with-gd
 
 #############################################################
 cellular automaton Game of Life
@@ -49,3 +47,10 @@ opmock2做单元测试，当多是用来生成mock
 
 curl -X POST
 
+CentOS-5.5上安装git
+# Add the repository
+rpm -Uvh http://repo.webtatic.com/yum/centos/5/latest.rpm
+# Install the latest version of git
+yum install --enablerepo=webtatic git-all
+
+Xdebug - Debugger and Profiler Tool for PHP

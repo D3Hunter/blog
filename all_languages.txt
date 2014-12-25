@@ -58,13 +58,17 @@ linux栈溢出不报错，如果访问相关地址则会导致SIGSEGV
 
 编译时除了库一致，头文件也要一样（不然出现类似undefined reference to __poll_chk的错误）
 
+va_list变量多次使用可能会出现问题（段错误等），跟实现有关
+若想多次使用，可以用va_copy拷贝一份（最后仍要va_end)
+http://julipedia.meroh.net/2011/09/using-vacopy-to-safely-pass-ap.html
+
 #############################################################
 # GDB
 #############################################################
 list/list -
 break/delete/info break
 info
-run/attach/kill/continue
+attach/kill/continue/run后面可接参数（或再命令行使用--args)
 next/step
 print/set print elements 0 设置gdb的打印元素上限，0为不限制
 printf "%s\n", some_string 不escape打印
@@ -90,8 +94,10 @@ set x = y + 4
 cont
 end
 
+gdb7.7内置的python3, 有些包（voidwalker）执行不了
 x系统学习下gdb
 
+gdb的prompt由于不能使用\[\]故可使用\001\002，参考linux_related.txt
 #############################################################
 # SED
 #############################################################
