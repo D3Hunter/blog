@@ -1,0 +1,25 @@
+MAP_ANON会将内存初始为0
+ngx_atomic_cmp_set使用汇编实现
+ngx_event_module_init创建共享内存,设置worker间共享的数据(锁,计数器等)  
+    还初始化ngx_random_number
+    ngx_accept_mutex_ptr与ngx_accept_mute没啥关系
+    timer_resolution为sigalrm间隔
+
+ngx_event_timer_alarm仅在epoll_wait被中断时才会被回置,不明白为什么不直接在update后设置为0
+epoll_wait使用的timer为设置的event的delay,而timer_alarm为timer_resolution
+当pollerr或pollhup出现时,而pollin或pollout未设置,为什么会出现这种情况
+为什么需要使用NGX_POST_EVENTS,为什么不直接处理
+        因为此时当前worker拿着accept_mutex,加入post处理,减少其他worker等待时间
+NGX_USE_TIMER_EVENT仅在kqueue和eventport中使用,其他的在设置timer_resolution时使用sigalrm来更新时间,在不使用timer_resolution时,每次epoll_wait都会更新时间.
+
+ngx_process_events_and_timers
+        拿着锁需要post处理,不拿则最多ngx_accept_mutex_delay时间就需要超时
+        (这里如果delay设置为0,在使用accept_mutex时会进入死循环,epoll_wait会直接返回)
+        ngx_accept_disabled 如何起作用的? disable_accept_event,在其为0时,在trylock_accept_mutex成功后会enable_accept_event(每次都会执行)
+ngx_epoll_add_event处理了已经添加过的事件再添加的情况
+ngx_epoll_delete_event同上,但将ev->active = 0,这样后续的处理是怎样的,active=0会有什么影响?(connection内的active未更改)
+ngx_delete_connection则会将connection里的active全设为0
+
+poll-module
+ngx_poll_add_event会设置index,所以已有index的ev不能添加,且没检查nevents是否超过connection_n
+ngx_poll_del_event会设置为invalid_index就算其部分仍然有index

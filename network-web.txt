@@ -1,0 +1,20 @@
+chrome://net-internals/#dns chrome的dns缓存
+更改hosts后对ping和curl和chrome是立即生效的
+有些google ip能按下面方法用curl访问,但是chrome访问不了
+使用curl访问google时需要使用完整的地址,如www.google.com/www.google.com.hk,并在hosts也这样设置才能访问google
+直接将baidu地址在hosts中对应haha,然后用haha是不能访问baidu的,Host头也要对才行(可用curl设置)
+
+#############################################################
+# mysql
+#############################################################
+mysql配置文件为my.cnf
+启动和停止mysql : mysqld:mysqld_safe:/etc/init.d/mysql.server
+mysqld日志在<prefix>/data/<hostname>.err中
+scripts/mysql_install_db --user=mysql --datadir=/usr/local/mysql/var
+    会在/usr/local/mysql/var下生成数据文件
+    chown mysql:mysql -R mysql test不然会报权限错误
+    但这样service脚本将不能启动,只能在./mysqld_safe --user=root & 来启动
+grant all privileges on *.* to 'root'@'' identified by 'render@shanda' with grant option;
+console登录mysql指定-h为域名会转成ip访问,这与my.cnf中的bind-address需要对应,不然不能连接
+
+

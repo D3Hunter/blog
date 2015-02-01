@@ -27,6 +27,7 @@ LIBRARY_PATH 链接时, LD_LIBRARY_PATH 运行时
     所以在编译程序时，要特别注意警告，最好设置成存在警告则编译失败
     -Werror-implicit-function-declaration
     -Werror使所有警告变成错误
+    该错误源自gcc默认使用gnu89标准,该标准会默认使函数返回int,故可使用-std=c90或c99来避免该问题
 
 gcc会按命令行从左往右的顺序扫描符号，使用gcc编译程序时一定注意链接库指定顺序，否则可能出现明明指定了正确的库，但是仍然报找不到符号的问题。
 
@@ -34,6 +35,7 @@ glibc编译后libpthread.so 和libc.so 都是脚本，里面指定实际库所�
     上面的问题可能出现加了-L,但是ld找的库却在另一个目录的情况,导致链接失败
 
 do while(false)可以方便的break（类似goto的效果）
+    看起来却很丑,php代码里大量有这个
 
 gcc -s strip掉符号表
 查看gcc默认的include路径
@@ -61,6 +63,33 @@ linux栈溢出不报错，如果访问相关地址则会导致SIGSEGV
 va_list变量多次使用可能会出现问题（段错误等），跟实现有关
 若想多次使用，可以用va_copy拷贝一份（最后仍要va_end)
 http://julipedia.meroh.net/2011/09/using-vacopy-to-safely-pass-ap.html
+
+#############################################################
+# gcc ld ld.so make
+#############################################################
+编译动态库,允许动态库中有U符号,编译可执行时,则需要使用下面的选项
+ld
+    --allow-shlib-undefined允許定义的符号
+    -z lazy指定lazy loading
+
+
+ld.so
+
+LD_BIND_LAZY LD_BIND_NOW
+LD_DEBUG
+  libs        display library search paths
+  reloc       display relocation processing
+  files       display progress for input file
+  symbols     display symbol table processing
+  bindings    display information about symbol binding
+  versions    display version dependencies
+  all         all previous options combined
+  statistics  display relocation statistics
+  unused      determined unused DSOs
+  help        display this help message and exit
+
+
+readelf -a 查看符号是变量还是函数(nm看不出来)
 
 #############################################################
 # GDB
