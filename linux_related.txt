@@ -72,6 +72,42 @@ You must put \[ and \] around any non-printing escape sequences in your prompt.
 否则再bash history中前一条命令可能会overwrite当前命令，gdb的prompt由于不能使用\[\]故可使用\001\002
 bash颜色表http://misc.flogisoft.com/bash/tip_colors_and_formatting
 
+/usr/share/applications/ 和 .local/share/applications/中存放desktop文件(全局和当前用户)
+修改对gnome有效的环境变量在/etc/environment和.pam_environment,里面只能放文本赋值,不是shell脚本
+添加到gnome-panel中的快速启动在.config/gnome-panel/launchers/中存放
+/usr/share/applications/内的desktop条目在添加x权限后会在gnome开始菜单中出现
+将.desktop文件中Categories=GNOME;Application;Development;即可在gnome菜单中添加条目,无须设置x权限
+    Accessories --> Utility;
+    Edutainment --> Education;
+    Games --> Game;
+    Graphics --> Graphics;
+    Internet --> Network;
+    Office --> Office;
+    Programming --> Development;
+    Sound & Video -->AudioVideo;
+    System Tools --> System;
+    Others --> Other;
+
+ubuntu chrome 37显示某些网站的字体很模糊的问题
+    该问题是chrome的一个bug:https://code.google.com/p/chromium/issues/detail?id=408059
+    zoom in可看清字体
+    创建~/.fonts.conf,并添加如下,之后重启chrome即可
+        <match target="font" >
+            <edit name="embeddedbitmap" mode="assign"><bool>false</bool></edit>
+        </match>
+
+ps -eo user,pid,user,rss,args --sort=-rss | head可按照内存占用查看进程
+    %mem/pmem rss的百分比
+    args/command/comm comm只显示程序名称
+
+C-z暫停程序,可使用bg/fg將程序置於前台或后台
+cmus:Console music player
+
+iphone device is already mounted
+sudo apt-get install libimobiledevice-utils;idevicepair unpair && idevicepair pair
+
+禁止ubuntu automount usb设备:dconf-editor
+rg -> gnome -> desktop -> media-handling
 #############################################################
 # linux自启动程序
 #############################################################
@@ -87,6 +123,15 @@ service需要root才能看的所有service的状态
     edit /etc/init/filename.conf to disable service or add manual to /etc/init/filename.override
 Ref:http://askubuntu.com/questions/19320/how-to-enable-or-disable-services
 
+#############################################################
+# 更改ubuntu 14.04 login背景
+#############################################################
+sudo apt-get install dconf-editor
+sudo -i
+xhost +SI:localuser:lightdm
+su lightdm -s /bin/bash
+dconf-editor
+com –> canonical –> unity-greeter.
 #############################################################
 # 在64b机器上编译32b程序
 #############################################################

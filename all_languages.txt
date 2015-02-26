@@ -97,7 +97,7 @@ readelf -a 查看符号是变量还是函数(nm看不出来)
 list/list -
 break/delete/info break
 info
-attach/kill/continue/run后面可接参数（或再命令行使用--args)
+file/attach/kill/continue/run后面可接参数（或再命令行使用--args)
 next/step
 print/set print elements 0 设置gdb的打印元素上限，0为不限制
 printf "%s\n", some_string 不escape打印

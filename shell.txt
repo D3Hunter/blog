@@ -66,3 +66,5 @@ shell引号:
 
 set -e 当任意程序失败（return非0）时，退出
 
+n>&digit- 将文件描述符digit作为n并关闭digit,不指定digit相当于关闭n,n默认为stdout,n<&digit-同理
+

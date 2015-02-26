@@ -18,3 +18,45 @@ grant all privileges on *.* to 'root'@'' identified by 'render@shanda' with gran
 console登录mysql指定-h为域名会转成ip访问,这与my.cnf中的bind-address需要对应,不然不能连接
 
 
+#############################################################
+# java related
+#############################################################
+安装J2EE需要先安装JSE SDK
+commons-logging-1.0.4.jar
+    java.lang.NoClassDefFoundError: org/apache/commons/logging/LogFactory
+spring-framework need cglib and asm
+一个对象可说是stateless,当内部没使用状态变量,或者该变量在初始化后不再改变,即是线程安全的
+spring中的bean lifecycle和nginx中的request cycle是类似的模式,按cycle划分成多个阶段,在各个阶段(不一定是所有阶段)允许用户自定义的处理以增加扩展性和灵活性,同时也方便模块化分或者做插件
+post-processors在使用App Context时可用xml配置后自动调用,而使用bean factory则需要手动调用,因为bean factory仅支持基本的getbean等,其他如PropertyPlaceholder也需要手动设置
+bean默认是singleton(内部bean是非singleton)
+软件设计架构:垂直设计,分层(垂直模块);水平设计,位于同一层的平行模块.
+AOP:针对一些交叉性的业务/功能,将相互交叉的内容进行模块化
+    一个例子是添加账户/删除账户的异常处理,一种方式由账户对象自行处理(耦合性高,代码冗余,不宜扩展),另一种则将业务操作和异常处理分开,有两块内容分别处理
+    围绕target object(join point), interceptor supply around service to advise(give advice to) target object. Advisor用来将前两者组合起来
+    Before/after/Throws Advice
+    具体到底层实现,可以使用wrapper(Hook)  proxy based,或直接更改函数实现的字节码  weaving based
+不是很明白一个很简单的面向接口编程,使用配置文件配置依赖的模块,这么一个抽象费了这么大篇幅来描述,这本spring高级编程看看DI/IoC/AOP/DAO,我觉得剩下的可以当一个技术参考书了.
+DAO : 业务层和数据访问层的中间接口层
+要将两个水平模块或垂直层连起来,需要确定的输入输出格式以及调用接口
+设计上的正交性来源于数学上的正交,有两个含义:改变A不会导致B的改变;可以任意组合所有正交的元素.
+Leaky abstration is an implemented abstration where details and limitations of the implementation leak through. Law of Leaky Abstractions claims that developers of reliable software must learn the abstration's underlying details anyway.
+事务管理不仅在持久层,在业务层同样需要,为了避免业务层与具体事务管理实现紧耦合:
+    将事务放在DAO中处理(内部可能用到其他的DAO)
+    使用container-based transaction.
+使用jdbc和基于ORM的hibernate实现的DAO切换上可能会有问题,基于jdbc实现的DAO接口一般包含CRUD,返回的object是transient,而hibernate给出的则是persistent,对所返回的object的更改会反馈到数据源上;同样业务层在使用对象上也应有约定,或者让hibernate实现的DAO同样返回一个transient对象.但这样就失去了persistent的意义.
+设计上,对于依赖于其他组件或模块时,多用DI,而不是内部创建,当然抽象成接口更易于组件切换
+Soc(Separation of concerns),是模块化的目的,模块化的表现是信息封装.将具体信息/实现隐藏在一块代码,外部只能通过已定的接口来访问.(这条用在编程上,应该始终专注于要做什么,从一个更抽象的角度描述问题,至于具体的即可如何实现的则是其次.自顶向下思考)(在学习新东西的时候,有时候为了能够更好的理解某件事情会去跳到其他的概念上,但是要始终专注在你要学的东西上,精力分散太多容易都会但都不精)
+Concern: highly-coupled concern,cross-cutting concern(分散在各处负责相同或相似功能的部分,或和其他模块代码混合在一块的部分),如logging(具体的记录到文件的部分是接口化的,但是"记录所有数据库更新记录"这个concern是分散在各个模块内的), security, transaction exception/rollback processing.
+join point--->pointcut(can express in language level)<--->advice
+
+从泛化-具象化层面解释:软件本身是一个泛化,该泛化划分成多个子泛化(模块),子泛化具象化为代码;字母是一个泛化的概念,而A则是其的一个具象.另一层意思则是所有具象化构成泛化(由个体到整体的泛化),而泛化可具象化某个具象(整体到个体的具象化),即通过限制整体得到个体,通过整合个体得到整体.当然有些是不能继续划分为个体的,比如人不能简单的划分成手腿身体头等个体,因为各个个体相互紧耦合,不可划分.所以前面所说的对于松散耦合的个体才有效.另外还要求个体是能够一直一致的满足某些特性,如果一旦整合就会受其他个体影响则不能有效的成为整体,比如人受情绪感情认知等的影响很难有效作为一个团队,还有量子力学里的不可观察特性等.其他的可以分析下如公司/政府/小组等整体,及其中的个体,相互影响及特性.
+
+这一类的错误往往是以来的包没有引入导致无法验证该类的基类
+    No exception of type BeansException can be thrown
+    The hierarchy of the type  is inconsistent
+spring自动下载的junit库没有hamctest,可以自己添加eclipse自带的
+Spring TargetSource/Introduction
+
+相比使用底层jdbc,spring封装的jdbc不再用手动维护连接/异常等
+标示为final的值在匿名内部类中可访问.
+事务管理不应该在数据访问层,这会减少代码可重用性,而只有具体业务才有原子概念,比如DAL有用来更新账户余额的功能,但是只有上层事务的转帐取钱存钱作为事务才更合适,而不应该在"更新余额"这一层.如果在业务层显示编程管理事务,那么业务层就会依赖于具体数据访问技术(需要用到connection等),所以前面描述的两种方法更合适.
