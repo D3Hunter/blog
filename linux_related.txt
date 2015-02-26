@@ -108,6 +108,14 @@ sudo apt-get install libimobiledevice-utils;idevicepair unpair && idevicepair pa
 
 禁止ubuntu automount usb设备:dconf-editor
 rg -> gnome -> desktop -> media-handling
+
+YPBINDPROC_DOMAIN: Domain not bound，该服务将从远端主机上获取用户名密码等信息
+	如果远端机器宕机或其他问题，则在ssh登陆会出现该情况
+	/etc/init.d/ypbind restart 
+umount时 -l卸载
+NFS有两种挂载方式：
+	硬挂载将模拟本地磁盘，在IO操作未完成前一直阻塞（这在NFS服务器出问题时会导致应用hang）
+	软挂载
 #############################################################
 # linux自启动程序
 #############################################################
