@@ -1,6 +1,6 @@
 MAP_ANON会将内存初始为0
 ngx_atomic_cmp_set使用汇编实现
-ngx_event_module_init创建共享内存,设置worker间共享的数据(锁,计数器等)  
+ngx_event_module_init创建共享内存,设置worker间共享的数据(锁,计数器等)
     还初始化ngx_random_number
     ngx_accept_mutex_ptr与ngx_accept_mute没啥关系
     timer_resolution为sigalrm间隔
@@ -20,6 +20,310 @@ ngx_epoll_add_event处理了已经添加过的事件再添加的情况
 ngx_epoll_delete_event同上,但将ev->active = 0,这样后续的处理是怎样的,active=0会有什么影响?(connection内的active未更改)
 ngx_delete_connection则会将connection里的active全设为0
 
+nginx-0.1代码
+
 poll-module
 ngx_poll_add_event会设置index,所以已有index的ev不能添加,且没检查nevents是否超过connection_n
 ngx_poll_del_event会设置为invalid_index就算其部分仍然有index
+
+添加删除事件（如read）时会检查另一方事件（write），如果active则变成modify，因为设置是在整个fd上进行的，分离接口后就需要这么处理
+
+以下基本上都在ngx_epoll_process_events中
+
+epoll_wait设置的超时时间为event中剩余最小的，超时后的时间会直接调用event_handler
+rb树中存放的是超时的clock时间，用当前elapsed时间做减法就可以得知是否超时，也可避免对rb树进行更新
+ngx_event_find_timer中只有rb树为空（此时不存在被设置为超时的事件，因此也不需要expire）才返回infinite（-1），其他时候都是非负，0表示存在超时的事件
+ngx_trylock_accept_mutex代码写的很简洁，考虑到了当lock时held变量可能为真的情况，这个变量标志着listen的fd事件是否在epoll监听列表中，通过这种方法ngx_epoll_process_events中可以选择性的忽略accept事件，达到负载均衡。另一个关键变量是ngx_accept_disabled
+
+异步指发出请求后不会立刻得到response，如email；非阻塞则是立刻返回可能的结果，不会导致程序进入睡眠等待状态，该特性本身是无用的，需要跟事件驱动接口select等配合。异步和非阻塞含以上会有交叉，如非阻塞的socket read从其会立刻相应上可当做同步的，但在数据处理上是异步的。
+对于write事件，当无需accept时（held为0）直接处理，存放到post中是多余的开销。同理，不accept时的read也是直接处理
+ngx_posted_events中next是普通链表的next，但是prev为双向指针指向前一节点的next变量，而头的prev指向的是ngx_posted_events。暂未发现这么做相比普通双向链表的好处。
+ngx_epoll_process_events先处理的write事件后read、accept，说是为了优化，为什么？
+在处理accept时先释放了postmutex后在lock，减少加锁时间，这个锁仅对多线程时有效
+该方法最后处理所有posted事件
+accept出现ECONNABORTED是由于client提前关闭了连接（正常或异常），此时server这边应继续accept其他client
+0.1中ngx_inherited_nonblocking设置时，接收的fd并不设置non-blocking
+instance只在rev中设置了，并在listen中每次都去反
+每一个client连接都用于自己的pool和log对象，log由ls复制过来
+
+epoll的新连接并未直接加到eventlist中，而是在ls的handler即ngx_http_init_connection中添加，新连接事件的active=0，rev的ready仅在deferred，ready=1表示已经有数据可读，active=1表示该事件已经添加到poll/epoll列表中，为活动事件 accept才设置为1。在ls的handler中，对于ready的rev根据accept_mutex选择直接init request还是加入到posted event中，仍优先处理accept事件
+TCP_DEFER_ACCEPT使kernel不在接收三次握手最后的ACK，这并不会减少发包次数减少延迟，但是可避免切换上层应用，因为但是ack消息是无意义的，接收后，上层应用就会陷入等待数据的状态
+ngx_http_parse_request_line并没使用循环内循环来实现词法解析，而是单while循环用状态机实现整个过程。
+<1.0的HTTP协议只有GET，且没有请求头，此时直接调用ngx_http_handler处理请求，事件handler为ngx_http_block_read，否则为ngx_http_process_request_headers，接受完request line后直接调用handler处理request headers，之后同样调用ngx_http_handler开始处理请求
+ngx_http_alloc_large_header_buffer对于request line，r->state=0说明buf全是\r\n直接复用
+ngx_http_process_request_header主要对请求头做检查，是否符合设置要求，并填充相关headers_in中的变量
+接受完请求头后并没着急ngx_http_block_read，而是先ngx_http_handler，write事件为ngx_http_phase_event_handler
+r->phase_handler记录当前走到那个phrase了，且是添加的倒序执行
+ngx_http_set_lingering_close会关闭写端，read由ngx_http_lingering_close_handler处理（只把数据读出来，并不处理，然后等待超时或client关闭），并设置超时
+这个版本中，每个http模块针对srv和loc有不同的conf
+ngx_http_rewrite_rule_t的status记录当匹配时的返回状态，匹配时操作有三种，copy long、copy short、copy match
+NGX_HTTP_FIND_CONFIG_PHASE阶段ngx_http_find_location_config，根据location设置选择是proxy还是redirect，此外index模块会通过ngx_http_internal_redirect，index模块为NGX_HTTP_CONTENT_PHASE阶段，http-core-module在run-phrases时会检查r->content_handler，所以若location有proxy或redirect，index不会走。
+static请求忽略请求体
+header body filter使用内部的next构成的链表确定执行顺序，按init的反序执行，最后一个filter为header_filter，处理完后调用ngx_http_write_filter，这也是最后一个body filter，其中调用ngx_writev_chain发送消息
+write事件handler为ngx_http_phase_event_handler，但是这样每次有未发送完的数据都要走一遍filter，但header在filter中每次都生成一次：finishize request中调用ngx_http_set_write_handler设置write handler为ngx_http_writer内部调用ngx_http_output_filter
+使用chain和内存池，简化了ngx_writev_chain对非阻塞的write操作，并提供了对速率控制的功能
+被缓冲的文件、static文件，使用copy模块调用ngx_output_chain读取出来
+file cache通过crc去模得到hash
+接下来看index proxy redirect
+nginx为减少内存数据复制和多份数据存放，采用了有长度的string，但这带来了对字符串需要考虑是否带\0上的复杂度
+http302为url重定向，新地址在location头中，但http1.0一般浏览器会将其含义实现为将请求类型改为get，http1.1添加了303和307
+ngx_http_proxy_create_request与ngx_http_header_filter部分类似
+r->request_body->bufs最多只有两个chain，后一个chain为r->request_body->buf，若超过了buf大小则会写入文件中，一旦开始写入文件后续都会写入文件中
+upstream对消息头大小有控制，太大的会报invalid header
+http cache和upstream cache如何处理的？是将内容存放到内存中？还是缓存在文件？
+ngx_event_pipe_copy_input_filter将buf浅拷贝一份到p->in，p->last_in指向链表尾next（同理对于p->out和p->last_out一样的作用），提高插入效率。该方法内还将原buf和拷贝后的buf互为shadow，新拷贝的为last_shadow
+为什么要使用shadow-buf，目的是什么，优势在哪儿？按shadow是否会成为链表，ngx_event_pipe_free_shadow_raw_buf中将其作为链表进行循环直到last_shadow
+ngx_event_pipe_write_chain_to_temp_file将p->in中按p->temp_file_write_size和p->max_temp_file_size写出到l临时文件，被写出的内容从p->in去掉并添加到p->out中（标识为in_file）
+ngx_event_pipe_remove_shadow_links清理buf中所有的shadow，b->last_shadow标识该buf为shadow
+ngx_event_pipe_free_shadow_raw_buf去掉free中与buf的last_shadow相等的buf
+ep->preread_bufs->buf=p->header_in;与ep->preread_size标识在读取requestHeader时预读出的内容；ep->single_buf只在AIO时设置为1；p->free_raw_bufs指向可用来读取数据的buf，是上一次采用的buf的剩余部分；p->free_bufs指示是否在出错或完成后释放buf
+ngx_readv_chain（ngx_recv_chain）读取数据后并没有更新buf的last，因此在ngx_event_pipe_read_upstream中在ngx_recv_chain后还要更新last
+p->out中需要处理清理p->free_raw_bufs中的shadow-buf，而p->in不需要处理shadow
+shadow-buf指向的都是同一个缓存区域（start-end都一样）但是在remove_shadow_links并没有清掉，这样不是很乱么，而且容易出错
+chain的作用就是将buf链起来，还用shadow这个歧义的字段再整一个链表？
+lcf->peers->number表示peer的个数，如给出的是域名会有很多ip地址返回，每个都会在其中存放
+r->request_body->bufs记录了需要向upstream发送的数据
+c->number为每个连接的编号
+ngx_output_chain会将buf放到output_chain_ctx->in中，之后按是否需要拷贝放到out中，处理完后调用ngx_chain_update_chains将out放到busy中，然后将busy中发送完的（即大小为0）且tag相同的放到free中。
+p->upstream->status=p->status；p->state->status=p->status;p->status为proxy返回码，如200类的
+类似于buf的shadow方式，ngx_http_proxy_copy_header也仅浅拷贝ngx_table_elt_t避免数据复制
+p->header_in在读取header期间是复用的，最后可能会有多读出的body部分，在ngx_http_proxy_send_response中，ep->preread_bufs->buf设为p->header_in,ep->free_bufs=1;
+ngx_event_pipe_read_upstream会把读到的数据以shadow-buf形式放到pipe->in中，
+ngx_event_pipe_write_chain_to_temp_file将写出的p->in中的b->last_shadow=1的buf的shadow放到p->free_raw_bufs中复用。从ngx_event_pipe_read_upstream中可以得知通过p->input_filter添加到p->in中的都是last_shadow
+read_upstream中用于读取数据的buf要么是在p->free_raw_bufs中（此时其shadow是预p->out中的buf互为shadow，在添加到p->in前会断开shadow连接，但是最后一个添加的没这么处理，因此最多可能有一个buf仍通过shadow连接，在ngx_event_pipe_write_to_downstream中对p->out中的buf做了free_shadow_raw_buf，而p->in未做处理，因为此时该buf不会存在被复用的可能），要么在添加到p->in中后仅通过shadow（last_shadow=1）引用。这种方式确能够达到安全使用buf的目的，但不如在添加到out前立即取消shadow连接来的简洁。
+nginx中实现双线链表时使用了**prev指向前者的next（或头指针），这种方式在实现任意点插入删除节点时都仅需要传入2个变量（不在需要传入头指针），且内部无需条件判断（是否为NULL），这在高频插入删除场合可以提高插入删除效率。在linux-kernel中hlist也是这么做的
+该版本中，request有很多字符串是带\0的
+quit-shutdown（等待所有连接完成）terminate-term（立即退出）
+接收到SIGCHLD后，ngx_processes[i].exited=1，但并不清掉ngx_processes[i].pid,ngx_processes[i].pid=-1应该表示该slot还未使用；此外ngx_reap=1会收割已结束的child（根据情况可能还会重启）
+这个版本中，worker的最大生存时间为10天，因为32位下毫秒事件计时器限制在24天内，计时器到时会清掉原worker并重新创建
+热切换步骤：发送change-binary信号；发送noaccept信号给old；发送quit信号给old
+ngx_change_binary后新旧master、worker会同时存在，需要用户手动终止old；new-bin由于继承了old-bin的监听socket，不会daemonize；假如收到new-bin退出，且old已经不再accept（需要手动处理），old会重新启动（自动）。如果在启动new后，想切换回old（发送noaccept，没发送quit前）可以发送reconfigure信号，此时不会重读配置文件，而是重启由于noaccept而结束的worker，然后发quit给new即可。
+ngx_event_connect_peer必须加上写事件
+ngx_http_cookie_time中还考虑到了netscape3.x的差异
+ngx_collect_garbage递归清掉temp目录下的文件，存在内存泄露；
+ngx_event_busy_lock_cancel没考虑last，存在bug，但ngx_event_busy_lock未在任何代码中使用到
+ngx_http_headers_filter仅对expire和相关的cache-control进行处理
+ngx_atoi仅处理非负数，且不处理溢出，但因为以int存储结果，当是负数时返回错误，这种方法能否catch到所以溢出情况
+只有in->buf->in_file&&in->buf->last_buf时，body-range才会处理，但是否会出现header-range已经处理过，而in不在文件内这种情况？
+ngx_conf_set_enum_slot能将conf读出的字符串映射为值，较通用
+http_userid_filter在cookie中未设置userid时，设置userid
+
+v1.7.9
+
+ngx_strerror_init复制一份strerror，以支持信号重入
+NGX_PROCESS_SIGNALLER是在发送信号时的模式
+ngx_get_options中switch最后一条语句是break或return，中间返回用了goto
+ngx_process_options将从命令行读取到的信息放到cycle中
+ngx_crc32_table_init将ngx_crc32_table_short对齐到cacheline的内存位置，以加快读取效率
+新版中http执行供11个phase，每个phase-handler的next指向的是下一个phase的index，以允许跳段，其中NGX_HTTP_ACCESS_PHASE如果跳段，将跳过NGX_HTTP_POST_ACCESS_PHASE；Post-phrase只有在对应段存在时才执行；find-location、post和try-files段最多仅有一个；POST_REWRITE跳段到find-location；find和try-files不可跳段
+代码中一些相似但不易封装的内容，仍采用了复制的方式
+ngx_http_cmp_conf_addr实现会使得地址排序变成unstable，两个wildcard会交换
+INADDR_ANY是0.0.0.0，因此在ngx_parse_inet_url中仅指定port和*:port含义相同
+server_name里.com等同于*.com + com
+variables？script？类似于0.1版本中的log_fmt_ops,功能更强大
+ngx_http_rewrite_handler中使用r->loc_conf==cscf->ctx->loc_conf来判断是否没找到具体的location，因为每个location都会有自己的loc_conf,且location-rewrite在find-loc之后
+ngx_http_regex_compile中生成的数字variable，取值时通过r->captures_data拷贝，而命名variable在ngx_http_regex_exec直接设置好（valid=1），因此才将其get_handler设置为ngx_http_variable_not_found
+sc.compile_args仅在regex->redirect=0时才设置
+sc.main在values数组起始位置变动时，记录sc.main所指向的值的新位置
+ngx_http_rewrite中regex->next指向当不匹配时的下一个code，通过这个形成一个链表支持多个rewrite,相当于if-else，这种方法活用了script的执行特性。传统的做法是将多个rewrite放进数组或者显示链表，执行时采用循环用多个ngx_http_script_engine_t，并根据结果判断。非常棒的实现！！！：：：该模块还有其他的directives，如if\break\return，连在一起构成中间代码，方便处理：：：处理方式上模拟脚本语言的解释过程，if-else用next实现，last/break/return使用null-ip实现。
+rewrite规则中如果不设置last（有些情况会默认为last），则会继续寻找匹配，直到最后一个或者设置last的规则，并使用最后一个匹配的作为匹配结果，所以下例当匹配时会使用b.html
+    rewrite ^.*$ a.html;
+    rewrite ^.*$ b.html [last];#因为已经是最后一个规则，这个last无所谓
+nginx配置项的顺序是不重要的，先解析后merge的方式不考虑顺序；但是rewrite模块的配置（if、rewrite等）是按顺序执行的（也因为每层仅有一个codes，构成“中间代码”）
+rewrite模块的codes，对同一层配置仅有一个，如server层、location层
+noname的location（if）不参与location检索，而是找到最匹配的location后，在rewrite阶段根据情况重新设置loc_conf和request的配置。
+break-directive会直接跳出rewrite模块（设置changed=0），而rewrite-directive中的break除了设置changed=0外，还会设置r->valid_location=0，其他方面两者相同：仍更改了headers_out.location;此时虽然location被rewrite但并不会重新设置loc_conf，后续仍使用当前location配置，若内部跳转在当前location中无法处理则会404
+更改r->loc_conf后需要ngx_http_update_location_config
+
+pclcf->locations为有头节点的queue
+ngx_http_join_exact_locations不管两个location是否是同一层目录，只要是前缀就会合并，因此/a和/abc也会被合并
+ngx_queue_split(h, q, n)将h中q之后的部分放到n（头结点）中
+ngx_http_create_locations_list(locations, q)将与q同前缀的部分放到lq->list中，q必须含有inclusive，并对lq->list和locations的后续部分进行递归处理，该函数返回后，locations里相邻两者中不会出现前者是后者的前缀的情况
+ngx_queue_middle取queue中间节点，两个指针按不同步调走来实现（一个每次1步，另一个每次两步）
+当最后location的name最后一位为'/'时，clcf->auto_redirect=1，目前该设置仅在使用upstream（如proxy，fastcgi）时才会设置。当clcf->auto_redirect=1时，如果location-name为/abc/，那么url为/abc的请求就会和其匹配，即使该location为exact，并自动进行重定向（ngx_http_core_find_config_phase），并返回301。
+ngx_http_create_locations_tree里node->len是u_char类型，location-name不能长于255？？貌似没做检查，bug么？？？
+
+
+Http basic access authentication 协议
+Server端要求认证：WWW-Authenticate: Basic realm="nmrs_m7VKmomQ2YM3:"
+Client端发送用户名密码：Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+A realm can be seen as an area (not a particular page, it could be a group of pages) for which the credentials are used; this is also the string that will be shown when the browser pops up the login window, e.g.
+Please enter your username and password for <realm name>:
+
+Content negotiation : Accept header
+
+access-phase中NGX_DECLINED表示没有匹配的可用来验证的配置，OK为allow，其他错误为deny
+auth_basic的密码文件要求在密码前添加加密格式。访问使用basic验证后的，若不保存密码，浏览器仍不会添加Authorization头，但因为是静态网页，last-modify-sice头使得nginx返回not-modified，因此不再需要验证
+location匹配使用的是uri，不包含args部分
+subrequest为internal，且sc->main=r->main，在header-filter阶段由于r!=r->main，所以所有header-filter都不会执行。
+在auth_request_handler中设置sr->header_only=1,因此auth_request出发的subrequest不会发送回客户端
+addition_filter的正确执行依赖于postpone_filter，该filter会在r!=c->data时将数据添加到r->postponed中，当然两种的顺序是很重要的。
+subrequest在finalize时会将r->parent添加回r->main以保证其在次执行，即此时仅唤醒parent，为什么需要这么做？r->main->count？r->main->subrequests？
+c->data指向的是当前active的request，若还未create_request，c->data指向的是http_connection
+c->buffer是干嘛的
+HTTP pipelining，将多个HTTP请求放在一起发送，并不等待前面的请求获得响应
+HTTP Keep-Alive and TCP Keep-Alive is totally unrelated things.
+HTTP-keep-alive保持连接打开，等待用户其他请求，超时或client关闭则关闭连接；而tcp-keep-alive为tcp的一个心跳包特性，以保持socket处于连接状态
+the TCP connection will stay up if left to its own devices. However, if you have a device in the middle of the connection that tracks its state (such as a firewall), you may need keepalives in order to keep the state table entry from expiring.
+保持连接状态的方法：application level ping, use TCP keep alive or just accept that the router is resetting your connection;
+keepalive的连接时reuseable的，但在接收数据后设置为unreuseable。连接reuseable应指当可用空闲连接不足时，可以关闭reuseable连接并将其分配给新的client，这一过程在ngx_drain_connections中，ngx_get_connection会调用。而linger-close（默认为on）则用来处理header或body过大的情形，此时server返回对应错误码，而其header和body需要discard（与r的discard-body参数含义有不同）
+设置SO_LINGER且超时为0，在close会发送RST而非正常的的FIN
+subrequest是main-r的一部分，使用的是main-r->pool，因此在ngx_http_close_request中仅r->count--，而不一定会去free-request
+同port\family\addr的listen可存在于不同的server，此时会合并两者，但最多能够有一个设置了非默认配置（set=1）
+ngx_http_wait_request_handler数据先读到c->buffer中。如果读取失败，buf会被free掉，避免占用内存，且此时该c为reuseable
+proxy_protocol必须一次性接收成功，如果接收了一部分也会当做错误处理。（对应HAProxy）
+ngx_http_wait_request_handler当接收完PROXY后，如果恰好用完buf，并不着急创建request，而是等有数据时在创建
+ngx_http_init_connection初始化hc，包括hc->addr_conf和hc->conf_ctx
+ngx_http_create_request时初始化r->header_in为r->header_in=hc->nbusy?hc->busy[0]:c->buffer;
+header大小初值为client_header_buffer_size，若超了则使用large_client_header_buffers中的配置重新申请，但最大不能超过该配置，且单个header应能完全放到buf内，不能跨buf（申请更大buf时如果原buf内已有数据会被拷贝，并更新相应指针）
+HTTP-method是大小写敏感的，必须为大写
+转成小写|0x20
+Request-line中的host会设置virtual-server，如果没有则根据host-header来设置，前者有更高的优先级
+目前版本的实现，在请求处理阶段不在通过频繁更改c->read->handler（write）来区分之后的阶段，而是通过修改r->read_event_handler（和write），貌似固定为ngx_http_request_handler，在该函数内调用r->read_event_handler（write）
+http1.1默认keep-alive
+ngx_http_run_posted_requests仅调用的r->write_event_handler，subrequest确实也不需要从client处读取内容
+ngx_http_request_handler和ngx_http_process_request执行后都会调用ngx_http_run_posted_requests
+ngx_http_init_phase_handlers中对cmcf->phase_engine.handlers多申请了一个void*的空间，content-phase用来判断是否还有后续的content-handler
+http的Meta-refresh用来让browser自动刷新，如访问baidu.com实际返回的是让browser自动访问www.baidu.com的信息
+baidu可以无HOST头访问，但taobao无HOST返回为302，nginx如何实现这种需求
+baidu.com和www.baidu.com对应的不是一台主机
+301为permantent，302为temporary，（新地址都在Location中），对browser而言，遇到301时后续的请求将直接使用新的地址，而302则应继续使用旧地址访问；对搜索引擎如google，遇到301时还会更新相应链接及传递pagerank到新地址
+
+slab算法：
+slabpool存放在连续内存空间中
+每个slot记录不同块大小的内容：slot0为min_size；slot1为2*min_size等等。实际存放时为避免碎片并提高分配效率，块大小会被对齐到上述大小，如<min_size，则用min_size，>min_size&&<=2*min_size对齐为2*min_size。
+slot中记录的最大块大小为ngx_pagesize/2，因此min_shift+n-1=page_shift-1，n=page_shift-min_shift，n为slot个数
+slab的位图使用的uintptr_t表示的，而不是使用char，因此表示方法不同。bitmap=1表示第一块被使用，bitmap=3表示前两块被使用等等。
+ngx_slab_max_size = ngx_pagesize/2;
+ngx_slab_exact_size当恰能用一个uintptr_t表示所有块的使用情况时，块的大小。ngx_slab_exact_shift为其shift
+pool->min_shift = 3
+pool->min_size = 1 << pool->min_shift;
+按块大小<|=|>ngx_slab_exact_size，bitmap的存放位置不同：存放在n个块中；存放在第一个page的.slab域中；存放在第一个page的.slab的前半位中（>ngx_slab_exact_size时块大小至少为ngx_slab_exact_size的两倍，所需位数减半，因此用前半位即可存放。此时最低4位(这个说法不是很准确)存放块大小shift，最大块大小shift为15，即块大小为32k。pagesize是依赖于CPU架构，有些会支持很大如1G的pagesize，但一般使用的都是4K或8K。此处代码的正确性是依赖于这一点的）。
+已经为busy的page会从slots中去掉，存在空闲空间（块被释放）后再加回来，由于slab是在连续空间，且实际数据存放区时align到pagesize的，通过（p-pool.start)>>page_shift即可得到要free的数据在第几个page中，继而获得其ngx_slab_page_t信息（元数据）
+ngx_slab_page_t即作为slot，作为链表头连接各块大小数据存放的有空闲空间的page（此时.slab域未使用，已满的page会从链表中踢掉，有空间时再加进来，避免搜索满的page），也作为每个page的元数据
+slot为循环带头单链表
+ngx_slab_page_t的.slab域在free中含义为连续的空闲page个数，在slot中时，对small为1|NGX_SLAB_PAGE_START（因为此时申请的page数为1），对exact和big作为bitmap；对large第一页同small，后续页为PAGE_BUSY。.prev域最低两位表示页类型（large，small，exact，big），但当页为free时值为large的类型表示（0）
+free列表里，连续的page中开头用于将其连接起来，结尾的prev指向开头。对一个已free的连续块头，其next不为NULL且类型为NGX_SLAB_PAGE（如果next为NULL且类型为NGX_SLAB_PAGE，则为分配出去的large）。free_pages时，会合并连续的空闲页，此时的做法为现将其从free列表中去掉，合并后再加进来。
+nginx代码中有些地方依赖数据结构中字段的顺序，这其实类似对象中的继承策略，放在首位或使用offsetof都能达到目的，算是更raw的底层处理方式
+ngx_http_file_cache_delete为了减少加锁的时间，在删除文件时先unlock掉了锁，但这样带来的问题是该节点可能会被其他worker释放，为了避免这种情况，先做了count++&&deleting=1在释放，避免其他worker在forced_expire时选该节点，也标记该node为正在释放的。删除后在count--&&deleting=0
+rbtree的key为uint，为了能使用rbtree，file_cache使用MD5的前4字节作为key，这样查找时就需要额外处理。这样反而使得rbtree更加通用化了，数据结构是固定的，但是查找/插入等“接口”（功能接口，函数接口未必一样）可以根据需要改变，并可有多种接口实现；rbtree插入有统一的ngx_rbtree_insert，但insert_pt为开放的比较（寻找插入位置）接口。
+nginx在内部提供了一套MD5接口，在无ssl的MD5支持时使用。有ssl时，ngx_md5_init应该是在configure后被定义成宏
+ngx_http_file_cache_read为了减少加锁时间，会多次加锁-解锁，但花在锁上面的开销呢？是否会大过由此带来的并发提升。在使用shpool时都说尽量减小加锁区间
+不支持file-aio时ngx_http_file_cache_aio_read会退化成普通的block-read，此时nginx的并发能力会受此限制
+ngx_http_file_cache_expire清掉超时的node，从queue尾遍历，貌似假设了node是按超时时间排序的，尾部的是最早插入的？？应该是FIFO队列，隐含了时间顺序
+ngx_http_file_cache_loader将cache文件从磁盘（递归加载）加载到？？
+从path中load文件有单独的cache-manager进程管理，每次最多加载loader_files个文件且最长加载loader_threshold时间，之后等待loader_sleep毫秒
+加锁解锁，一定能够正确返回，不受信号干扰，nginx代码中假设这点，实际上也是对的，就是pthread的加锁语义上仍然仅在没初始化时才可能失败，否则是不能出现的情况。即锁是可靠的，但内存申请则不是，存在申请失败的情况。
+nginx中rbtree的线性访问是通过额外的queue结构来实现的，通过将ngx_queue_t和ngx_rbtree_node_t放到同一结构中，通过offsetof即可以两者方法存放该结构
+open-file-cache中存放的内容是从系统获取内存（未使用pool），因为cache并不在某个request中，且。。。
+open_file_cache_min_uses的含义是在inactive时间段内，如果有min_uses则该cache一直保持可用？？
+open-file-cache采用LRU策略，最多max个文件可在cache中
+基本上是完全自定义的类型系统，虽然多数都跟底层实现相似或相同，decouple，算是数据结构的接口层
+clcf->directio指明文件多大时使用直接io，而不再使用sendfile
+disable_symlinks功能有什么用？？
+ngx_http_set_disable_symlinks根据需要设置of->disable_symlinks_from（开始比较的位置）
+ngx_open_file_wrapper在disable-sym为NOTOWNER时只会打开已有文件，不会去创建。
+nginx的文件打开接口将open中的mode分为mode和create两类，后者负责表面是否应该create或truncate文件，前者则是像只读类的mode，这样可更清新的控制文件是否创建及不存在时报错
+ngx_http_upstream_add支持upstream块也支持对proxy_pass似的直接跟地址的形式，该函数需要判断该地址或upstream块有没有被添加过，像proxy_pass不做地址解析（no_resolve），因为其值可能是upstream块
+对finalize的理解不够，这个函数被设计成，在任何时候只要出错就可以直接调用来结束当前请求，并根据错误码做相应处理，如何做到的？？？递归，函数调用依赖，变量设置等等，如何保证正确的？？还有subrequest在处理上也有上述的问题
+init_round_robin_peer和create_round_robin_peer功能上有重复，后者使用的设置也用的默认的，也没考虑backup，WTF？
+ngx_http_upstream_get_peer中对权重的实现太妙了！！！利用了等式：其他和*ew=ew*其他和,每次被选中cw-=其他和，共被选中ew次；每次其他被选中cw+=ew，共计其他和次。刚好形成一个循环。但当某peer连接失败时，其ew是有可能减少的（每次失败减少weight/max_fails，因此当max_failes>weight时不减少权重），虽然后续还会被加回来，但也会对上述公式带来影响，具体的影响就不清楚了，找时间试验下！
+resolver
+代码中大量使用-1表明length和content-length的特殊状态。为什么upstream中使用p->length==-1判断结束，不应该是==0？？ngx_http_proxy_copy_filter里使用==0判断的，但p->upstream_eof && p->length == -1貌似是一种特殊情况，当做正确处理，参考ngx_http_upstream_process_request
+upstream_process_request里cache和store不是一回事？？store仅将响应存放到文件中，具体后续如何使用由自己决定和实现。而cache则是在再次请求前自动检索、支持过期等。
+upstream_process_set_cookie不会缓存设置cookie的内容
+http cache-control\vary\content-type里可设置charset？（作为最后一个）
+upstream_process_cache_control与upstream_process_expires都会影响cache->valid_sec
+accel_expires的时间为相对时间，也会更改valid_sec；如果前面加@则为绝对时间。
+XA_BUFFERING更改u->buffering
+
+HTTP缓存策略（Cache-Control）
+HTTP/1.1标准，用来替换以往的Expires头
+no-store浏览器不缓存该内容
+no-cache缓存，但需要每次都验证(需要Etag)
+public/private
+max-age
+同一内容用唯一URL访问，避免Browser端cache多次
+提供ETag避免未变内容多次传输
+为每项资源设置最好的lifetime
+常修改的内容使用单独的文件，并加上fingerprint
+
+实现功能时，首先优先把功能做出来，可以为了实现各种细节很多分支，很多冗余行，之后再进行review，多次review，不要一开始就陷入以最优的方式实现的焦虑中。在Nginx代码中，可以看出仍有不少没有进行过review的部分，实现显得粗糙。
+
+pipe的length为body的（剩余未读取的）长度，貌似和u->length是一个意思
+
+HTTP chunked
+1.1引入
+使用Transfer-Encoding头，而不再使用Content-Length，因为允许在数据长度未知时即可发送数据，这在生成动态内容时可提高吞吐量
+数据以多个‘chunk’的形式发送，每个chunk前为当前chunk大小，最后一个chunk大小为0
+允许在消息体后继续发送header，即trailer
+允许与Content-Encoding（gzip）一起使用，因此chunk并不压缩
+
+HTTP gzip,deflate
+HTTP deflate是zlib格式，使用deflate压缩机制
+HTTP gzip是由程序gzip生成的格式（LZ77），使用deflate压缩机制
+HTTP-deflate要比HTTP-gzip块（前者使用ADLER32校验，后者使用CRC，而ADLER32快于CRC）
+很多浏览器如IE，实现了错误的HTTP-deflate，他们期待raw压缩数据而不是zlib格式数据，为了避免web访问因为浏览器而无法访问，多少服务器都采用gzip，导致了gzip的流行
+X-Forwarded-For当客户端通过代理访问www时，用来表示客户端地址，中间的代理链也会被记录，最后一个代理的地址不包含在该header中。但该header的正确性依赖于代理链正确的传递和设置该header。该header由Squid引入；RFC标准化了一个类似的‘Forwarded’的header。
+proxy向上游发送请求时，每次必发送的头包括ngx_http_proxy_headers（如果有cache则为ngx_http_proxy_cache_headers）和proxy_set_header（如果与前者相同，则覆盖前者）的部分，如果header的value为空则会忽略该header，因此默认情况下实际必发的为Host/Connection/Content-Length(无cache时)
+
+HTTP/1.1
+为定义缓存和非缓存的proxy的行为，header被分为End-to-end和Hop-by-hop头
+End-to-end头需被传递给最终的server，响应也需要发给客户端，并被缓存
+Hop-by-hop仅对当前连接有效，不缓存也不转发;除了HTTP/1.1协议中定义的，其他的被设置为hop的头必须在Connection中列出
+Connection头定义了仅对当前传输层连接有效的选项，其中列出的header不会被转发，并只能是Hop-by-hop头；一个特例是‘close’表示在请求处理完后该连接应被关闭
+101：Switching Protocols.
+
+当proxy存在时，使用websocket需要支持HTTP CONNECT tunneling，反向代理需要转发Upgrade和Conncction头
+WebSocket：WebSocket使用HTTP的Upgrade请求做handshake
+WebSocket是全双工、双向通信，允许server主动推送数据，这点是与HTTP很大的不同（客户端必须请求，服务端才可发送数据），这对游戏类的应用是很好的选择（之前好像都是AJAX做polling来实现的）
+
+HTTP tunneling
+HTTP tunneling一般被用在有连接限制的地方（restricted connectivity），如端口限制、协议限制和远端连接限制（为了提高安全性而设置的），NAT、FireWalls、Proxy Servers
+virtual private network (VPN) 允许在公网访问私有网络，主流实现为OpenVPN和IPsec
+
+proxy_rewrite_complex_handler中pattern->len虽有可能<len，但仍是从被替换部分的头部开始比较的。
+proxy_redirects除针对location还对refresh有效
+proxy_pass中含有变量时，conf->url不会被设置，因此merge_loc_conf中使用conf->url.data判断是否需要设置默认的redirects
+ngx_http_upstream_rewrite_location在location为/开头，即没有host-name时，不设置r->headers_out.location
+nginx文档上说，当replacement为/时，会自动添加上servername和port，这部分是在哪儿处理的？？？这部分由ngx_http_header_filter处理（设置r->headers_out.location，且value不为空，[0]='\',该filter就会处理）
+当proxy_pass中没有uri时，default的redirect的replacement为/；如果此时传递给proxy-server的url包含了location-name那么应该和文档中给出的例子应该是相同的含义，这里去找找proxy-pass中含有uri对处理上是否是怎么做的？？？？确实是这么做的，参考ngx_http_proxy_create_key中生成u->uri的部分
+clcf->handler在ngx_http_update_location_config传递给r->content_handler，在ngx_http_core_content_phase中被调用
+proxy_buffering指定来着proxied-server的响应是否会被缓存（是响应完全获得后再发送给client？？？），为否时同步发送，也受来自proxied-server的X-Accel-Buffering控制（可通过proxy_ignore_headers来取消该控制）
+
+Expect头要求服务器满足特定需求，如不满足应返回417。100-continue，让client在发送body前获知server是否能满足该request，能的话应返回“HTTP/1.1 100 Continue”：baidu的bws不支持该头，Tengine支持
+ngx_http_test_expect中针对“HTTP/1.1 100 Continue”这类小消息是假定其能够成功，而没有尝试过一段时间再发，
+r->request_length为已读取到的请求长度
+read_client_request_body会执行r->main->count++，因为该处理完成后会以NGX_DONE调用finalize，这个步骤仅--count，但discard_request_body为何也r->count++（r==r->main）：发送响应和discard-body是同时进行的，为避免发送响应完后仍有未读取的body，避免finalize会释放r，第二次释放由ngx_http_discarded_request_body_handler来完成
+ngx_http_chunked_t的length字段表示合法的chunk至少还需要多少字节
+ngx_http_read_client_request_body在读取完request-body才会执行post-handler。受request_body_in_file_only控制，当body不能放进buf中也会写入临时文件
+nginx中很多值的未初始化值为-1，因此仅pcalloc后还需要手动设置
+ngx_http_compile_complex_value当value里不含variable时，不会进行编译，即仅编译complex_value，如果想强制编译使用ngx_http_script_compile
+ngx_http_proxy_create_request在构造请求行时，Method后可能会没有空格，比如加了proxy_method后：代码保证了method都是包含空格的，包括proxy_method设置的。
+当请求为HEAD，ngx_http_upstream_cache会将u->request置为GET
+当proxy_pass后有uri时，发送请求时，会将原uri中的location-name部分替换为该uri；proxy_pass包含变量，且有uri时，使用该uri访问proxied-server，client的uri无效，因此当包含变量就不应再包含uri：参考proxy_create_key和proxy_create_request
+针对要发送的响应和向proxy发送的请求，很多地方都对数据拷贝了chain或者buf，这么做的目的（有些会复用），什么时候该这么做，不该这么做？？
+proxy_create_request构造发送给proxy的请求
+proxy_process_status_line将NGX_ERROR当做正确的HTTP_VERSION_9来处理的，但是递增的pos这部分数据岂不是丢失了？？
+ngx_http_parse_status_line时状态码的三个数字之间可以有空格。。。。
+proxied-server返回的信息存到哪儿了？？？存在u->buffer中
+cache->header_start长度的部分会在u->buffer中预留出来，因此ngx_http_file_cache_set_header可以将buffer->start直接作为cache_header
+nginx function pointers,这种就是接口的设计，函数调用原型就类似接口中的函数，减少耦合性，提高可扩展性.抽象设计。upstream在很大程度上做了抽象，后续proxy、fastcgi等实现就更方便
+ngx_event_pipe实现上下游数据的透传？？需要做filter处理
+ngx_http_proxy_handler中将pipe->input_filter置为ngx_http_proxy_copy_filter，该函数以新的buf和chain将数据地址放到p->in中（互为shadow）；ngx_http_upstream_send_response将p->output_filter置为ngx_http_output_filter。在pipe_read_upstream中chain（由p->pool申请）是复用的，因此需要使用copy_filter
+读写事件中的delayed应该是用来控制传输速率的，并不可显示设置
+
+HTTP
+Deep-linking:使用一个指向具体的可被搜索和索引的网页内容，而非主页。一些网站是限制其他网站使用deep-linking的，避免盗链。Flash和AJAX不支持deep-linking，这会导致再刷新页面（前进后退）时不会显示刚才看到的状态，而是可能会回到初始状态
+HTTP-Referer（referrer的拼写错误）：指向当前请求网页的网页地址，一般web服务器用来记录用户从哪儿访问的，用于统计和提高权重，但这样也暴漏用户隐私，一般浏览器可关闭，与此同时这也会导致访问依赖该特性的webserver（避免盗链）出现问题。一些porn-paylist使用该特性，只有通过特定网页链接过来才允许访问。（这个header值很容易伪造，如referer spoofing）
+referer-spoofing：发送伪造的referer，避免server获得正确值、绕过依赖该特性的检查
+
+为什么有upstream_done了还要upstream_eof？？前者表示正常处理完成，后者为proxied-server提前关闭了socket（read返回0）。事件的eof和error岂不是重叠了？？
+nginx文档：send_lowat This directive is ignored on Linux, Solaris, and Windows.
+代码里对事件的处理零散太零碎了，有些地方需要handle_event有些地方是add/delete timer，很多地方都有这类代码。（cross-cut）
+delay = p->limit_rate ? (ngx_msec_t) n * 1000 / p->limit_rate : 0;
+上面这个计算，假设每次读取数据用时1ms，p->limit_rate/1000转换单位为字节/ms，因此n>=p->limit_rate/1000就算超过了速率，即n*1000/p->limit_rate>=0，而delay值即可作为需要等待的时间（ms）
+pipe_read_upstream获取空闲buf时p->single_buf仅在AIO时才这么做
+free即做释放也做空闲用，如free_raw_bufs（空闲）和free_bufs（释放）
+
+read/readv当传入的buf空间为0，返回的是0，此时0就不能作为eof或者socket已关闭的信号，因此需要保证传入的buf空间>0

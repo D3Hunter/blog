@@ -61,6 +61,7 @@ dd可以指定offset输出
 
 使用ssh或者使用ssh协议的git慢，GSSAPIAuthentication no在ssh_config中
 
+ubuntu下注意如果将当前用户加到另外的组可能会导致失去sudo权限
 添加用户到组sudo usermod -a -G group username
 
 sources.list  /etc/apt/
@@ -111,11 +112,25 @@ rg -> gnome -> desktop -> media-handling
 
 YPBINDPROC_DOMAIN: Domain not bound，该服务将从远端主机上获取用户名密码等信息
 	如果远端机器宕机或其他问题，则在ssh登陆会出现该情况
-	/etc/init.d/ypbind restart 
+	/etc/init.d/ypbind restart 如果远端宕机会hang
 umount时 -l卸载
 NFS有两种挂载方式：
 	硬挂载将模拟本地磁盘，在IO操作未完成前一直阻塞（这在NFS服务器出问题时会导致应用hang）
 	软挂载
+
+查看当前系统是否为虚拟机：
+    常用的虚拟机：VMWare、KEmu、KVM、Microsoft VirtualPC、Xen（HVM domU）、Virtuozzo
+    dmidecode -t system / dmidecode -s system-product-name
+    lshw -class system
+    /sys/class/dmi/id/sys_vendor
+    lspci
+    dmesg |grep DMI  / dmesg |grep Hypervisor
+
+sz/rz 通过secureCRT（其他支持ZMODEM协议的软件）发送和接收文件，类似的有XMODEM、YMODEM
+watch 每隔一段时间执行命令
+
+alias可以使用shell中定义的函数作为value（terminal仍是解析的shell脚本，当然可以调用函数）
+
 #############################################################
 # linux自启动程序
 #############################################################
