@@ -68,7 +68,7 @@ sources.list  /etc/apt/
 
 curl -X POST
 
-The readline library accepts \001 and \002 (ASCII SOH and STX) as non-printable text delimiters. 
+The readline library accepts \001 and \002 (ASCII SOH and STX) as non-printable text delimiters.
 You must put \[ and \] around any non-printing escape sequences in your prompt.
 否则再bash history中前一条命令可能会overwrite当前命令，gdb的prompt由于不能使用\[\]故可使用\001\002
 bash颜色表http://misc.flogisoft.com/bash/tip_colors_and_formatting
@@ -130,6 +130,25 @@ sz/rz 通过secureCRT（其他支持ZMODEM协议的软件）发送和接收文�
 watch 每隔一段时间执行命令
 
 alias可以使用shell中定义的函数作为value（terminal仍是解析的shell脚本，当然可以调用函数）
+
+#############################################################
+# SSH
+#############################################################
+local/remote forwarding:
+ssh user@example.com -L bind_address:9000:some-host:5432 # forward any tcp traffic on 9000 to some-host:5432 through example.com，本地监听9000
+ssh user@example.com -L bind_address:9000:localhost:5432 # here localhost means example.com
+ssh user@example.com -R bind_address:9000:some-host:3000 # forward any traffic from example:9000 to some-host:3000 through chient，远端监听9000
+ssh user@example.com -R bind_address:9000:localhost:3000 # here localhost means ssh client
+忽略bind_address时默认绑定地址为loopback
+ssh -nNf(-nNT)可以避免打开登陆shell，而仅作端口转发
+remote forwarding默认不开启，需要在/etc/ssh/sshd_config中设置GatewayPorts yes
+当remote forwarding不可用，但可在example.com上访问client时，可通过在example.com上做-L，来实现-R，即：
+    在example.com上执行ssh localhost -L 9000:client:5432
+
+dynamic forwarding
+ssh user@example.com -D 1080 # 本地监听1080作为SOCKS代理，通过example.com转发数据
+SOCKS本身并不是安全的，但是dynamic forwarding时SOCKS数据通过ssh发送，则是安全的
+而像现在的ShadowSocks，也是本地加密，通过非加密通道传输
 
 #############################################################
 # linux自启动程序
