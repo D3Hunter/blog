@@ -43,6 +43,10 @@ C-x s保存所有buffer
 C-x C-w save as
 
 dired使用m/u标记文件，dired-do-query-replace-regexp可在标记的文件内查找替换
+
+revert-buffer
+
+imenu-add-to-menubar查看文件中的函数列表
 #############################################################
 # git
 #############################################################

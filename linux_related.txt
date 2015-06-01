@@ -49,7 +49,6 @@ ulimit -c 仅对当前所在的用户有效
 tar -zxvf config.tar.gz etc/default/sysstat
 
 curl HTTP层请求
-netcat/nc TCP/UDP协议层请求
 
 安装dep包 sudo dpkg -i *.dep
 apt-get download 下载dep包，安装过程可参考man dpkg主要执行特定脚本，然后复制文件（和/目录结构类似）
@@ -108,6 +107,30 @@ sudo apt-get install libimobiledevice-utils;idevicepair unpair && idevicepair pa
 
 禁止ubuntu automount usb设备:dconf-editor
 rg -> gnome -> desktop -> media-handling
+
+/etc/default/keyboard
+ XKBOPTIONS="ctrl:nocaps"# make caps another ctrl key
+and then run:
+$ sudo dpkg-reconfigure -phigh console-setup
+
+ALT-middleMouse 可以更改窗口大小(默认的边界太小,很难点到)
+
+Network Service Switch,nslookup可用但ping不通域名时
+/etc/nsswitch.conf将hosts行加上dns,或者去掉mdns4部分
+
+netcat/nc 可用来做TCP/UDP/Unix-domain相关的事情,连接/发送/监听
+   以下是一个简单的SSH,但不安全,任何连接过来的用户都可以执行命令
+     On ‘server’ side:
+
+           $ rm -f /tmp/f; mkfifo /tmp/f
+           $ cat /tmp/f | /bin/sh -i 2>&1 | nc -l 127.0.0.1 1234 > /tmp/f
+
+     On ‘client’ side:
+
+           $ nc host.example.com 1234
+           $ (shell prompt from host.example.com)
+   此外netcat还可用来扫描端口,手动向server发送信息(MAIL/HTTP这类文本协议,telnet也有类似的功能)等.
+tcpdump -i lo -A tcp可用来抓取tcp包,相比wireshark这个是发行版自带的
 #############################################################
 # linux自启动程序
 #############################################################
