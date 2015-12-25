@@ -46,5 +46,5 @@
  )
 
 (add-to-list 'load-path "~/.emacs.d/")
-(require 'php-mode)
-(load-file "~/.emacs.d/nhexl-mode-0.1.el")
+;; (require 'php-mode)
+;; (load-file "~/.emacs.d/nhexl-mode-0.1.el")
