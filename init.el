@@ -16,6 +16,8 @@
 
 (setq c-default-style "linux" c-basic-offset 4)
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; (defun redraw-after-change (beg end len)
 ;;   (redraw-display))
 
