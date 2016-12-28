@@ -1,0 +1,57 @@
+gtest/gmock
+    autoreconf -fvi; make并不需要make install
+    默认gtest位置为${GMOCK_DIR}/gtest
+    ${GMOCK_DIR}/make有个小例子
+    -DGTEST_XXX可用来tweak gmock
+
+g++
+    -isystem dir Search dir for header files, after all directories specified by -I
+    but before the standard system directories.
+
+Makefile
+    VPATH: Search Path for All Prerequisites and targets 如果在当前目录找不到
+        会使用vpath做prefix来查找
+
+    Special Built-in Target Names
+        .PHONY
+
+ld
+    仅静态连接部分library：
+        GNU有效 gcc <objectfiles> -Wl,-Bstatic -lstatic1 -lstatic2 -Wl,-Bdynamic -ldynamic1 -ldynamic2
+             -Wl,-Bstatic换成-static是不行的，这会导致ld设置错误的ld.so，可执行程序不能运行
+        gcc -lsome_dynamic_lib code.c some_static_lib.a
+
+cmake
+    configure_file Copy a file to another location and modify its contents.
+    include_directories: 设置-I
+    add_definitions添加预处理宏-D
+    link_directories -L
+
+缩减二进制尺寸
+http://www.amigacoding.de/index.php?topic=168.0
+
+write在buf不可访问时errno为EFAULT，可以用来验证地址是否合法
+
+让动态库可以运行：
+1. x权限
+2. entry point -Wl,-e entry_point
+3. Interpreter(.interp section)
+    const char my_interp[] __attribute__((section(".interp"))) = "/lib/ld-linux.so.2";
+
+Data Model
+    Data model  Sample operating systems
+    LLP64       Windows (x86-64 and IA-64)
+    LP64        Most Unix and Unix-like systems, Solaris, Linux, BSD, OS X; z/OS
+    ILP64       HAL port of Solaris to the SPARC64
+    SILP64      Classic UNICOS[34]
+    ILP32       基本上所有的32系统都使用该模型
+
+    Datatype    LP64    ILP64   LLP64   ILP32   LP32
+    char        8       8       8       8       8
+    short       16      16      16      16      16
+    _int32              32
+    int         32      64      32      32      16
+    long        64      64      32      32      32
+    long long                   64
+    pointer     64      64      64      32      32
+
