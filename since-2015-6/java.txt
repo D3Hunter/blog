@@ -692,7 +692,11 @@ java工具
     jmap - prints shared object memory maps or heap memory details
     jsadebugd - serviceability agent debug daemon
     jstat - Java Virtual Machine statistics monitoring tool
+        -gc 可以查看所有区块内存的使用情况
+        -gccapacity 查看使用量和最大最小配置
     jvisualvm - profile and monitor tool
+    jcmd
+    java -XX:+PrintFlagsFinal -version
 
 proxy pattern:
     Allows for object level access control by acting as a pass through entity
@@ -812,3 +816,24 @@ classloader的verification过程好像要求自己需要的类一定要在自己
 
 sun.boot.class.path
 java.ext.dirs
+
+
+Serviceability Agent(sa)
+    $JAVA_HOME/lib/sa-jdi.jar
+    sun.jvm.hotspot.tools.jcore.ClassDump包含main可dump所有的类
+        -Dsun.jvm.hotspot.tools.jcore.filter可指定filter只dump特定的类，filter
+        需要实现ClassFilter接口
+
+执行jar包时，只能通过manifest指定cp，命令行不起作用
+
+MemoryMapped mmap的java接口，可用来做IPC
+
+java memory keywords:
+    Heap Memory
+    Non Direct ByteBuffer
+    Direct ByteBuffer（may or may not use mmap)
+    Off Heap or Direct Memory
+
+Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+
+jar cvf program.jar -C path/to/classes .

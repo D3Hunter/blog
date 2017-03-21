@@ -3,8 +3,8 @@ CXX := g++
 LD := $(CC)
 AR := ar
 
-BASEDIR= ./php_daemon
-PROGNAME=oneapm-daemon
+BASEDIR= ./build
+PROGNAME=program-daemon
 SOURCEFILES := banner.c cache.c cJSON.c command.c config.c connector.c harvest.c listener.c main.c minIni.c oa_app.c oa_buf.c oa_cond.c oa_errno.c forkdaemon.c log.c oa_json.c oa_mutex.c oa_daemon.c oa_obj.c oa_ssl.c oa_str.c oa_util.c param.c proc.c rpm.c sig.c thread.c
 
 all_source_files := $(SOURCEFILES)

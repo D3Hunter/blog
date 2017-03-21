@@ -1,0 +1,69 @@
+libraries:
+    pexpect: expect的python版本
+    virtualenv: create isolated Python environments
+
+Requirements files
+    pip install -r requirements.txt
+
+use 'import modu' over 'from modu import sqrt' over 'from modu import *' to
+    increase readalibity and understandability
+Any directory with an __init__.py file is considered a Python package.
+In Python, everything is an object, and can be handled as such.
+Carefully isolating functions with context and side-effects from functions with logic (called pure functions)
+A decorator is a function or a class that wraps (or decorates) a function or a method.
+A context manager is a Python object that provides extra contextual information to an action.
+Dynamic typing
+Python has two kinds of built-in or user-defined types. Mutable and immutable types
+    Typical mutables are lists and dictionaries. tuple and string is immutables
+    字符串拼接用list的join更高效：list comprehensions，如果个数固定用‘+’也可以
+We are all responsible users: no explicit 'private'
+PEP 8 is the de-facto code style guide for Python.
+
+Idioms
+    Unpacking
+        for index, item in enumerate(some_list):
+        a, b = b, a
+        a, (b, c) = 1, (2, 3)
+    Create an ignored variable
+        basename, __, ext = filename.rpartition('.')
+    Create a length-N list of the same thing
+        four_nones = [None] * 4
+    Create a length-N list of lists¶
+        Because lists are mutable, the * operator (as above) will create a list of N references to the same list
+        four_lists = [[] for __ in xrange(4)]
+    Create a string from a list
+        letters = ['s', 'p', 'a', 'm']
+        word = ''.join(letters)
+    Searching for an item in a collection
+        use set/directories which use hashtable for better performance
+        'list''ll iterate whole list
+
+Conventions
+    Check if variable equals a constant
+        if attr:
+        if not attr:
+        if attr is None:
+    Access a Dictionary Element
+        Don’t use the dict.has_key() method. Instead, use x in d syntax,
+        or pass a default argument to dict.get().
+    Short Ways to Manipulate Lists
+        List comprehensions provide a powerful, concise way to work with lists.
+        Also, the map() and filter() functions can perform operations on lists
+        using a different, more concise syntax.
+    Read From a File
+        Use the with open syntax to read from files.
+    Line Continuations
+        A better solution is to use parentheses around your elements.
+
+python -m site --user-site
+
+basic:
+    command line argument: import sys; len(sys.argv); sys.argv
+    [] list, () tuple, {} dict
+    str.split(strtok)
+    and or not
+    def functionname( parameters ):
+    for x in range(5): 或者xrange
+    time.sleep(t)
+django
+    SimpleHTTPServer: This class serves files from the current directory and below
