@@ -243,8 +243,11 @@ sublime：
         了，使用tcpflow获得的为二进制数据，可以正常解压。使用follow,tcp,hex或者
         follow,tcp,raw获取的数据都是转成hex的，非原始二进制数据，因此都解压不了
     tcpdump
-    tcpdump -w xpackets.pcap -i eth0 dst 50.31.164.226 and port 443
+    tcpdump -w xpackets.pcap -i eth0 dst 50.31.164.226 and port 80
+        这样只能抓发往50.31.164.226:80的数据，但是response收不到
+        要抓response不要指定端口，但这样会把所有的流量都抓住
     tcpdump -tttt -r data.pcap读取已经抓的包
+    tcpflow能把.pcap的http包分析出来
     tcpflow/tcpdump都是使用libpcap，expression的格式是一样的：
         expression有一系列primitives组成，通常的primitive包含id和多个前缀qualifiers
         qualifiers包含type/dir/proto，但也有复杂的primitive
@@ -376,7 +379,8 @@ Docker
     docker run -d -p 80:80 nginx-1.9.1:latest
     sudo docker -H tcp://127.0.0.1:2375 -d &让docker监听非默认端口
         这样执行任何命令都需要指定-H，否则会报连接不到docker
-    docker的repository叫Registry
+    Registry 存放一系列镜像
+    repository 存放某一类镜像的各个tag
     docker command的执行由用户提交传递给docker daemon，而-H指定的就是这个命令
         提交地址使用docker search [ip/host]/term搜索时，实际链接的-H的地址，然后
         转给daemon
@@ -392,6 +396,18 @@ Docker Remote API
     GET /images/search?term=XXX
     GET /info
 
+Docker
+    添加registry
+        修改docker.service
+        ExecStart=添加 --registry-mirror=https://docker.mirrors.ustc.edu.cn
+        systemctl daemon-reload
+        systemctl restart docker
+    保持container运行
+        docker run -d centos tail -f /dev/null
+        docker run -t -d centos
+        docker run -td -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root docker.io/mysql:latest
+    docker ps -f "status=exited"
+    docker ps -f "status=exited" | awk 'NR>1{print $1}' | xargs docker rm -f
 
 squid3使用
     带用户名密码的proxy需要支持Proxy-Authorization的proxy server
@@ -1293,6 +1309,7 @@ unzip -d <dst-dir> -o : 自动覆盖，没有force，需要使用-o
     一条方案未必是死胡同，可以继续按动态和静态两条线继续思考
 
 yum install lrzsz
+yum --nogpgcheck
 
 pthread_mutex_lock/unlock隐含memory barriar操作
 
@@ -1362,3 +1379,24 @@ weblogic非常慢，添加-Djava.security.egd=file:/dev/./urandom选项
 
 ls &; sleep 1   这里&不需要添加';'
     ";" and "&" are command terminators, meaning fg and bg respectively
+
+
+VNC centos7
+    https://linux.cn/article-5335-1.html
+    yum groupinstall "X Window System"
+    yum install gnome-classic-session gnome-terminal nautilus-open-terminal control-center liberation-mono-fonts
+    unlink /etc/systemd/system/default.target
+    ln -sf /lib/systemd/system/graphical.target /etc/systemd/system/default.target
+    reboot
+    yum install tigervnc-server -y
+    vncserver
+    vncserver -kill :number (通过ps可看到)
+
+Automatic Bug Reporting Tool, commonly abbreviated as ABRT
+    进程崩溃后会写core文件，并在/var/log/messages里写入信息
+    对于“Package 'jdk' isn't signed with proper key“，需要：
+        Edit the file /etc/abrt/abrt-action-save-package-data.conf
+        Set OpenGPGCheck = no
+        Reload abrtd with the command: service abrtd reload
+
+info symbol

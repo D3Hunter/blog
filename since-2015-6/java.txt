@@ -61,6 +61,8 @@ Agent start-up
     Live phase calls OnAttach
 
 bytecode instrumentation (BCI)
+    仅仅在 AdviceAdaptor 的 methodExit 添加代码还不够，因为 RuntimeException 并不会显示抛出
+        因此需要添加方法整体的 try-catch，并在在 visitMaxs 添加 methodExit 处理
 
 Java agents
     premain
@@ -800,8 +802,8 @@ JVM
 java逆向
     对于混淆代码，可以先把field等改成长名字，避免跟方法/类混淆，减少理解难度
 
-binary name
-internal form of binary name
+binary name   use '.'
+internal form of binary name, use '/'
 descriptor(只针对field和method)
 signature
 
@@ -837,3 +839,22 @@ java memory keywords:
 Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
 
 jar cvf program.jar -C path/to/classes .
+
+What is a Java Safepoint?找时间把后两个看完
+    http://chriskirk.blogspot.jp/2013/09/what-is-java-safepoint.html
+    http://psy-lob-saw.blogspot.jp/2015/12/safepoints.html
+    http://psy-lob-saw.blogspot.jp/2016/02/why-most-sampling-java-profilers-are.html
+
+transient 的对象不会被序列化
+对敏感字段加密
+情境：服务器端给客户端发送序列化对象数据，对象中有一些数据是敏感的，比如密码字符串等，希望对该密码字段在序列化时，进行加密，而客户端如果拥有解密的密钥，只有在客户端进行反序列化时，才可以对密码进行读取，这样可以一定程度保证序列化对象的数据安全。
+解决：在序列化过程中，虚拟机会试图调用对象类里的 writeObject 和 readObject 方法，进行用户自定义的序列化和反序列化，如果没有这样的方法，则默认调用是 ObjectOutputStream 的 defaultWriteObject 方法以及 ObjectInputStream 的 defaultReadObject 方法。用户自定义的 writeObject 和 readObject 方法可以允许用户控制序列化的过程，比如可以在序列化的过程中动态改变序列化的数值。基于这个原理，可以在实际应用中得到使用，用于敏感字段的加密工作，清单 3 展示了这个过程。
+
+
+Tiered Compilation
+Compressed Oops
+Zero-Based Compressed Ordinary Object Pointers (oops)
+Escape Analysis
+Escape analysis is a technique by which the Java Hotspot Server Compiler can analyze the scope of a new object's uses and decide whether to allocate it on the Java heap.
+
+The HotSpot™ Serviceability Agent: An out-of-process high level debugger for a Java™ virtual machine

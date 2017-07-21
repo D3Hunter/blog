@@ -1,0 +1,32 @@
+#!/usr/bin/expect
+
+set timeout 10
+
+if {$argc < 1} {
+    puts "please input server address."
+    exit 1
+}
+
+set server_address [lindex $argv 0]
+set server_pwd "javaagent"
+
+if { $argc == 2} {
+    set server_pwd [lindex $argv 1]
+}
+
+spawn ssh $server_address
+
+expect {
+    "(yes/no)?" {
+        send "yes\r"
+        expect "*password:" {
+            send "${server_pwd}\r"
+        }
+    }
+    "*password:" {
+        send "${server_pwd}\r"
+    }
+}
+
+interact
+

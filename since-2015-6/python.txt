@@ -65,5 +65,55 @@ basic:
     def functionname( parameters ):
     for x in range(5): 或者xrange
     time.sleep(t)
-django
     SimpleHTTPServer: This class serves files from the current directory and below
+    print '%d, %f' % (1, 2.3)
+    merged_list = list1 + list2
+
+    * unpacks the sequence/collection into positional arguments
+        def sum(a, b):
+            return a + b
+        values = (1, 2)
+        s = sum(*values)       ======      s = sum(1, 2)
+        values = { 'a': 1, 'b': 2 }
+        s = sum(**values)      ======      s = sum(1, 2)
+    需要f = staticmethod(f)才能成为static method，同理f = classmethod(f)
+    sys.argv 0为脚本
+    pip install virtualenvwrapper
+    TypeError: __call__() takes exactly 2 arguments (1 given)
+        pip install setuptools==33.1.1
+    访问全局变量，需要在方法中指定：global variable
+
+Selenium
+    phantomjs 可以headless处理
+    WebDriver will wait until the page has fully loaded (that is, the “onload” event has fired) before returning control
+    The Keys class provide keys in the keyboard like RETURN, F1, ALT etc.
+        send_keys("pycon") 发送p, y, c, o, n等按键，send_keys(Keys.RETURN) 按回车
+    Interacting with the page
+        element.send_keys
+        element.clear()
+        element.submit() # 自动往外找form
+        Drag and drop
+        Moving between windows and frames
+        driver.forward() / driver.back()
+    in discovering the XPath of an element:
+        XPath Checker - suggests XPath and can be used to test XPath results.
+        Firebug - XPath suggestions
+        XPath Helper - for Google Chrome
+    page object pattern
+    XPATH
+        . 代表从当前开始
+
+method & function
+    A method is on an object.
+    A function is independent of an object.
+    For Java, there are only methods.
+    For C, there are only functions.
+    For C++/python it would depend on whether or not you're in a class.
+
+descriptor
+    In general, a descriptor is an object attribute with “binding behavior”,
+        one whose attribute access has been overridden by methods in the descriptor protocol.
+    both __get__() and __set__(), it is considered a data descriptor
+    only define __get__() are called non-data descriptors
+    Data and non-data descriptors differ in how overrides are calculated
+        with respect to entries in an instance’s dictionary.
