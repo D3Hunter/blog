@@ -1,0 +1,246 @@
+plugin
+    TraceMetadataProvider 代表plugin，通过ServiceLoader加载
+
+TransformerRegistry classname -> ClassFileTransformer
+DynamicTransformerRegistry 动态添加的
+ClassFileTransformerDispatcher 负责这个transform
+    按以下流程
+        PinpointClassFilter pinpoint的类不处理
+        处理DynamicTransformerRegistry匹配
+        UnmodifiableClassFilter 不处理包名为java[x]/的类
+        TransformerRegistry匹配
+        DebugTransformer处理
+    构造函数内处理 ProfilerPluginSetupContext 成为 TransformerRegistry
+    ProfilerPluginSetupContext
+        GuardProfilerPluginContext
+            可以close，delegate到ProfilerPluginSetupContext
+        DefaultProfilerPluginContext
+            每个plugin一个
+            包含一个classTransformers列表，都是MatchableClassFileTransformerGuardDelegate
+            MatchableClassFileTransformerGuardDelegate
+                内部通过 TransformCallback 处理
+    InstrumentContext
+        GuardInstrumentContext
+            可以close 并delegate到下面的这个
+        DefaultProfilerPluginContext 同上
+    TransformTemplate 校验并delegate到InstrumentContext
+        只有plugin实现了 TransformTemplateAware 才会添加
+        目前所有的plugin都实现该接口了
+    PluginContextLoadResult
+        lazy加载
+        ProfilerPluginLoader
+            使用 PluginLoader 加载plugin为 ProfilerPlugin
+            ProfilerPlugin
+                代表一个plugin
+                一个plugin jar包可能有多个plugin
+            PluginLoaderClassLoader
+                用于辅助 ServiceLoader 加载 Plugin
+            遍历所有plugin jar包，遍历所有plugin
+            PluginSetup
+                DefaultPluginSetup
+                    设置 TransformTemplate ， 创建 DefaultProfilerPluginContext 并执行 setup
+JarProfilerPluginClassInjector 将类 inject 到classloader中
+    根据不同的classloader，用不同的injector
+    BootstrapClassLoaderHandler
+        将jar放到bootstrap classpath中
+        通过Class.forName加载类
+    URLClassLoaderHandler
+        将jar添加到其url列表中，然后使用loadClass加载类
+    PlainClassLoaderHandler
+        读取jar包中class的字节码，通过defineClass来加载
+    SimpleClassMetadataReader
+        将类信息读到SimpleClassMetadata
+            version access className superClassName interfaceNameList
+Instrumentor
+    GuardInstrumentor
+        跟下面的差不多，但是支持close
+    InstrumentorDelegate
+        delegate到InstrumentContext
+InstrumentClass
+    用来实施instrument
+    ASMClass
+    ASMNestedClass
+    JavassistClass
+
+    同理 InstrumentMethod 也有针对asm javassist的实现
+
+    addField
+        接口要有getter 和 setter
+        field名称为 _$PINPOINT$_ + 接口名称
+    addGetter 可添加接口实现获取field
+        会递归向上寻找field，但是没有验证access是否为private，子类不能访问父类的private field
+    addSetter
+        这块去除final的过程有bug，如果是parent 的 field代码无效
+        目前没有plugin使用
+    addInterceptor
+    addScopedInterceptor
+        intercept类的特定方法，可通过annotation或者 MethodFilter 选择要注入的方法
+        每个被注入的方法有自己的 interceptor 实例，或者通过TargetFilter 指定为singleton
+        TargetFilter
+            根据annotation的参数创建MethodFilter
+        显示使用 MethodFilter 的，都是singleton的
+
+    getDeclaredMethod 然后 addInterceptor
+    getNestedClasses
+        找到符合条件的内类，如果需要对内类进行处理
+        不递归处理
+InstrumentMethod
+    ASMMethod
+        每个方法只能使用一个interceptor
+        支持addInterceptor addScopedInterceptor
+        实际处理交给 ASMMethodNodeAdapter
+        ASMMethodNodeAdapter
+            ASMMethodVariables
+                _$PINPOINT$_interceptor InterceptorRegistry.getInterceptor(id) 获取
+                _$PINPOINT$_result
+                _$PINPOINT$_throwable
+                还有其他要用到的数据都已local variable的形式表示
+            插入before after等方法
+            addDelegator
+            local variable 和 methodName的 remapping
+ASMClassNodeAdapter
+    ASMFieldNodeAdapter
+    ASMMethodNodeAdapter
+InstrumentClassPool
+    ASMClassPool
+    JavassistClassPool
+InterceptorRegistryBinder
+    DefaultInterceptorRegistryBinder
+    GlobalInterceptorRegistryBinder
+    内部都使用 DefaultInterceptorRegistryAdaptor
+    DefaultInterceptorRegistryAdaptor
+        使用 AtomicReferenceArray 存储 Interceptor
+InterceptorDefinitionFactory
+    before after 方法可通过 IgnoreMethod 来忽略某函数插码，对应的CaptureType也会更改
+AnnotatedInterceptorFactory
+    创建Interceptor对象，通过 AutoBindingObjectFactory
+    然后根据配置，wrap interceptor
+        ByExceptionHandleScope
+        ByExceptionHandle
+        ByScope
+    AutoBindingObjectFactory
+        根据 ObjectFactory ArgumentProvider 创建对象
+    ObjectFactory
+        ByConstructor
+            ConstructorResolver
+        ByFactoryObject
+        ByStaticFactoryMethod
+            StaticMethodResolver 类似 ConstructorResolver
+    ConstructorResolver
+        interceptor 的 constructor 和 arguments 整个 resolve 过程
+    ArgumentsResolver
+        根据类型及annotation resolve 参数
+        ArgumentProvider
+            ProfilerPluginArgumentProvider
+                提供以下类型的参数
+                    Trace
+                    TraceContext
+                    Instrumentor
+                    InterceptorScope
+            OrderedValueProvider / JudgingParameterResolver
+                按照传入的顺序向外提供参数
+                可以使用 ObjectFactory ，通过 AutoBindingObjectFactory 创建对应实例
+            InterceptorArgumentProvider
+                提供以下类型的参数
+                    InstrumentClass
+                    MethodDescriptor
+                    InstrumentMethod
+                    InterceptorScope
+                    DataSourceMonitorRegistry
+            Option
+                WithValue
+                empty option
+
+采样按 N 采 1，按顺序来，非随机
+TraceContext
+    DefaultTraceContext trace创建的一系列操作
+BaseTraceFactory
+    DefaultBaseTraceFactory
+    LoggingBaseTraceFactory 如果开启日志，用来wrap DefaultBaseTraceFactory
+    TraceFactory
+        MetricTraceFactory 没用到
+        ThreadLocalTraceFactory 实际使用
+        ActiveTraceFactory wrap threadlocal trace，可关闭
+            信息记录在DefaultActiveTraceRepository
+            DefaultActiveTraceRepository
+Trace
+    AsyncTrace
+    DefaultTrace
+        新创建的被sample的trace
+    DisableTrace
+        新创建的没有被sample的trace
+    TraceWrap
+        TraceChain 没用到
+StorageFactory 参考下面的storage，由 StorageFactoryProvider 提供实例
+    BufferedStorageFactory
+    LogStorageFactory
+    SimpleSpanStorageFactory
+    SpanStorageFactory
+Storage
+    AsyncStorage delegate到别的Storage，不store span
+    BufferedStorage 缓冲一部分SpanEvent，超过上限就会发送，默认的 Storage
+    SimpleSpanStorage 直接用DataSender发送，不缓冲
+    LogStorage 只记日志
+    SpanStorage 一直缓冲SpanEvent，store(span)时一块发送数据
+AbstractRecorder
+    WrappedSpanEventRecorder
+        wrap SpanEvent
+    DefaultSpanRecorder
+        wrap Span
+Annotation 继承并对应到TAnnotation
+    span event中的信息以该形式存储
+SpanEvent 继承并对应到TSpanEvent
+    startElapsed相对于span startTime
+    endElapsed 相对于该spanEvent的起始时间的时间，即 span startTime + startElapsed
+        等同于duration
+Span TSpan
+SpanChunk
+CallStack
+    存储 SpanEvent
+    index 从 1 开始
+    有最大栈深限制
+    不进栈的没有sequence
+    如果没设置depth，跟上个spanEvent的depth一样
+    树的层级关系通过sequence，depth关联起来（通过时间也行，不过计算相对麻烦）
+ApplicationContextModule
+    juice module
+UdpSpanDataSenderProvider
+    UdpDataSenderFactory
+        根据配置选择如下两个之一
+        NioUDPDataSender
+        UdpDataSender 默认
+UdpStatDataSenderProvider
+    UdpDataSenderFactory 同上，但是sender type 可以分开设置
+        根据配置选择如下两个之一
+        NioUDPDataSender
+        UdpDataSender 默认
+DataSender
+    AbstractDataSender
+        NioUDPDataSender
+        UdpDataSender
+            BufferedUdpDataSender 测试代码用
+        SpanStreamUdpSender 测试代码用
+        TcpDataSender
+    EnhancedDataSender 由 TcpDataSenderProvider 提供，创建 TcpDataSender
+        CountingDataSender 测试代码用
+        EmptyDataSender 没用到
+        LoggingDataSender 测试代码用
+        TcpDataSender
+    ListenableDataSender 测试代码用
+AsyncQueueingExecutor
+    收集、发送异步
+    发的过程由 AsyncQueueingExecutorListener 完成
+apiId 对应某个埋点，将MethodDescriptor缓存起来（DefaultApiMetaDataService）
+    通过EnhancedDataSender发送到后端注册
+        TApiMetaData
+DefaultStringMetaDataService
+    类似DefaultApiMetaDataService，但缓存普通字符串
+DefaultSqlMetaDataService
+    同上
+AgentInfoSender
+    每天发送/刷新一次
+DefaultAgentStatMonitor
+    收集各类信息，默认5s采一次，采集至少6次则发送
+    AgentStatCollector
+        内部集成其他的collector
+使用 metrics-jvm 收集gc、内存数据

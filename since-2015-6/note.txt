@@ -1400,3 +1400,6 @@ Automatic Bug Reporting Tool, commonly abbreviated as ABRT
         Reload abrtd with the command: service abrtd reload
 
 info symbol
+
+
+yum provides \*/Intrinsic.h

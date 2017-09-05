@@ -1,0 +1,41 @@
+VM
+    process virtual machine : jvm, clr
+         support the execution of a single program
+    system virtual machine : VirtualBox, VMWare
+        support execution of a complete operating system
+
+    实现
+        stack-based: jvm, CLR
+        register-based: Lua, Dalvik VM(google's jvm on android)
+        different in mechanism used for storing and retrieving operands and their results.
+
+process VM should contains:
+    Compilation of source language into VM specific bytecode
+    Data structures to contains instructions and operands (the data the instructions process)
+    A call stack for function call operations
+    An ‘Instruction Pointer’ (IP) pointing to the next instruction to execute
+    A virtual ‘CPU’ – the instruction dispatcher that
+        Instruction fetch, where an instruction is fetched from memory.
+        Decoding, which determines the type of the instruction — the opcode, or the operation
+            it is supposed to perform. Additionally, decoding may also involve fetching operand(s) from memory.
+        Execute. The decoded instruction is then executed; the operation is performed on the operands.
+        Storing the result in the mentioned register.
+
+Stack Based Virtual Machines
+    memory structure where the operands are stored is a stack data structure
+    operands are addressed implicitly by the stack pointer
+    Virtual machine does not need to know the operand addresses explicitly
+    instruction shorter
+    同样的功能需要更多指令，意味着更多的instruction fetch
+Register Based Virtual Machines
+    data structure where the operands are stored is based on the registers of the CPU
+    the instructions need to contain the addresses (the registers) of the operands
+    the operands for the instructions are explicitly addressed in the instruction
+    overhead of pushing to and popping from a stack is non-existent, and instructions
+        in a register based VM execute faster within the instruction dispatch loop.
+    allows for some optimizations that cannot be done in the stack based approach.
+        when there are common sub expressions in the code, the register model can calculate it once
+        and store the result in a register for future use when the sub expression comes up again,
+        which reduces the cost of recalculating the expression.
+    average register instruction is larger than an average stack instruction, as we need
+        to specify the operand addresses explicitly.

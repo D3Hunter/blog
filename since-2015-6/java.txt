@@ -60,9 +60,11 @@ Agent start-up
         Agent_OnLoad,Agent_OnUnload
     Live phase calls OnAttach
 
-bytecode instrumentation (BCI)
+bytecode instrumentation (BCI ASM)
     仅仅在 AdviceAdaptor 的 methodExit 添加代码还不够，因为 RuntimeException 并不会显示抛出
         因此需要添加方法整体的 try-catch，并在在 visitMaxs 添加 methodExit 处理
+    MethodNode的accept会复现一遍该node
+    为类添加getter，如果field为父类的private会报错，需要调整其access
 
 Java agents
     premain
@@ -712,9 +714,6 @@ proxy pattern:
     Java proxies are runtime implementations of interfaces. On other cases
         use CGLib
 
-ASM
-    MethodNode的accept会复现一遍该node
-
 高编译低运行只能保证字节码兼容，不保证类库兼容
     比如：ConcurrentHashMap.keySet()如果再1.8编译会返回KeySetView，该类在1.7上没有
     因此最好的保持binary兼容的方法仍然是，想支持什么最低版本，就在什么版本上编译
@@ -858,3 +857,14 @@ Escape Analysis
 Escape analysis is a technique by which the Java Hotspot Server Compiler can analyze the scope of a new object's uses and decide whether to allocate it on the Java heap.
 
 The HotSpot™ Serviceability Agent: An out-of-process high level debugger for a Java™ virtual machine
+
+java.lang.OutOfMemoryError: unable to create new native thread
+以下结果在64b机器上测试，hotspot 1.7.0_79-b15
+    如果以root运行，jvm会自动调整ulimit，此时通过ulimit限制线程数/内存占用无效
+    jvm本身会创建10几个（本机数量）native thread，因此可用数量要减去该部分
+    virtual memory/physical memory/max user processes/stack size(本机1M)都会影响实际可创建的线程数量
+    -Xms或者当前正在使用的heap大小也会影响，因为heap内存需要pin(lock)到内存中
+    以下内核参数也会影响实际可创建线程数
+        sys.kernel.threads-max 全局单进程最大线程数，对应路径/proc/sys/kernel/threads-max。/etc/sysctl.conf做永久修改
+        sys.kernel.pid_max tid最大编号
+        sys.vm.max_map_count 至少为2倍thread-count，否则会报Attempt to protect stack guard pages failed
