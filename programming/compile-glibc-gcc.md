@@ -1,11 +1,9 @@
-==================================================================================================
 编译gcc/glibc: Ubuntu14.04, gcc4.82, glibc2.19, kernel3.13, x86_64-linux-gnu
-编译时最好指定--host=x86_64-linux-gnu
-编译时一定要加上CFLAGS="-U_FORTIFY_SOURCE -O2 -fno-stack-protector",命令行或者修改config.make, 
-因为ubuntu默认加了-D_FORTIFY_SOURCE=1 和 -fstack-protector, 编译旧版本gcc/glibc会导致各种问题
+编译时最好指定`--host=x86_64-linux-gnu`
+编译时一定要加上`CFLAGS="-U_FORTIFY_SOURCE -O2 -fno-stack-protector"`,命令行或者修改`config.make`, 
+因为`ubuntu`默认加了`-D_FORTIFY_SOURCE=1` 和 `-fstack-protector`, 编译旧版本`gcc/glibc`会导致各种问题
 比如下面的:
-    error: call to ‘__open_missing_mode’ declared with
-==================================================================================================
+    `error: call to ‘__open_missing_mode’ declared with`
 
 1. 编译gcc时,由于Ubuntu对x86和x64链接库的处理和旧版的不同,可参考下面列出的patch处理
     http://www.trevorpounds.com/blog/?p=111

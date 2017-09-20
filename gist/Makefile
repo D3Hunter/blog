@@ -4,8 +4,8 @@ LD := $(CC)
 AR := ar
 
 BASEDIR= ./build
-PROGNAME=program-daemon
-SOURCEFILES := banner.c cache.c cJSON.c command.c config.c connector.c harvest.c listener.c main.c minIni.c oa_app.c oa_buf.c oa_cond.c oa_errno.c forkdaemon.c log.c oa_json.c oa_mutex.c oa_daemon.c oa_obj.c oa_ssl.c oa_str.c oa_util.c param.c proc.c rpm.c sig.c thread.c
+PROGNAME=program-xxx
+SOURCEFILES := a.c b.c c.c
 
 all_source_files := $(SOURCEFILES)
 source_obj1 := $(all_source_files:.cpp=.o)

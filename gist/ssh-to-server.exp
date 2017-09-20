@@ -8,7 +8,7 @@ if {$argc < 1} {
 }
 
 set server_address [lindex $argv 0]
-set server_pwd "javaagent"
+set server_pwd "password"
 
 if { $argc == 2} {
     set server_pwd [lindex $argv 1]
