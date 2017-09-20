@@ -1,5 +1,5 @@
 .vscode
 .idea
 .git
-.iml
-.mdr
+*.iml
+*.mdr

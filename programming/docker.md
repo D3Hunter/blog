@@ -18,6 +18,11 @@ docker cp <containerId>:/file/path/within/container /host/path/target
 
 cpu/memory分别在`/proc`系统下的`cpuacct.stat/memory.stat`，dockerAPI也可用top获取
 
+### docker and vagrant
+Provisioner - is something doing provision - in docker installing, running, pulling containers.
+Provider - is something that runs the VM. I.e. VBox runs the ubuntu OS image.
+docker and vagrant, They are very much complimentary.
+
 ### 镜像相关
 busybox
     busybox的find、sed功能都很弱

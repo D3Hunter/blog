@@ -14,7 +14,7 @@
     header一般只有两个字节，标明method和windowbits；trailing为4字节,adler-32校验和
 - gzip wrapping
 - zlib/gzip warpping的区别在于前者更紧凑，adler-32校验速度快于后者使用crc32校验
-### window bits: 
+### window bits:
 - -15 ~ -8 raw deflate
 - 8 ~ 15 zlib wrapping
 - 24 ~ 31 gzip wrapping (header和trailing基本为空), (可以使用gunzip工具解压)
