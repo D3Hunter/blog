@@ -138,6 +138,8 @@ make VERBOSE=1
 Makefile里执行shell：`$(shell <command>)`
 make SHELL='sh -x'
 
+编译32b添加CC="gcc -m32" CXX="g++ -m32"
+
 ### ld/ld.so/elf
 编译动态库,允许动态库中有`U`符号,编译可执行时,则需要使用下面的选项
 - `ld --allow-shlib-undefined`允許定义的符号

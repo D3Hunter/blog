@@ -26,6 +26,7 @@ convmv -f UTF-8 -t GBK -notest filename 文件名编码转换
 `terminal`的输出变乱（按回车会打印PS1但并不换行，输入也不显示），是`echo`被关闭导致,可使用`reset`，或`stty echo`打开echo（`stty -echo`用来关闭echo）
 bash里`\[\]`用来表示non-printable字符的开始结束，否则针对过长的命令，会导致bash不能正确显示输入
 对应到ascii代码为`\001`和`\002`，在不能使用`\[\]`的情况可以使用这两个，如gdb prompt
+参考：https://superuser.com/questions/301353/escape-non-printing-characters-in-a-function-for-a-bash-prompt/301355
 
 ### job 管理
 jobs/disown/fg/bg/跟作业管理相关，disown解除关系（不再在shell接受到HUP时向该进程发送HUP）

@@ -1,12 +1,19 @@
 编译php报undefined错误，可能是上次make导致，make clean可解决
-`php-fpm -t`查看php-fpm.conf位置
-`php -i | grep ini`
 php-fpm.conf中`pm*`对应管理多少个worker
-`php-fpm -R`运行root运行
 
 抽取php-ext的编译依赖，需要修改phpize/php-config中的prefix获取方法（dirname）
 `php-ext debug`编译时不带"-g"（可能时设置CFLAGS覆盖掉了）
 `Primary script unknown`可能是找不到php脚本，看看nginx中`SCRIPT_FILENAME`是否配置正确
+### 常用命令
+`echo '<?php print ini_get("extension_dir"); ?>' | php -q`
+`echo '<?php print PHP_CONFIG_FILE_SCAN_DIR; ?>' | php -q`
+`echo '<?php print PHP_CONFIG_FILE_PATH; ?>'    | php -q `
+`echo '<?php phpinfo(); ?>'     | php -q`
+`php -m`查看已加载的扩展
+`php-fpm -t`查看php-fpm.conf位置
+`php -i | grep ini`
+`php-fpm -R`运行root运行
+
 ### yii framework
 apt-get install libssl-dev
 yii2需要mcrypt支持
@@ -53,3 +60,9 @@ TSRM thread-safe-resource-mamagenent; ls local storage
 - CG(function_table) compile global
 显示某个模块的`PHP_MINFO_FUNCTION`中的内容：`php -$'\x0e' <extension-name>`，这个好像是内部使用的，其参数为不可打印字符14
 `SG(request_info).request_method`
+
+### 配置php输出Debug错误
+- catch_workers_output = yes
+- php.ini中log_errors = On
+- 在.php文件中使用error_log打印输出
+- public array PDOStatement::errorInfo ( void )

@@ -46,7 +46,7 @@ cmd在if里设置环境变量如果存在带空格路径会报错，在if外就�
 `strcasecmp`最初出现在string.h，glibc中有，但posix标准将其定义在strings.h中
 `snprintf`保证最后一个字符为0，windows下的`_snprintf`不保证这点
 windows上的`select`中至少有一个`fd-set`必须不为null，且还得有至少一个handle，因此不好用来实现nanosleep
-`__impl__`是windows的动态库链接用lib的符号前缀
+`__impl__`是windows的动态库链接用lib的符号前缀, `name decoration`
 DLL导出的符号必须要`__declspec(dllexport)`、`#progma(linker)`或者使用`DEF`表
 `__stdcall`即`WINAPI`，由`callee`释放栈，不适合变长参数函数，这类使用`__cdecl`
 Windows下DLL会在`PATH`目录中搜索，优先级稍微靠后
