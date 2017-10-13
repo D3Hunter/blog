@@ -116,3 +116,30 @@ chroot为/a/b/c后的进程A，如果连接/etc/file.sock 进程B监听/a/b/c/et
 远程运行locust（python脚本）时必须同时重定向stderr，否则程序起不来，原因未知
 
 互信登陆只需要编写~/.ssh/authorized_keys就可以
+
+#### local/remote forwarding:
+ssh user@example.com -L bind_address:9000:some-host:5432 # forward any tcp traffic on 9000 to some-host:5432 through example.com，本地监听9000
+ssh user@example.com -L bind_address:9000:localhost:5432 # here localhost means example.com
+ssh user@example.com -R bind_address:9000:some-host:3000 # forward any traffic from example:9000 to some-host:3000 through chient，远端监听9000
+ssh user@example.com -R bind_address:9000:localhost:3000 # here localhost means ssh client
+忽略bind_address时默认绑定地址为loopback
+ssh -nNf(-nNT)可以避免打开登陆shell，而仅作端口转发
+remote forwarding默认不开启，需要在/etc/ssh/sshd_config中设置GatewayPorts yes
+当remote forwarding不可用，但可在example.com上访问client时，可通过在example.com上做-L，来实现-R，即：
+    在example.com上执行ssh localhost -L 9000:client:5432
+
+#### dynamic forwarding
+ssh user@example.com -D 1080 # 本地监听1080作为SOCKS代理，通过example.com转发数据
+SOCKS本身并不是安全的，但是dynamic forwarding时SOCKS数据通过ssh发送，则是安全的
+而像现在的ShadowSocks，也是本地加密，通过非加密通道传输
+
+### 查看当前系统是否为虚拟机：
+常用的虚拟机：VMWare、KEmu、KVM、Microsoft VirtualPC、Xen（HVM domU）、Virtuozzo
+- dmidecode -t system / dmidecode -s system-product-name
+- lshw -class system
+- /sys/class/dmi/id/sys_vendor
+- lspci
+- dmesg |grep DMI  / dmesg |grep Hypervisor
+### NFS有两种挂载方式：
+硬挂载将模拟本地磁盘，在IO操作未完成前一直阻塞（这在NFS服务器出问题时会导致应用hang）
+软挂载
