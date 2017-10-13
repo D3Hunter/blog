@@ -1,0 +1,35 @@
+" 开启语法高亮
+syntax enable
+
+" 开启语法高亮
+syntax on
+
+" 设置字体
+set guifont=Monaco\ 12
+
+" 设置历史记录条数
+set history=2000
+
+" 检测文件类型
+filetype on
+
+" 显示当前行号和列号
+set ruler
+
+" 在状态栏显示正在输入的命令
+set showcmd
+
+" 左下角显示当前Vim模式
+set showmode
+
+" 显示行号
+set number
+
+" 设置tab宽度
+set tabstop=4
+
+" 设置自动对齐空格数
+set shiftwidth=4
+
+" 编辑的时候将所有的tab设置为空格(expandtab)
+set et
