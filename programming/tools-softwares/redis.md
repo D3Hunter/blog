@@ -1,0 +1,3 @@
+keys
+type
+hgetall

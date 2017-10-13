@@ -1,0 +1,4 @@
+dynamic proxy, Proxy.newProxyInstance动态创建对应类，该类实际上调用InvocationHandler的invoke方法
+
+dubbo使用`dynamic proxy`实现
+dubbo针对每个reference service都会创建InvokerInvocationHandler,有的不会

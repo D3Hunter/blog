@@ -82,3 +82,6 @@ IFS(Internal Field Seprator) 会影响set设置位置变量，及echo是否使�
 if中用`-a` `-o` 表示 AND OR
 `-bash: [: too many arguments`  使用的变量被IFS拆分为多个参数 需要用双引号扩起来
 `shell`的实际解释器为`#!`设置的,要注意控制台`shell(bash)`与实际脚本使用`shell(sh或叫做dash)`的不同
+
+pushd / popd
+dirname "$0"

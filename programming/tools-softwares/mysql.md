@@ -1,8 +1,10 @@
-show variables like 'old%';
-show tables from database;
-show create table tale_name;
-show databases;
-insert into user select * from user; 快速插入大量数据
+查询当前配置变量：`show variables like 'old%';`
+`show tables from database;`
+建表语句：`show create table tale_name;`
+`show databases;`
+当前数据库：`select database()`
+当前用户：`SELECT USER()`
+快速插入大量数据 `insert into user select * from user;`
 execution plan also known as the `EXPLAIN` plan： `explain select * from users;`可以得到一系列op
 ### my.cnf位置
 mysql --help可查看my.cnf的位置即读取顺序
@@ -24,6 +26,8 @@ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
 `mysqldump -u$user -p$pass -S $socket --all-databases > db_backup.sql`
 `mysqldump -u <db_username> -h <db_host> -p db_name table_name > table_name.sql`
 `mysql -u username -p db_name < /path/to/table_name.sql`
+`mysql -u root -p'PASSWORD'`
+	You must do this if the password has any of the following characters: * ? [ < > & ; ! | $ ( )
 
 ### mysql5.0默认old_passwords = 1，高版本的client连接时会报ERROR 2049 (HY000):
 Connection using old (pre-4.1.1)，在client中加--skip-secure-auth可使用old
@@ -32,3 +36,14 @@ set old_passwords = 0;
 update user set password = password('testpass') where user = 'testuser';
 select user,password from user;可看到密码长度变了
 flush privileges;
+
+
+### 本地密码保存
+```
+密码输入时仍然需要使用单引号转义
+mysql_config_editor set --login-path=root --host=localhost --user=root --password
+```
+### 遇到如下错误,重启mysql
+```
+	Lost connection to MySQL server at 'reading initial communication packet', system error: 102
+```
