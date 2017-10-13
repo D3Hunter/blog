@@ -1,6 +1,6 @@
 [alias]
-    slog = 'log --oneline'
-    clog = 'log --pretty="format:%C(yellow)%h %Cblue%>(11)%ad %Cgreen%<(10) %aN%Cred%d %Creset%s" --date=short --all --graph'
+    slog = "log --oneline"
+    clog = "log --pretty='format:%C(yellow)%h %Cblue%>(11)%ad %Cgreen%<(10) %aN%Cred%d %Creset%s' --date=short --all --graph"
     br = branch
     st = status
     co = checkout
