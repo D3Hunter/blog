@@ -178,7 +178,6 @@ sudo ln -sf /home/ubuntu/programs/jdk1.8.0_74/bin/javac  /usr/bin/javac
 
 JAXB
     通过xml标记直接得到某个xml结构的bean
-    com.blueocn.tps.dm.util.jobs.Jobs有时间研究下，这太方便了
 
 Quartz调度库
     Scheduler - the main API for interacting with the scheduler.
@@ -868,3 +867,5 @@ java.lang.OutOfMemoryError: unable to create new native thread
         sys.kernel.threads-max 全局单进程最大线程数，对应路径/proc/sys/kernel/threads-max。/etc/sysctl.conf做永久修改
         sys.kernel.pid_max tid最大编号
         sys.vm.max_map_count 至少为2倍thread-count，否则会报Attempt to protect stack guard pages failed
+
+JMH - Java Microbenchmark Harness 用来做基准测试
