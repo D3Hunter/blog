@@ -8,3 +8,7 @@ FileClient 本地脚本
 RemoteClient
 
 `BTraceProbe` 继承自`ClassNode`, 表示一个要注入的脚本
+`OnMethod`支持以下类匹配
+- `+` subclass of
+- `@` annotation
+- `/.*/` regular expression
