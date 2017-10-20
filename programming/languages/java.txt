@@ -869,3 +869,35 @@ java.lang.OutOfMemoryError: unable to create new native thread
         sys.vm.max_map_count 至少为2倍thread-count，否则会报Attempt to protect stack guard pages failed
 
 JMH - Java Microbenchmark Harness 用来做基准测试
+
+
+### java
+`Boot-Class-Path` 额外的bootstrap classpath
+https://docs.oracle.com/javase/7/docs/api/java/lang/instrument/package-summary.html
+`Reflection.getCallerClass` 在1.7能正常使用，1.8需要是bootstrap／ext classloader加载的类才可以
+
+ResourceBundle 国际化
+
+#### Instrumentation
+native methods can be instrumented since 1.6: `setNativeMethodPrefix`
+jdk1.5支持redefine，1.6开始支持retransform
+redefineClasses: 需要传入被redefine的Class及新的字节码
+- 1.5可以使用redefine重新修改字节码，但局限于能从磁盘拿到字节码的类
+- 所有注册的transformer都会执行一边，不像retransform能在注册时配置
+retransformClasses：
+- starting from the `initial class file bytes`
+    - The `initial class file bytes` represent the bytes passed to `ClassLoader.defineClass` or `redefineClasses` (before any transformations were applied),
+    - however they might not exactly match them.
+    - 验证了下每次的`file bytes`都是不同的对象，内容基本一样（参考javadoc，部分顺序可能存在差别），数据来源可能是从内存中定义的类反向生成的，或者磁盘读取（对网络读取的字节码无效）
+- for each transformer that was added with `canRetransform` false, skip it.
+- for each transformer that was added with `canRetransform` true, the `transform` method is called in these transformers
+- the transformed class file bytes are installed as the new definition of the class
+
+#### ClassFileTransformer
+`transform`会使jvm卡住，是不是STW得查下
+
+#### javagent
+`premain` method throws an uncaught exception, the JVM will abort.
+- 运行在`main`线程，先于`main`函数
+`agentmain` method throws an uncaught exception it will be ignored.
+- 运行在`Attach Listener`线程内，因此不会卡住整个jvm
