@@ -143,3 +143,31 @@ SOCKS本身并不是安全的，但是dynamic forwarding时SOCKS数据通过ssh�
 ### NFS有两种挂载方式：
 硬挂载将模拟本地磁盘，在IO操作未完成前一直阻塞（这在NFS服务器出问题时会导致应用hang）
 软挂载
+
+
+### linux
+kill: If sig is 0, then no signal is sent, but error checking is still performed; this 
+can be used to check for the existence of a process ID or process group ID.
+
+ssh支持连接复用，只要一个终端连接上了，后续的窗口可免密码登陆
+`auditd`  is  the userspace component to the Linux Auditing System
+`inotify` inode notify
+`/proc/sys/kernel/core_pattern`, `man core`配置coredump生成
+配置内核参数 `/etc/sysctl.conf`
+
+sed 换成回车
+sed 's/,/\
+/g'
+
+`setuidgid` - runs another program under a specified account’s uid and gid.
+Bochs 类似kvm／zen/QEMU
+`pidof` -- find the process ID of a running program.
+`/proc/pid/stat`中包含ppid
+#### supervise
+`svc` - controls services monitored by `supervise`(8)
+`supervise` - starts and monitors a service.
+`supervise s`
+`supervise`  switches  to  the  directory named `s` and starts `./run`. It restarts `./run` if `./run` exits. It pauses for a second after starting `./run`, so that it does not loop too quickly if `./run` exits immediately.
+`supervise` maintains status information in a binary format inside the directory `s/supervise`, which must be writable to `supervise`.  The status information can be read by  `svstat`
+`auditd`  is  the userspace component to the Linux Auditing System. It’s responsible for writing audit records to the disk.
+`audispd`  is  an  audit  event multiplexor(dispatcher). It has to be started by the audit daemon in order to get events. It takes audit events and distributes them to child programs that want to analyze events in realtime.
