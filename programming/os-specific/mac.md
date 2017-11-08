@@ -21,3 +21,11 @@ sudo lsof -iTCP -sTCP:LISTEN -P
 sudo lsof -iTCP -sTCP:LISTEN -P -n. -P -n prevents lsof from doing name resolution
 sudo lsof -iTCP -sTCP:LISTEN -n
 ```
+
+### commands
+进程线程数 `ps -M <pid> | wc -l`
+ldd: `otool -L`
+
+### brew 没有特定软件
+- `brew install coreutils`
+- `sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum`
