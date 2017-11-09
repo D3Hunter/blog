@@ -1,3 +1,11 @@
+## history
+- K&R C
+- ANSI C89
+- ISO C90, same as C89
+- ISO C95
+- ISO C99
+- ISO C11
+
 ## C/gcc
 ### 获取当前调用栈
 `libc`中提供`backtrace*`方法，可访问当前函数栈信息（在程序中直接得到）
