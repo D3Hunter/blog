@@ -139,6 +139,8 @@ The GPLv3 `BFGMiner` mining software and AGPLv3 `Eloipool` mining pool software 
     - Coefficient: This gives you the initial 3 bytes of the target.
 - The nonce is a field in the block header. I call it "the mining field".
 - Application-specific integrated circuit (ASIC)
+- `Tor` is a distributed 'onion' network, that makes it more difficult for an adversary to track any one peer on the network.
+- `Onion routing` is a technique for anonymous communication over a computer network. In an onion network, messages are encapsulated in layers of encryption, analogous to layers of an onion. The encrypted data is transmitted through a series of network nodes called onion routers, each of which "peels" away a single layer, uncovering the data's next destination. When the final layer is decrypted, the message arrives at its destination. The sender remains anonymous because each intermediary knows only the location of the immediately preceding and following nodes.
 
 ### Mining pool
 List of Mining Pools: `https://en.bitcoin.it/wiki/Comparison_of_mining_pools`
