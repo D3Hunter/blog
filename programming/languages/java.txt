@@ -48,13 +48,6 @@ eclipse
 ZKM(Zelix KlassMaster): java obfuscator
 Project Object Model, or POM
 
-IntelliJ导入maven工程需要单独导入modules，即需要两步
-
-mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
-    You executed the Maven goal archetype:generate
-    a plugin is a collection of goals with a general common purpose
-    package. Rather than a goal, this is a phase. A phase is a step in the build lifecycle, which is an ordered sequence of phases.
-
 Agent start-up
     OnLoad phase calls OnLoad
         Agent_OnLoad,Agent_OnUnload
@@ -349,20 +342,6 @@ Spring
         JSR250提供了PostConstruct和PreDestroy，这种方式不依赖Spring
             这种方式比前者优先级更高
 
-Maven
-    BOM: bill of materials 用来让多个同源的库有相同的版本号
-
-    默认情况下放到resources目录中的文件会放到当前module的classpath中，即会拷贝到target/classes
-    mvn设置jar的manifest文件使用maven-jar-plugin
-    maven固定化了很大一部分，并提供依赖管理
-
-    Idea将目录设置到classpath中，右键->Mark directory as->source root
-
-    显示所有依赖项：mvn dependency:resolve
-
-gradle
-    gradle build -x test
-
 protobuf
     使用grpc；protoc --plugin=protoc-gen-grpc-java=/home/ubuntu/code/grpc-java/compiler/build/exe/java_plugin/protoc-gen-grpc-java --grpc-java_out=. pingpong.proto
 
@@ -631,40 +610,6 @@ DROP PROCEDURE insert_test_data;
 
 db-context.xml包含表--DataSource的对应关系
 
-
-Maven compiler plugin 3.0有bug，使用3.1
-显示某个plugin的参数信息：mvn help:describe -Dplugin=war -Dfull=true
-mvn protobuf:compile  可以执行单个goal
-    goal的参数可以在plugin这一层配置configuration，如果再在execution这一层配置
-        的configuration不生效
-maven的lifecycle： https://maven.apache.org/ref/3.3.9/maven-core/lifecycles.html
-在maven的settings.xml配置中，更改mirror，修改repository地址：
-    http://maven.oschina.net/content/groups/public/
-
-idea中被excluded的目录是不能设置为generated-root的，要先去掉excluded
-maven有很多phase
-    Maven Default Lifecycle Phases
-    validate
-    generate-sources
-    process-sources
-    generate-resources
-    process-resources
-    compile
-    process-classes
-    generate-test-sources
-    process-test-sources
-    generate-test-resources
-    process-test-resources
-    test-compile
-    test
-    prepare-package (maven 2.1+)
-    package
-    pre-integration-test
-    integration-test
-    post-integration-test
-    verify
-    install
-    deploy
 
 logback:
     每个logger都有自己的level，未设置就取parent的level，root的默认level为debug
