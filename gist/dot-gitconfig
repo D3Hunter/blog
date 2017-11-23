@@ -5,3 +5,4 @@
     st = status
     co = checkout
     ci = commit
+    ds = "diff --staged"

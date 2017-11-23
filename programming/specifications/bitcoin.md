@@ -145,3 +145,13 @@ The GPLv3 `BFGMiner` mining software and AGPLv3 `Eloipool` mining pool software 
 ### Mining pool
 List of Mining Pools: `https://en.bitcoin.it/wiki/Comparison_of_mining_pools`
 `Eligius`, also sometimes referred to as `Éloi` or "`Luke-Jr's pool`", is a mining pool.
+
+### other coin
+Bitcoin Cash (BCH)
+BitConnect (BCC)
+Siacoin (SC)
+Dash (DASH)
+Dashcoin (DSH)
+Ethereum (ETH)
+Ethereum Classic (ETC)
+Litecoin (LTC)
