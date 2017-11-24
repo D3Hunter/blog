@@ -10,6 +10,8 @@ plugin 帮助: `mvn help:describe -Dplugin=war -Dfull=true`
 `-DrepositoryId=antpool`决定了通过`settings.xml`中的哪个`server`获取credentials
 
 ### Questions
+#### maven dependency:tree 报错 "Could not resolve dependencies for project"
+`mvn test-compile dependency:tree`
 #### Create empty mvn project
 `mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`
 
@@ -31,6 +33,9 @@ plugin 帮助: `mvn help:describe -Dplugin=war -Dfull=true`
     - 如果生成`dir`会警告`is not a regular file`, 在配置添加：`<attach>false</attach>`
     - Entry longer than 100 characters: `<tarLongFileMode>gnu</tarLongFileMode>`
 - maven-antrun-plugin: 解压文件
+- maven-dependency-plugin
+    - 拷贝依赖
+    - unpack某个artifact，比如jre，如果是本地文件，使用maven-antrun-plugin
 
 ### Maven Default Lifecycle Phases
 - validate

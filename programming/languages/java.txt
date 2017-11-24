@@ -846,3 +846,6 @@ retransformClasses：
 - 运行在`main`线程，先于`main`函数
 `agentmain` method throws an uncaught exception it will be ignored.
 - 运行在`Attach Listener`线程内，因此不会卡住整个jvm
+
+#### wait notify notifyAll
+这些函数使用需要获得object的monitor
