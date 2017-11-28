@@ -147,8 +147,8 @@ List of Mining Pools: `https://en.bitcoin.it/wiki/Comparison_of_mining_pools`
 `Eligius`, also sometimes referred to as `Éloi` or "`Luke-Jr's pool`", is a mining pool.
 
 ### other coin
-Bitcoin Cash (BCH)
-BitConnect (BCC)
+Bitcoin Cash (BCH)(bittrex decided to take `BCC` for bitcoin cash)
+BitConnect (`BCC`)(ponzi)
 Siacoin (SC)
 Dash (DASH)
 Dashcoin (DSH)
