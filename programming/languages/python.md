@@ -84,6 +84,18 @@ pip install virtualenvwrapper
 
 Trailing comma is required for one-element tuples
 删除某变量`del variable`
+
+千位转换：`'{0:,}'.format(1000000)`,反向转换可以去掉`,`或使用locale
+
+添加寻找路径`sys.path.append`,然后即可import
+
+### PEP 8
+David Goodger describes the PEP 8 recommendations as follows:
+- `joined_lower` for functions, methods, attributes, variables
+- `joined_lower` or ALL_CAPS for constants
+- `StudlyCaps` for classes
+- `camelCase` only to conform to pre-existing conventions
+
 ### Problems
 `TypeError: __call__() takes exactly 2 arguments (1 given)`: pip install setuptools==33.1.1
 
@@ -107,6 +119,7 @@ Data and non-data descriptors differ in how overrides are calculated, with respe
 - `dict`: Create a new dictionary. The dict object is the dictionary class.
 - `object`: Return a new featureless object. object is a base for all new style classes.
 - map(function, iterable, ...) Apply function to every item of iterable and return a list of the results.
+- `slice`: Extended Slices since python 1.4, Python's built-in list, tuple, and string sequence types have supported this feature since Python 2.3: `str[::-1]` reverse `str`
 
 ### String prefixs
 The `b` prefix signifies a `bytes` string literal.
@@ -129,5 +142,7 @@ If you need to catch every attribute regardless whether it exists or not, use `_
 
 By definition, if a module has a `__path__` attribute, it is a package, regardless of its value.
 
-### Packages
-asynchat — Asynchronous socket command/response handler, simplifying asynchronous clients and servers and making it easier to handle protocols whose elements are terminated by arbitrary strings, or are of variable length.
+### Packages/Modules
+- `asynchat` — Asynchronous socket command/response handler, simplifying asynchronous clients and servers and making it easier to handle protocols whose elements are terminated by arbitrary strings, or are of variable length.
+- `SocketServer` module simplifies the task of writing network servers.
+- `struct` — Interpret strings as packed binary data

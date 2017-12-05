@@ -115,6 +115,48 @@ In both solo and pool mining, the mining software needs to get the information n
 Like all `bitcoind` RPCs, `getblocktemplate` is sent over HTTP. To ensure they get the most recent work, most miners use `HTTP longpoll` to leave a `getblocktemplate` request open at all times. This allows the mining pool to push a new `getblocktemplate` to the miner as soon as any miner on the `peer-to-peer network` publishes a new block or the pool wants to send more transactions to the mining software.
 The GPLv3 `BFGMiner` mining software and AGPLv3 `Eloipool` mining pool software are widely-used among miners and pools. The `libblkmaker` C library and `python-blkmaker` library, both MIT licensed, can interpret `GetBlockTemplate` for your programs.
 
+Block header format
+- Version             4 bytes     Little-endian
+- Previous Block ID   32 bytes    Big-endian
+- Merkle Root         32 bytes    Big-endian
+- Time                4 bytes     Little-endian
+- Bits                4 bytes     Little-endian
+- Nonce               4 bytes     Little-endian
+#### Target/Difficulty
+The maximum target used by SHA256 mining devices is: `0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF`
+Because Bitcoin stores the target as a floating-point type, this is truncated: `0x00000000FFFF0000000000000000000000000000000000000000000000000000`
+
+`difficulty = maxtarget / current_target`
+`maxtarget` can be different for various ways to measure difficulty. Traditionally, it represents a hash where the leading 32 bits are zero and the rest are one (this is known as "`pool difficulty`" or "`pdiff`"). The Bitcoin protocol represents targets as a custom floating point type with limited precision; as a result, Bitcoin clients often approximate difficulty based on this (this is known as "`bdiff`").
+
+#### Transaction
+The UTXO of a coinbase transaction has the special condition that it cannot be spent (used as an input) for at least `100` blocks. This temporarily prevents a miner from spending the transaction fees and block reward from a block that may later be determined to be stale (and therefore the coinbase transaction destroyed) after a block chain fork.
+
+`Locktime` sets the eariest time a transaction can be mined in to a block. You can use locktime to make sure that a transaction is locked until a specific `block height`, or `a point in time`.
+A `vout`(vector out) is an index number for an output in a transaction.
+
+#### Hashcash
+Bitcoin uses the `hashcash Proof_of_work` function as the mining core.
+Like many cryptographic algorithms `hashcash` uses a hash function as a building block
+`hashcash` can be instantiated with different functions:
+- hashcash-SHA1 (original)
+- hashcash-SHA256^2 (bitcoin)
+- hashcash-Scrypt(iter=1) (litecoin).
+##### Adding purpose
+If the partial-pre-image `x` from `y=H(x)` is random it is just a `disconnected proof-of-work` to no purpose, everyone can see you did do the work, but they don't know why, so users could reuse the same work for different services. To make the proof-of-work be bound to a service, or purpose, the hash must include `s`, a `service string` so the work becomes to find `H(s,c)/2^(n-k)=0`. The miner varies counter `c` until this is true. The service string could be a web server domain name, a recipients email address, or in bitcoin `a block of the bitcoin blockchain ledger`.
+One additional problem is that if multiple people are mining, using the same service string, they must not start with the same `x` or they may end up with the same proof
+To avoid risking wasting work in this way, there needs to be a random starting point, and so the work becomes to find `H(s,x,c)/2^(n-k) = 0` where `x` is random, and `c` is the counter being varied, and `s` is the service string.
+In fact in bitcoin the `service string is the coinbase` and the coinbase includes the recipients reward address, as well as the transactions to validate in the block. Bitcoin actually does not include a random start point `x`, reusing the reward address as the randomization factor to avoid collisions for this random start point purpose, which saves 16-bytes of space in the coinbase. For privacy bitcoin expect the miner to use a different reward address on each successful block.
+But because bitcoin needs more precise and dynamic control of work (to target 10-minute block interval accurately), it changes `k` to be a fractional (floating-point) so the work becomes to find `H(s,x,c) < 2^(n-k)`
+
+Bitcoin also defines a new notion of `(relative) difficulty` which is the work required so that at current network hashrate a block is expected to be found every 10 minutes. It is expressed relative to a `minimum work unit of 2^32 iterations` (approximately, technically minimum work is `0xFFFF0000` due to bitcoin implementation level details). Bitcoin difficulty is simple to approximately convert to log2 cryptographic security: `k=log2(difficulty)+32` (or for high accuracy `log2(difficulty*0xFFFF0000)`). Difficulty is related to the target simply as `difficulty = target / 0xFFFF0000`.
+##### Miner privacy
+In principle a miner should therefore for privacy use a different reward-address for each block (and reset the counter to 0).
+In fact with bitcoin the counter also should be obscured otherwise you would reveal your effort level
+Bitcoin does this via the `nonce` and `extra-nonce`. `Nonce` starts at 0, but extra nonce is random. Together these form a randomized counter hiding the amount of effort that went into the proof, so no one can tell if it was a powerful but unlucky miner who worked hard, or a weak miner who was very lucky.
+#### Block hashing algorithm
+Incrementing the `extraNonce` field entails recomputing the `merkle tree`, as the `coinbase transaction` is the left most leaf node.
+
 ### commands
 `bitcoin-cli stop`
 `Bitcoin Coin
@@ -122,7 +164,7 @@ The GPLv3 `BFGMiner` mining software and AGPLv3 `Eloipool` mining pool software 
 ### glossary
 - Internal Byte Order: The standard order in which hash digests are displayed as strings
 - RPC Byte Order: reversed: The rationale for the reversal is unknown, but it likely stems from Bitcoin Core’s use of hashes (which are byte arrays in C++) as integers for the purpose of determining whether the hash is below the network target
-- target: The target is the threshold below which a block header hash must be in order for the block to valid, and `nBits` is the encoded form of the t`arget threshold` as it appears in the `block header`.
+- target: The target is the threshold below which a block header hash must be in order for the block to valid, and `nBits` is the encoded form of the `target threshold` as it appears in the `block header`.
 - Coinbase transaction(Generation transaction): The first transaction in a block. Always created by a miner, it includes a single coinbase.
 - `The number of Bitcoins generated per block` starts at 50 and is halved every 210,000 blocks (about four years).
 - Hash Rate: The hash rate is the measuring unit of the processing power of the Bitcoin network.
@@ -146,6 +188,20 @@ The GPLv3 `BFGMiner` mining software and AGPLv3 `Eloipool` mining pool software 
 List of Mining Pools: `https://en.bitcoin.it/wiki/Comparison_of_mining_pools`
 `Eligius`, also sometimes referred to as `Éloi` or "`Luke-Jr's pool`", is a mining pool.
 
+### Protocol
+Usually, when a hash is computed within bitcoin, it is computed twice. 
+#### Addresses
+A bitcoin address is in fact the hash of a ECDSA public key, computed this way:
+- Version = 1 byte of 0 (zero); on the test network, this is 1 byte of 111
+- Key hash = Version concatenated with RIPEMD-160(SHA-256(public key))
+- Checksum = 1st 4 bytes of SHA-256(SHA-256(Key hash))
+- Bitcoin Address = Base58Encode(Key hash concatenated with Checksum)
+
+#### version
+When a node creates an outgoing connection, it will immediately advertise its version. The remote node will respond with its version. No further communication is possible until both peers have exchanged their version.
+
+### BIP Bitcoin Improvement Proposals
+
 ### other coin
 Bitcoin Cash (BCH)(bittrex decided to take `BCC` for bitcoin cash)
 BitConnect (`BCC`)(ponzi)
@@ -156,3 +212,4 @@ Ethereum (ETH)
 Ethereum Classic (ETC)
 Litecoin (LTC)
 Zcash (ZEC)
+Rootstock (RSK)

@@ -29,3 +29,7 @@ ldd: `otool -L`
 ### brew 没有特定软件
 - `brew install coreutils`
 - `sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum`
+
+### 截屏
+Command + Shift + 3/4: 结果保存到桌面，分别为截取整个屏幕／选择截取
+Ctrl + Command + Shift + 3/4: 结果保存到剪切板，分别为截取整个屏幕／选择截取
