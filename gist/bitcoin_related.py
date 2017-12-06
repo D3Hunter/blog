@@ -10,7 +10,7 @@ def sha256(str):
     sha.update(str)
     return sha.digest()
 
-def import bitcoin_related(hex_str):
+def get_bitcoin_hash(hex_str):
     """
     1. sha256(sha256(str))
     2. reverse previous result

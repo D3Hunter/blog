@@ -88,6 +88,7 @@ Trailing comma is required for one-element tuples
 千位转换：`'{0:,}'.format(1000000)`,反向转换可以去掉`,`或使用locale
 
 添加寻找路径`sys.path.append`,然后即可import
+python默认会缓存某个已经加载过的module，使用`reload`强制重新加载
 
 ### PEP 8
 David Goodger describes the PEP 8 recommendations as follows:

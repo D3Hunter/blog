@@ -201,6 +201,20 @@ A bitcoin address is in fact the hash of a ECDSA public key, computed this way:
 When a node creates an outgoing connection, it will immediately advertise its version. The remote node will respond with its version. No further communication is possible until both peers have exchanged their version.
 
 ### BIP Bitcoin Improvement Proposals
+`getmemorypool` was renamed to `getblocktemplate`, the technical specifications can be found in BIP 22 and BIP 23
+- check [Getblocktemplate](https://en.bitcoin.it/wiki/Getblocktemplate)
+
+#### BIP 34
+解决`coinbase transaction`hash重复问题
+- Treat transactions with a version greater than 1 as non-standard
+- Add `height` as the first item in the coinbase transaction's `scriptSig`, and increase `block version` to `2`
+- 75%和95%规则
+#### BIP 9
+解决`BIP 34`及后续`BIP 66`和`BIP 65`带来的问题，proposal将以位的形式出现，并有状态转换
+高三位为`001`，即`block version`以`0x20`开头
+#### BIP 22/23
+解决`getwork`导致`bitcoind`负载过高，这部分工作可以交给外部应用
+`BIP 23` contains optional extensions on top of BIP 22
 
 ### other coin
 Bitcoin Cash (BCH)(bittrex decided to take `BCC` for bitcoin cash)
