@@ -166,6 +166,7 @@ Incrementing the `extraNonce` field entails recomputing the `merkle tree`, as th
 - RPC Byte Order: reversed: The rationale for the reversal is unknown, but it likely stems from Bitcoin Core’s use of hashes (which are byte arrays in C++) as integers for the purpose of determining whether the hash is below the network target
 - target: The target is the threshold below which a block header hash must be in order for the block to valid, and `nBits` is the encoded form of the `target threshold` as it appears in the `block header`.
 - Coinbase transaction(Generation transaction): The first transaction in a block. Always created by a miner, it includes a single coinbase.
+- `coinbase`: A special field used as the sole input for `coinbase transaction`. The coinbase allows claiming the block reward and provides up to 100 bytes for arbitrary data.占了普通事务的sigScript的位置
 - `The number of Bitcoins generated per block` starts at 50 and is halved every 210,000 blocks (about four years).
 - Hash Rate: The hash rate is the measuring unit of the processing power of the Bitcoin network.
 - Bitcoin mining is the process of making computer hardware do mathematical calculations for the Bitcoin network to `confirm transactions and increase security`. As a reward for their services, Bitcoin miners can collect `transaction fees` for the transactions they confirm, along with `newly created bitcoins`.
@@ -183,7 +184,15 @@ Incrementing the `extraNonce` field entails recomputing the `merkle tree`, as th
 - Application-specific integrated circuit (ASIC)
 - `Tor` is a distributed 'onion' network, that makes it more difficult for an adversary to track any one peer on the network.
 - `Onion routing` is a technique for anonymous communication over a computer network. In an onion network, messages are encapsulated in layers of encryption, analogous to layers of an onion. The encrypted data is transmitted through a series of network nodes called onion routers, each of which "peels" away a single layer, uncovering the data's next destination. When the final layer is decrypted, the message arrives at its destination. The sender remains anonymous because each intermediary knows only the location of the immediately preceding and following nodes.
-
+- `Merged mining` is the process of allowing two different crypto currencies based on the same algorithm to be mined simultaneously.
+### Merged Mining
+- Auxiliary Proof-of-Work (POW): This is the way that merged mining can exist; it is the relationship between two blockchains for one to trust the other's work as their own and accept AuxPOW blocks.
+- Merged Mining: The act of using work done on one blockchain on more than one chain, using Auxiliary POW.
+- Auxiliary Blockchain: The altcoin that is accepting work done on alternate chains as valid on its own chain. Client applications have to be modified to accept Auxiliary POW.
+- Parent Blockchain: where the actual mining work is taking place. This chain does not need to be aware of the Auxiliary POW logic, as AuxPOW blocks submitted to this chain are still valid blocks.
+- Parent Block: a block that is structured for the parent blockchain. The header of this block is part of the AuxPOW Block in the auxiliary blockchain.
+- AuxPOW Block: This is a new type of block that is similar to a standard blockchain block
+- 将`AuxPOW Block`的header hash插入到`Parent Block`的scriptSig中
 ### Mining pool
 List of Mining Pools: `https://en.bitcoin.it/wiki/Comparison_of_mining_pools`
 `Eligius`, also sometimes referred to as `Éloi` or "`Luke-Jr's pool`", is a mining pool.
@@ -212,6 +221,7 @@ When a node creates an outgoing connection, it will immediately advertise its ve
 #### BIP 9
 解决`BIP 34`及后续`BIP 66`和`BIP 65`带来的问题，proposal将以位的形式出现，并有状态转换
 高三位为`001`，即`block version`以`0x20`开头
+在`getblocktemplate rpc request`添加了`rules`参数
 #### BIP 22/23
 解决`getwork`导致`bitcoind`负载过高，这部分工作可以交给外部应用
 `BIP 23` contains optional extensions on top of BIP 22

@@ -90,6 +90,8 @@ Trailing comma is required for one-element tuples
 添加寻找路径`sys.path.append`,然后即可import
 python默认会缓存某个已经加载过的module，使用`reload`强制重新加载
 
+Enum类：`Python 3.4` as described in `PEP 435`,之前需要自己实现
+
 ### PEP 8
 David Goodger describes the PEP 8 recommendations as follows:
 - `joined_lower` for functions, methods, attributes, variables
