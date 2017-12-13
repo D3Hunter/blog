@@ -35,4 +35,31 @@
     - Studies have shown that scheduling even your free time can help increase your satisfaction with life.
     - It has also been proven that long work hours (50+ hours a week) in fact make you less productive.[8]
     - scheduling small, “strategic renewals” (i.e. workouts, brief naps, meditation, stretching) into your day will boost your productivity and overall health.
+5. Set aside time to plan your week out.
+    - Many experts suggest scheduling time right at the start of your week to sit down and plan your week.
+6. Know that every day does not have to look the same.
+    - You can split up tasks into only 1 or 2 days a week — sometimes it’s even helpful to break up tasks as you can return to them with a fresh perspective.
+7. Schedule for problems.
+    - Build a little bit of extra time into every block that will account for a slow work day or an unanticipated interruption.
+    - A good rule of thumb is to give yourself double the time you expect a task to take — particularly when you're just starting out.
+8. Be flexible and gentle with yourself.
+    - Especially as you’re starting out, be prepared to tweak your schedule as you go. It’s part of the learning process. 
+9. Disconnect.
+    - Set times in your day where you’ll check your emails or social media.
+    - Be strict with yourself, as it’s possible to lose hours just checking in every few minutes here and there.
+    - This includes turning off your phone, if possible — at least for periods where you really want to focus on work.
+10. Do less.
+    - This relates to disconnecting. Figure out the most important things in your day — the ones that will help you achieve your goals, and focus on those.
+    - De-prioritize the less important things that fragment your day: emails, mindless paperwork, etc.
+### Staying Motivated
+1. Be positive.
+    - Staying positive is fundamental to achieving your goals.
+    - Believe in yourself and the people around you. Counter any negative self-talk with positive affirmations.
+    - In addition to being positive, you will benefit from surrounding yourself with positive people.
+    - Research has shown that over time, you adopt the habits of those with whom you spend the most time, so choose your company wisely.
+2. Reward yourself.[17] This is particularly important to do each time you hit a milestone.
+3. Track your progress. Research has shown that progress is the highest motivator
+4. Go to bed early and get up early. When you read about the schedules of highly productive people, a large percentage of them start their days early. 
+5. Give yourself downtime. Taking breaks is imperative to staying motivated. If you are always working, you’ll wind up exhausting yourself. Taking breaks is a pro-active way to prevent yourself from getting exhausted and losing time that you don’t want to lose.
+6. Know that it won’t be easy. Things worth having are rarely easy to get. You may have to resolve a lot of issues or work through some things as you work toward your goal. Accept them as they come.
 https://www.wikihow.com/Create-an-Effective-Action-Plan
