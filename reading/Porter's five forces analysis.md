@@ -45,9 +45,9 @@ In general terms the more powerful your customers are the less profitable your i
 - Presence of Substitutes
 - Industry concentration relative to buyer concentration
 - Importance of volume to buyers
-- Cost relative to total buyer purchases
+- Cost relative to total buyer purchases：购买成本（单价）
 - Impact of outputs on the cost of differentiation：客户的产品对我方产品特性的依赖度
 - Buyer information about supplier products：产品透明度
 - Buyer profitability
-- Decision makers incentives
+- Decision makers incentives: 客户购买欲望
 - Threat of backward integration
