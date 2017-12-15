@@ -149,3 +149,8 @@ By definition, if a module has a `__path__` attribute, it is a package, regardle
 - `asynchat` — Asynchronous socket command/response handler, simplifying asynchronous clients and servers and making it easier to handle protocols whose elements are terminated by arbitrary strings, or are of variable length.
 - `SocketServer` module simplifies the task of writing network servers.
 - `struct` — Interpret strings as packed binary data
+### GIL
+`The Global Interpreter Lock (GIL)` is used internally to ensure that only one thread runs in the Python VM at a time. In general, Python offers to switch among threads only between bytecode instructions; how frequently it switches can be set via sys.setcheckinterval. Each bytecode instruction and therefore all the C implementation code reached from each instruction is therefore atomic from the point of view of a Python program.
+
+In theory, this means an exact accounting requires an exact understanding of the PVM bytecode implementation. In practice, it means that operations on shared variables of builtin data types (int, list, dict, etc) that “look atomic” really are.
+这也意味着无论在python中起几个线程，最多只能用满一个cpu核，其他解释器实现可能不会使用GIL

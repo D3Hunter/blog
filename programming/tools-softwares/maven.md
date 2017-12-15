@@ -32,6 +32,7 @@ plugin 帮助: `mvn help:describe -Dplugin=war -Dfull=true`
     - 文件名称`<finalName>`
     - 如果生成`dir`会警告`is not a regular file`, 在配置添加：`<attach>false</attach>`
     - Entry longer than 100 characters: `<tarLongFileMode>gnu</tarLongFileMode>`
+    - attach = false, 避免assembly生成的文件被deploy
 - maven-antrun-plugin: 解压文件
 - maven-dependency-plugin
     - 拷贝依赖
@@ -70,3 +71,12 @@ Nexus ships with one group: `public`. The Public Repositories group combines the
 
 upload example, `repositoryId`用户得到对应的`Server credentials`
 - `mvn deploy:deploy-file  -Durl=http://host:port/nexus/content/repositories/thirdparty/ -DrepositoryId=repositoryId -Dfile="jre-1.8.151-linux-x64.zip"  -DgroupId=com.oracle  -DartifactId=jre  -Dversion=1.8.151  -Dpackaging=zip  -Dclassifier=linux-x64`
+
+### Dependency Scope
+Dependency scope is used to limit the transitivity of a dependency, and also to affect the classpath used for various build tasks.
+- compile: This is the default scope, used if none is specified. Compile dependencies are available in all classpaths of a project.
+- provided: This is much like compile, but indicates you expect the JDK or a container to provide the dependency at runtime. For example, when building a web application for the Java Enterprise Edition, you would set the dependency on the Servlet API and related Java EE APIs to scope provided because the web container provides those classes. This scope is only available on the compilation and test classpath, and is not transitive.
+- runtime: It is in the runtime and test classpaths, but not the compile classpath.
+- test: only available for the test compilation and execution phases. This scope is not transitive.
+- system: The artifact is always available and is not looked up in a repository.
+- import
