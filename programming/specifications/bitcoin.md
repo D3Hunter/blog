@@ -122,12 +122,30 @@ Block header format
 - Time                4 bytes     Little-endian
 - Bits                4 bytes     Little-endian
 - Nonce               4 bytes     Little-endian
+#### Stratum
+- The information necessary to construct a coinbase transaction paying the pool.
+- The parts of the merkle tree which need to be re-hashed to create a new merkle root when the coinbase transaction is updated with a new extra nonce. The other parts of the merkle tree, if any, are not sent, effectively limiting the amount of data which needs to be sent to (at most) about a kilobyte at current transaction volume.
+- All of the other non-merkle root information necessary to construct a block header for the next block.
+- The mining pool’s current target threshold for accepting shares.
+
+Unlike getblocktemplate:
+- miners using Stratum cannot inspect or add transactions to the block they’re currently mining.
+- uses a two-way TCP socket directly, so miners don’t need to use HTTP longpoll to ensure they receive immediate updates from mining pools when a new block is broadcast to the peer-to-peer network.
+
 #### Target/Difficulty
 The maximum target used by SHA256 mining devices is: `0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF`
 Because Bitcoin stores the target as a floating-point type, this is truncated: `0x00000000FFFF0000000000000000000000000000000000000000000000000000`
 
 `difficulty = maxtarget / current_target`
 `maxtarget` can be different for various ways to measure difficulty. Traditionally, it represents a hash where the leading 32 bits are zero and the rest are one (this is known as "`pool difficulty`" or "`pdiff`"). The Bitcoin protocol represents targets as a custom floating point type with limited precision; as a result, Bitcoin clients often approximate difficulty based on this (this is known as "`bdiff`").
+
+- `256_max = 2^256 - 1`
+- `bitcoin_max = 2 ^ 224 - 1`
+- `bitcoin_max_real = 2 ^ 224 - 2 ^ 208`
+- `probability = 1 / (hashrate * 600) = target / 256_max`
+    - `target = 256_max * probability = 256_max / (hashrate * 600)`
+- `bdiff = bitcoin_max_real / target = bitcoin_max_real * (hashrate * 600) / 256_max`
+    - `hashrate = (bdiff / 600) * (256_max / bitcoin_max_real)`
 
 #### Transaction
 The UTXO of a coinbase transaction has the special condition that it cannot be spent (used as an input) for at least `100` blocks. This temporarily prevents a miner from spending the transaction fees and block reward from a block that may later be determined to be stale (and therefore the coinbase transaction destroyed) after a block chain fork.
