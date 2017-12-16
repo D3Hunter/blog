@@ -20,10 +20,10 @@ The basic `Servlet` interface defines a `service` method for handling client req
 The `HttpServlet` interface defines the `getLastModified` method to support conditional `GET` operations.
 
 For a servlet not hosted in a distributed environment (the default), the servlet
-container must use only one instance per servlet declaration. However, for a servlet
+container must use only one instance `per servlet declaration`. However, for a servlet
 implementing the `SingleThreadModel` interface, the servlet container may
 instantiate multiple instances to handle a heavy request load and serialize requests
-to a particular instance.
+to a particular instance. 参考后面的annotation部分
 `SingleThreadModel` Interface is deprecated in this version of the specification
 
 ### Servlet Life Cycle
@@ -237,3 +237,36 @@ Any object bound into a session is available to any other servlet that belongs t
 The `valueBound` method must be called before the object is made available via the `getAttribute` method of the `HttpSession` interface. The `valueUnbound` method must be called after the object is no longer available via the `getAttribute` method of the `HttpSession` interface.
 ### Last Accessed Times
 The session is considered to be accessed when a request that is part of the session is first handled by the servlet container.
+
+## Annotations and pluggability
+In a web application, classes using annotations will have their annotations processed only if they are located in the `WEB-INF/classes` directory, or if they are packaged in a jar file located in `WEB-INF/lib` within the application. 
+The “`metadata-complete`” attribute defines whether the web descriptor is complete, or whether the class files of the jar file should be examined for annotations and web fragments at deployment time. If the `metadata-complete` attribute is not specified or is set to "`false`", the deployment tool must examine the class files of the application for annotations, and scan for web fragments.
+- @WebServlet: The annotated servlet MUST specify at least one url pattern to be deployed. If the same servlet class is declared in the deployment descriptor under a different name, a new instance of the servlet MUST be instantiated. 如果通过代码注册servlet，则此标记无效
+- @WebFilter
+- @WebInitParam This annotation is used to specify any init parameters that must be passed to the `Servlet` or the `Filter`. 
+- @WebListener
+- @MultipartConfig
+### Pluggability
+For better pluggability and less configuration for developers, in this version (Servlet 3.0) of the specification we are introducing the notion of `web module deployment descriptor fragments` (web fragment). A `web fragment` is a part or all of the `web.xml` that can be specified and included in a library or framework jar's `META-INF` directory. 
+A web fragment is a logical partitioning of the web application in such a way that the frameworks being used within the web application can define all the artifacts without asking developers to edit or add information in the web.xml.
+可以控制加载顺序
+plugin shared copies of frameworks - including being able to plug-in to the web container things like JAX-WS, JAX-RS and JSF that build on top of the web container, using `ServletContainerInitializer`
+
+## Dispatching Requests
+When building a Web application, it is often useful to forward processing of a request to another servlet, or to include the output of another servlet in the response. The `RequestDispatcher` interface provides a mechanism to accomplish this. 
+When asynchronous processing is enabled on the request, the `AsyncContext` allows a user to dispatch the request `back to the servlet container`
+To use a request dispatcher, a servlet calls either the `include` method or `forward` method of the `RequestDispatcher` interface. 
+The Container Provider should ensure that the dispatch of the request to a target servlet occurs in the same thread of the same JVM as the original request.
+### Obtaining a RequestDispatcher
+`RequestDispatcher` may be obtained from the `ServletContext` via the following methods:
+- getRequestDispatcher
+- getNamedDispatcher
+- getRequestDispatcher method is provided in the `ServletRequest` interface.使用相对路径
+### The Include Method
+If the default servlet is the target of a `RequestDispatch.include()` and the requested resource does not exist, then the default servlet MUST throw `FileNotFoundException`. If the exception isn't caught and handled, and the response hasn’t been committed, the status code MUST be set to `500`.
+### The Forward Method
+The `forward` method of the `RequestDispatcher` interface may be called by the calling servlet only when no output has been committed to the client.
+The `path` elements of the request object exposed to the target servlet must reflect the path used to obtain the `RequestDispatcher`.
+The only exception to this is if the `RequestDispatcher` was obtained via the `getNamedDispatcher` method. In this case, the path elements of the request object must reflect those of the `original request`.
+### Async
+Once you have an `AsyncContext`, you can use it to either complete the processing of the request via the `complete()` method or use one of the `dispatch` methods
