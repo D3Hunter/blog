@@ -158,4 +158,82 @@ Programmatically added Listeners must implementate one of:
 - javax.servlet.ServletContextListener : If the `ServletContext` was passed to the `ServletContainerInitializer`’s `onStartup` method
 
 Context attributes are local to the JVM in which they were created, not shared in a `distributed container`.
+### Resources
+The ServletContext interface provides direct access only to the hierarchy of static
+content documents that are part of the Web application, including HTML, GIF, and
+JPEG files
+The `getResource` and `getResourceAsStream` methods take a String with a leading
+“/” as an argument that gives the path of the resource `relative` to the root of the
+context or relative to the `META-INF/resources` directory of a JAR file inside the
+web application’s `WEB-INF/lib` directory. Search order:
+1. root of the web application context
+2. JAR files in the WEB-INF/lib directory, order of jars is undefined
+The full listing of the resources in the Web application can be accessed using the
+`getResourcePaths(String path)` method. 
+### Temporary Working Directories
+Servlet containers must provide a private temporary directory for each servlet context, and make it available via the `javax.servlet.context.tempdir` context attribute. The objects associated with the attribute must be of type `java.io.File`. 
 
+## The Response
+### Headers
+- setHeader
+- addHeader: a header name can have a set of header values 
+headers must be set before the response is committed (when the first byte of http payload is sent to the client).
+Servlet programmers are responsible for ensuring that the `Content-Type` header is
+appropriately set in the response object for the content the servlet is generating.
+It is recommended that containers use the `X-Powered-By` HTTP header to publish its
+implementation information.
+### Convenience Methods
+- sendRedirect: set the appropriate headers and content body to redirect the client to a different URL.
+- sendError
+These methods will have the side effect of committing the response, if it has not already been committed, and terminating it.
+### Internationalization
+The `setCharacterEncoding`, `setContentType`, and `setLocale` methods can be called repeatedly to change the character encoding. Calls made after the servlet response’s `getWriter` method has been called or after the response is committed have no effect on the character encoding.
+If the servlet does not specify a character encoding before the `getWriter` method of
+the `ServletResponse` interface is called or the response is committed, the default
+`ISO-8859-1` is used.
+
+## Filtering
+A filter is a reusable piece of code that can transform the content of HTTP requests, responses, and header information.
+- Authentication filters
+- Logging and auditing filters
+- Image conversion filters
+- Data compression filters
+- Encryption filters
+- Tokenizing filters
+- Filters that trigger resource access events
+- XSL/T filters that transform XML content
+- MIME-type chain filters
+- Caching filters
+The container must instantiate exactly one instance of the Java class defining the filter `per filter declaration` in the deployment descriptor. Hence, two instances of the same filter class will be instantiated by the container if the developer makes two filter declarations for the same filter class.
+- The invocation of the next entity is effected by calling the `doFilter` method on the `FilterChain` object
+- After invocation of the next filter in the chain, the filter may examine response headers.
+- When the last filter in the chain has been invoked, the next entity accessed is the target servlet or resource at the end of the chain. 
+
+The order the container uses in building the chain of filters to be applied for a
+particular request URI is as follows:
+1. First, the `<url-pattern>` matching filter mappings in the same order that these elements appear in the deployment descriptor. 即先按url匹配，后面跟着按servlet-name匹配的
+2. Next, the `<servlet-name>` matching filter mappings in the same order that these elements appear in the deployment descriptor
+
+### Filters and the RequestDispatcher
+New since version 2.4 of the Java Servlet specification is the ability to configure filters to be invoked under request dispatcher `forward()` and `include()` calls.
+By using the new `<dispatcher>` element in the deployment descriptor, the developer can indicate for a `filter-mapping `whether he would like the filter to be applied to requests.
+- The request comes directly from the client. This is indicated by a `<dispatcher>` element with value REQUEST, or by the absence of any `<dispatcher>` elements.
+
+## Sessions
+The Hypertext Transfer Protocol (HTTP) is by design a stateless protocol. To build effective Web applications, it is imperative that requests from a particular client be associated with each other.
+### Session Tracking Mechanisms
+- Cookies
+    - The standard name of the session tracking cookie must be `JSESSIONID` which must be supported by all 3.0 compliant containers.
+    - If a web application configures a custom name for its session tracking cookies, the same custom name will also be used as the name of the URI parameter if the session id is encoded in the URL
+- SSL Sessions: Secure Sockets Layer, the encryption technology used in the HTTPS protocol, has a built-in mechanism allowing multiple requests from a client to be unambiguously identified as being part of a session. 
+- URL Rewriting
+    - URL rewriting is the lowest common denominator of session tracking
+    -  When a client will not accept a cookie, URL rewriting may be used by the server as the basis for session tracking.
+### Session Scope
+HttpSession objects must be scoped at the application (or servlet context) level.The underlying mechanism, such as the cookie used to establish the session, can be the same for different contexts, but the object referenced, including the attributes in that object, must never be shared between contexts by the container.
+### Binding Attributes into a Session
+Any object bound into a session is available to any other servlet that belongs to the same ServletContext and handles a request identified as being a part of the same session. 即线程安全
+`HttpSessionBindingListener`
+The `valueBound` method must be called before the object is made available via the `getAttribute` method of the `HttpSession` interface. The `valueUnbound` method must be called after the object is no longer available via the `getAttribute` method of the `HttpSession` interface.
+### Last Accessed Times
+The session is considered to be accessed when a request that is part of the session is first handled by the servlet container.
