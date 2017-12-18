@@ -132,6 +132,8 @@ Unlike getblocktemplate:
 - miners using Stratum cannot inspect or add transactions to the block they’re currently mining.
 - uses a two-way TCP socket directly, so miners don’t need to use HTTP longpoll to ensure they receive immediate updates from mining pools when a new block is broadcast to the peer-to-peer network.
 
+具体协议格式参考`slushpool` help center
+
 #### Target/Difficulty
 The maximum target used by SHA256 mining devices is: `0x00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF`
 Because Bitcoin stores the target as a floating-point type, this is truncated: `0x00000000FFFF0000000000000000000000000000000000000000000000000000`
