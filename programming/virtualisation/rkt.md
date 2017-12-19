@@ -1,6 +1,6 @@
 From the start rkt was built as a pod native container engine. This means that the basic unit of execution is a pod, 
 ## Build from source
-`sudo apt install libssl-dev libacl1-dev libtspi-dev libsystemd-dev make autoconf automake gcc g++ libattr1-dev libcap-dev libpixman-1-dev libglib2.0-dev zlib1g-dev pkg-config python bc`
+`sudo apt install libssl-dev libacl1-dev libtspi-dev libsystemd-dev make autoconf automake gcc g++ libattr1-dev libcap-dev libpixman-1-dev libglib2.0-dev zlib1g-dev pkg-config python bc systemd-container`
 
 ### Commands
 - list: list pods
@@ -12,6 +12,8 @@ rkt 没有docker -d，rkt doesn't have a daemonize option but relies on the `ini
 - systemd-run rkt run xxx: 会打印unit name
 - journalctl -u <unit-name>: 显示stdout／err日志
 - systemctl stop <unit-name>：关闭
+`systemd-machined` is a system service that keeps track of virtual machines and containers, and processes belonging to them.
+
 ## ACI
 The image format defined by appc and used in rkt is the `Application Container Image`, or ACI. An ACI is a simple tarball bundle of a rootfs (containing all the files needed to execute an application) and an Image Manifest, which defines things like default execution parameters and default resource constraints. ACIs can be built with tools like `acbuild`, `actool`, or `goaci`. Docker images can be converted to ACI using `docker2aci`, although rkt will do this automatically.
 ## Pod
