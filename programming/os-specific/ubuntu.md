@@ -7,3 +7,5 @@
 安装dep包 `sudo dpkg -i *.dep`
 `apt-get download` 下载dep包，安装过程可参考man dpkg主要执行特定脚本，然后复制文件（和/目录结构类似）
 `ar -x pakname.deb`解压deb包
+
+`sudo`运行命令受`/etc/sudoers`影响，`Defaults secure_path`会重设`PATH`，导致`command not found`, 去掉即可
