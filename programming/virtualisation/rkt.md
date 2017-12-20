@@ -10,9 +10,18 @@ From the start rkt was built as a pod native container engine. This means that t
 - fetch: Fetch image(s) and store them in the local store
 rkt 没有docker -d，rkt doesn't have a daemonize option but relies on the `init system` to do that:
 - systemd-run rkt run xxx: 会打印unit name
+    - `--slice=machine` option to `systemd-run` places the service in `machine.slice` rather than the host's `system.slice`, isolating containers in their own cgroup area.
+    - 这样可通过machinectl/journalctl -M来控制对应的容器
 - journalctl -u <unit-name>: 显示stdout／err日志
 - systemctl stop <unit-name>：关闭
+- systemd-cgls
+- systemd-cgls –all
 `systemd-machined` is a system service that keeps track of virtual machines and containers, and processes belonging to them.
+To ensure that rkt is the main process of the service, the pattern `/bin/sh -c "foo ; rkt run ..."` should be avoided, because in that case the main process is `sh`. If shell invocation is unavoidable, use `exec` to ensure rkt replaces the preceding shell process:
+
+rkt supports socket-activated services.
+
+rkt uses `content addressable storage (CAS)` to store an ACI on disk. 
 
 ## ACI
 The image format defined by appc and used in rkt is the `Application Container Image`, or ACI. An ACI is a simple tarball bundle of a rootfs (containing all the files needed to execute an application) and an Image Manifest, which defines things like default execution parameters and default resource constraints. ACIs can be built with tools like `acbuild`, `actool`, or `goaci`. Docker images can be converted to ACI using `docker2aci`, although rkt will do this automatically.
