@@ -154,3 +154,9 @@ By definition, if a module has a `__path__` attribute, it is a package, regardle
 
 In theory, this means an exact accounting requires an exact understanding of the PVM bytecode implementation. In practice, it means that operations on shared variables of builtin data types (int, list, dict, etc) that “look atomic” really are.
 这也意味着无论在python中起几个线程，最多只能用满一个cpu核，其他解释器实现可能不会使用GIL
+
+### Virtual Environment
+- sudo pip install virtualenv virtualenvwrapper
+- source /usr/local/bin/virtualenvwrapper.sh
+- mkvirtualenv xxx
+- workon xxx
