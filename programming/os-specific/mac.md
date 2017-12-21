@@ -14,6 +14,10 @@ alias jdk8="export JAVA_HOME=$JAVA_8_HOME"
 ### item2
 profiles->keys->left options as ESC+
 
+高级设置：Scroll wheel sends arrow keys when in alternate screen mode，避免滚动命令行历史
+
+
+
 ### 查看listen的端口
 ```
 sudo lsof -iTCP -sTCP:LISTEN

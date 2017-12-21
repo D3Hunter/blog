@@ -9,5 +9,6 @@ alias ll='ls -lrt'
 alias l='ls -l'
 alias emacs='emacs -nw'
 alias grep='grep --exclude-dir=\.?* --exclude=\.?*'
+alias docker-killall='docker ps -a | tail -n +2 | cut -f1 -d' ' | xargs docker rm'
 TERM=xterm-256color
 #force_color_prompt=yes
