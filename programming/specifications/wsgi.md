@@ -1,3 +1,4 @@
+#### from `PEP 333`
 The WSGI interface has two sides: `the "server" or "gateway" side`, and `the "application" or "framework" side`. The server side invokes a callable object that is provided by the application side.
 In addition to ease of implementation for existing and future frameworks and servers, it should also be easy to create `request preprocessors`, `response postprocessors`, and other `WSGI-based "middleware"` components that look like an application to their containing server, while acting as a server for their contained applications.
 

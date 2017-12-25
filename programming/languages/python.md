@@ -92,18 +92,6 @@ python默认会缓存某个已经加载过的module，使用`reload`强制重新
 
 Enum类：`Python 3.4` as described in `PEP 435`,之前需要自己实现
 `func_dict` 等同于 `__dict__`，但尽量用后者，python3去掉了前者
-使用相对路径import，需要以package形式运行，否则报错`ValueError: Attempted relative import beyond toplevel package`
-- relative imports rely on `__name__` to determine the current module's position in the package hierarchy. In a main module, the value of `__name__` is always '`__main__`', so explicit relative imports will always fail (as they only work for a module inside a package)
-- python作者认为在一个package目录内运行某个脚本是`antipattern`的，这样运行不会把当前目录当作一个`package`, 如果运行需要在上层路径运行脚本或者以`-m`的形式运行
-- The only use case seems to be running scripts that happen to be living inside a module's directory, which I've always seen as an antipattern.
-- https://mail.python.org/pipermail/python-3000/2007-April/006793.html
-
-### PEP 8
-David Goodger describes the PEP 8 recommendations as follows:
-- `joined_lower` for functions, methods, attributes, variables
-- `joined_lower` or ALL_CAPS for constants
-- `StudlyCaps` for classes
-- `camelCase` only to conform to pre-existing conventions
 
 ### Problems
 `TypeError: __call__() takes exactly 2 arguments (1 given)`: pip install setuptools==33.1.1
@@ -179,3 +167,46 @@ WSGI in a nutshell is an interface between a web server and the application itse
 5. uWSGI itself is a vast project with many components, aiming to provide a full [software] stack for building hosting services
 6. Waitress is a pure-Python WSGI server.
 7. mod_python is an Apache module that embeds Python within the server itself.(dead?)
+
+### PEP
+`Benevolent Dictator For Life (BDFL)` is a title given to a small number of open-source software development leaders, typically project founders who retain the final say in disputes or arguments within the community.
+
+`Top level module` is the topmost one
+
+    top_module(这一层目录上面没有__init__.py)
+        __init__.py
+        moduleX.py
+
+### PEP 8
+David Goodger describes the PEP 8 recommendations as follows:
+- `joined_lower` for functions, methods, attributes, variables
+- `joined_lower` or ALL_CAPS for constants
+- `StudlyCaps` for classes
+- `camelCase` only to conform to pre-existing conventions
+
+#### PEP 328 Imports: Multi-Line and Absolute/Relative
+since `python 2.4` `21-Dec-2003`
+解决import过长及多个相同名称的package的问题
+it is proposed that all `import` statements be `absolute` by default (searching sys.path only) with special syntax `(leading dots)` for accessing package-relative imports.
+Relative imports must always use `from <> import`; `import <>` is always absolute.
+
+Relative imports use a module's `__name__` attribute to determine that module's position in the package hierarchy. If the module's name does not contain any package information (e.g. it is set to '`__main__`') then relative imports are resolved as if the module were a top level module, regardless of where the module is actually located on the file system.
+- 这意味着使用 relative import，需要以package（`python -m foo.bar`）形式运行，否则容易报错`ValueError: Attempted relative import beyond toplevel package`
+- 参考`PEP 366`和`PEP 338`
+
+### PEP 366 -- Main module explicit relative imports
+since `python 2.6` `1-May-2007`
+By adding a new module level attribute, this PEP allows relative imports to work automatically if the module is `executed using the -m switch`. A small amount of boilerplate in the module itself will allow the relative imports to work when the file is `executed by name`.
+The major proposed change is the introduction of a new module level attribute, `__package__`. When it is present, relative imports will be based on this attribute rather than the module `__name__` attribute.
+
+Note that it is `not enough` to simply have the directory containing the module in `sys.path`, the corresponding package needs to be `explicitly imported`.
+
+    if __name__ == "__main__" and __package__ is None:
+        import sys, os
+        # 这里假设当前脚本位于top level module目录内
+        parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        sys.path.insert(1, parent_dir) # 需要放到前面，免得被系统的package覆盖导致找不到
+        import xxxxxx
+        __package__ = str("xxxxxx")
+        del sys, os
+这个relative import是个大坑，使用时注意
