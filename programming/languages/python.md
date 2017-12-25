@@ -91,6 +91,12 @@ Trailing comma is required for one-element tuples
 python默认会缓存某个已经加载过的module，使用`reload`强制重新加载
 
 Enum类：`Python 3.4` as described in `PEP 435`,之前需要自己实现
+`func_dict` 等同于 `__dict__`，但尽量用后者，python3去掉了前者
+使用相对路径import，需要以package形式运行，否则报错`ValueError: Attempted relative import beyond toplevel package`
+- relative imports rely on `__name__` to determine the current module's position in the package hierarchy. In a main module, the value of `__name__` is always '`__main__`', so explicit relative imports will always fail (as they only work for a module inside a package)
+- python作者认为在一个package目录内运行某个脚本是`antipattern`的，这样运行不会把当前目录当作一个`package`, 如果运行需要在上层路径运行脚本或者以`-m`的形式运行
+- The only use case seems to be running scripts that happen to be living inside a module's directory, which I've always seen as an antipattern.
+- https://mail.python.org/pipermail/python-3000/2007-April/006793.html
 
 ### PEP 8
 David Goodger describes the PEP 8 recommendations as follows:
@@ -163,3 +169,13 @@ In theory, this means an exact accounting requires an exact understanding of the
 
 ### json
 json.dumps/loads
+
+### Servers using Web Server Gateway Interface v1.0 (WSGI)
+WSGI in a nutshell is an interface between a web server and the application itself.
+1. CherryPy WSGI Server. CherryPy is actually a web framework. Yet it is a fully self-contained one
+2. Gunicorn is a stand-alone web server which offers quite a bit of functionality in a significantly easy to operate fashion.
+3. Tornado is an application development framework and a networking library designed for handling asynchrnous operations,
+4. Twisted Web is the web server that comes with the Twisted networking library. Whereas Twisted itself is "an event-driven networking engine", the Twisted Web server runs on WSGI and it is capable of powering other Python web applications.
+5. uWSGI itself is a vast project with many components, aiming to provide a full [software] stack for building hosting services
+6. Waitress is a pure-Python WSGI server.
+7. mod_python is an Apache module that embeds Python within the server itself.(dead?)
