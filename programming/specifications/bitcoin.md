@@ -257,3 +257,16 @@ Ethereum Classic (ETC)
 Litecoin (LTC)
 Zcash (ZEC)
 Rootstock (RSK)
+
+### Estimating fees v0.14
+提供费率接口：https://bitcoinfees.earn.com/api
+https://github.com/jhoenicke/mempool
+https://jochen-hoenicke.de/queue/#all
+https://bitcointechtalk.com/an-introduction-to-bitcoin-core-fee-estimation-27920880ad0
+
+从`bitcoins core 0.15.0`开始引入`estimatesmartfee`和`estimaterawfee`
+
+- buckets：group those transaction fee rates into buckets, where each bucket corresponds to a range of fee rates
+    - Bitcoin Core wants to be able to make estimates over a very large range of fee rates, so the lowest bucket starts at `1s/B`, then increase 10% to `1.1s/B`, and keep increasing at `10%`
+- target:  the number of blocks between a transaction entering the mempool and being accepted in a block.
+    - Bitcoin Core keeps track of targets from 1 block up to 25 blocks.

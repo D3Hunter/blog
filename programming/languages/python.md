@@ -160,3 +160,6 @@ In theory, this means an exact accounting requires an exact understanding of the
 - source /usr/local/bin/virtualenvwrapper.sh
 - mkvirtualenv xxx
 - workon xxx
+
+### json
+json.dumps/loads
