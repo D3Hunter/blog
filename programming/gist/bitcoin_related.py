@@ -3,6 +3,7 @@
 import binascii
 import hashlib
 import sys
+import struct
 
 
 def sha256(str):
@@ -19,3 +20,6 @@ def get_bitcoin_hash(hex_str):
     bytes = bytearray.fromhex(hex_str)
     reverse_double_hash = sha256(sha256(bytes))[::-1]
     return binascii.hexlify(reverse_double_hash)
+
+def le_hex_2_long(hex_str):
+    return struct.unpack("<Q", binascii.unhexlify(hex_str))[0]

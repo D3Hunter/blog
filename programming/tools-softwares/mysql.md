@@ -47,3 +47,10 @@ mysql_config_editor set --login-path=root --host=localhost --user=root --passwor
 ```
 	Lost connection to MySQL server at 'reading initial communication packet', system error: 102
 ```
+
+### Fixed-Point Types (Exact Value) - DECIMAL, NUMERIC
+The DECIMAL and NUMERIC types store exact numeric data values. These types are used when it is important to preserve exact precision, for example with monetary data. In MySQL, NUMERIC is implemented as DECIMAL
+
+
+### functions
+`last_insert_ID`: The ID that was generated is maintained in the server on a per-connection basis.

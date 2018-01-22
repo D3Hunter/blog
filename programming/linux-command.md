@@ -171,3 +171,7 @@ Bochs 类似kvm／zen/QEMU
 `supervise` maintains status information in a binary format inside the directory `s/supervise`, which must be writable to `supervise`.  The status information can be read by  `svstat`
 `auditd`  is  the userspace component to the Linux Auditing System. It’s responsible for writing audit records to the disk.
 `audispd`  is  an  audit  event multiplexor(dispatcher). It has to be started by the audit daemon in order to get events. It takes audit events and distributes them to child programs that want to analyze events in realtime.
+
+### 关闭history记录
+配置中添加`set +o history`
+删除`.bash_history`

@@ -210,3 +210,12 @@ Note that it is `not enough` to simply have the directory containing the module 
         __package__ = str("xxxxxx")
         del sys, os
 这个relative import是个大坑，使用时注意
+### PEP 338 -- Executing modules as scripts
+The -m switch provides a benefit here, as it `inserts the current directory into sys.path`, instead of the directory contain the main module. 
+the main goal of the `-m` switch -- to allow the full Python namespace to be used to locate modules for execution from the command line.
+### PEP 263 -- Defining Python Source Code Encodings
+This PEP proposes to introduce a syntax to declare the encoding of a Python source file. 
+To define a source code encoding, `a magic comment` must be placed into the source files either as `first or second line` in the file.
+More precisely, the first or second line must match the following regular expression:
+
+    ^[ \t\v]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)
