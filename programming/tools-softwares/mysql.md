@@ -54,3 +54,6 @@ The DECIMAL and NUMERIC types store exact numeric data values. These types are u
 
 ### functions
 `last_insert_ID`: The ID that was generated is maintained in the server on a per-connection basis.
+
+### join
+the default is `INNER JOIN` if you just specify `JOIN`.
