@@ -14,6 +14,28 @@ mysql --help可查看my.cnf的位置即读取顺序
 /etc/mysql/my.cnf或/etc/mysql/mysql.conf.d/mysqld.cnf
 设置成0.0.0.0可以监听所有网卡
 
+MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval. (This does not occur for other types such as DATETIME.)
+
+show procedure status;
+show columns in xxx.xxx;
+
+### table size
+MyISAM的表可从information_schema.tables获取行数和表大小
+    或select count(1), 两者行号都在表的.MYD文件中
+InnoDB不行
+SHOW TABLE STATUS查看某个表使用的什么数据引擎
+    也可以用show create table
+    在MyISAM下table_row, data_length, index_length为正确指，在Innodb下为内存索引大小近似
+    结果从INFORMATION_SCHEMA TABLES来
+
+### 获取一个月前的timestamp和date时间：
+h2
+- DATEADD('day', -29, CURRENT_DATE())
+- datediff('ms', '1969-12-01', now()) 没有直接获得timestamp的方法
+mysql
+- DATE_ADD(CURDATE(), INTERVAL -29 DAY)
+- 1000 * (UNIX_TIMESTAMP() - 31*24*60*60)
+
 ### 权限相关
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '111111' WITH GRANT OPTION;
 flush privileges;
