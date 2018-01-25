@@ -21,6 +21,8 @@ It is the responsibility of the agent to be careful in the callbacks especially 
 IterateOverReachableObjects，遍历所有对象，不会改变object状态，可能会导致java程序暂停
 FollowReferences获得object关系树
 
+当无法修改或很难修改命令行参数时可通过设置`JAVA_TOOL_OPTIONS`来配置jvm参数，这些参数在`JNI_CreateJavaVM`时会被加到前面，某些在`launcher`阶段使用的参数指定后是无效的，如`-client/-server`
+
 ### jvmti
 heap遍历reference需要先添加tag，否则无法获取谁是谁
 jvmtiHeapReferenceCallback
