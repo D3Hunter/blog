@@ -34,6 +34,7 @@ follow,tcp,raw获取的数据都是转成hex的，非原始二进制数据，因
 - -i 指定interface，默认使用‘lowest numbered’
 - -n Don't convert host addresses to names
 - -X 打印数据in hex and ASCII
+- -r 读取文件
 
 
 ### curl

@@ -17,3 +17,6 @@ non-recusive算法
     1. stack保留path和访问状态（避免right节点多次访问），处理过right才能visit，类似inorder，需要leftmost优先。
     2. stack保留path，通过一个lastVisitedNode节点，来识别当前遍历顺序是往下、从左边往上或从右边往上
     3. 方法1中的“leftmost节点”的内循环可以跟外循环合并为一个，类似方法2，但lastVisitedNode只需判断是否是右节点，参考wikipedia
+
+
+如果每条边的waight为1，那么dijkstra可以简化成按层遍历

@@ -1,4 +1,5 @@
 # note on reading Java Servlet Specification 3.0
+抽象来看其他的app-server/container／甚至框架结构上都类似，比如servlet-mapping在nginx/apache/django都有类似结构
 
 ## Overview
 A servlet is a Java™ technology-based Web component, managed by a container,

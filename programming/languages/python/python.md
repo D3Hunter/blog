@@ -153,7 +153,14 @@ In theory, this means an exact accounting requires an exact understanding of the
 - sudo pip install virtualenv virtualenvwrapper
 - source /usr/local/bin/virtualenvwrapper.sh
 - mkvirtualenv xxx
+    - export VIRTUALENV_PYTHON=/usr/bin/python3
+    - mkvirtualenv -a myproject myenv
+    - 或者使用`--python=python3` or `-p python3`
 - workon xxx
+
+### 问题
+osx上pip有时会卸载`Uninstalling six-1.4.1`失败，可以先忽略掉`--ignore-installed six`，这样有可能出现其他问题
+- 参考https://github.com/pypa/pip/issues/3165
 
 ### json
 json.dumps/loads
