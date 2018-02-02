@@ -165,3 +165,17 @@ java.lang.OutOfMemoryError: unable to create new native thread
     - `sys.kernel.threads-max` 全局单进程最大线程数，对应路径/proc/sys/kernel/threads-max。/etc/sysctl.conf做永久修改
     - `sys.kernel.pid_max` tid最大编号
     - `sys.vm.max_map_count` 至少为2倍thread-count，否则会报Attempt to protect stack guard pages failed
+### HotSpot GC collectors
+HotSpot JVM may use one of 6 combinations of garbage collection algorithms listed below.
+`UseParallelOldGC`会自动设置`UseParallelGC`
+The throughput collector(UseParallelGC) can use multiple threads to process the old generation as well. That is the default behavior in JDK 7u4 and later releases, and that behavior can be enabled in earlier JDK 7 JVMs by specifying the `-XX:+UseParallelOldGC` flag. 即此时单独设置`UseParallelGC`同时也设置了`UseParallelOldGC`
++------------------------------+---------------------------------------+----------------------------------------+
+|Young collector               |Old collector                          |JVM option                              |
++------------------------------+---------------------------------------+----------------------------------------+
+|Serial (DefNew)               |Serial Mark-Sweep-Compact              |-XX:+UseSerialGC                        |
+|Parallel scavenge (PSYoungGen)|Serial Mark-Sweep-Compact (PSOldGen)   |-XX:+UseParallelGC                      |
+|Parallel scavenge (PSYoungGen)|Parallel Mark-Sweep-Compact (ParOldGen)|-XX:+UseParallelOldGC                   |
+|Serial (DefNew)               |Concurrent Mark Sweep                  |-XX:+UseConcMarkSweepGC -XX:-UseParNewGC|
+|Parallel (ParNew)             |Concurrent Mark Sweep                  |-XX:+UseConcMarkSweepGC -XX:+UseParNewGC|
+|G1                            |                                       |-XX:+UseG1GC                            |
++------------------------------+---------------------------------------+----------------------------------------+
