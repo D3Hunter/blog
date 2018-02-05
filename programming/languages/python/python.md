@@ -86,12 +86,18 @@ Trailing comma is required for one-element tuples
 删除某变量`del variable`
 
 千位转换：`'{0:,}'.format(1000000)`,反向转换可以去掉`,`或使用locale
+int转hexstr: `'0x{:02x}'.format(integer)`
+hexstr转int: `int(str, 16)`
 
 添加寻找路径`sys.path.append`,然后即可import
 python默认会缓存某个已经加载过的module，使用`reload`强制重新加载
 
 Enum类：`Python 3.4` as described in `PEP 435`,之前需要自己实现
 `func_dict` 等同于 `__dict__`，但尽量用后者，python3去掉了前者
+
+python中`/`是浮点除法，在大数处理时会有精度损失，可使用`decimal`，`//`为整形除法
+
+python按位取反操作`~`，是按有符号的方式处理的
 
 ### Problems
 `TypeError: __call__() takes exactly 2 arguments (1 given)`: pip install setuptools==33.1.1

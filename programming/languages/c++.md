@@ -70,6 +70,7 @@ A constructor that is not declared with the specifier explicit and `which can be
 `std::move` is used to indicate that an object t may be "moved from", i.e. allowing the efficient transfer of resources from t to another object.
 `std::integral_constant` wraps a static constant of specified type.
 `std::thread::detach` Separates the thread of execution from the thread object, allowing execution to continue independently. Any allocated resources will be freed once the thread exits.
+- Threads begin execution immediately upon construction of the associated thread object
 `std::unique_lock` is a general-purpose mutex ownership wrapper. RAII用法
 `std::atomic` is neither copyable nor movable.
 `std::condition_variable`.wait_until 可按Predicate等待
