@@ -1,13 +1,24 @@
 #!/bin/bash
-# controling life cycle of non-service programs.
-# valid actions are start/stop/status
 
 
 action=$1
+argument=$2
 program_name="xxxxxxxx"
 regex="[p]ython xxxxxxxx.py"
 directory="xxxxxxxx"
 exec_command="python xxxxxxxx.py"
+
+function print_help() {
+    cat << EOF
+controling life cycle of non-service programs.
+Run with: $0 action [argument]
+    valid actions are :
+    start
+    stop
+    status
+    top [interval]
+EOF
+}
 
 function getpid() {
     ps -ef | grep "$regex" | awk '{print $2}' 2> /dev/null
@@ -45,6 +56,18 @@ function stop() {
     fi
 }
 
+function view_in_top() {
+    pid=$(getpid)
+    if [ "$pid" != "" ]; then
+        if [ "$argument" = "" ]; then
+            argument=1.5
+        fi
+        top -p $pid -d $argument
+    else
+        echo "$program_name hasn't started yet."
+    fi
+}
+
 case $action in
     status)
         status
@@ -55,7 +78,14 @@ case $action in
     stop)
         stop
         ;;
+    top)
+        view_in_top
+        ;;
+    help)
+        print_help
+        ;;
     *)
         echo "invalid action $action"
+        print_help
         ;;
 esac
