@@ -51,6 +51,8 @@ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
 `mysql -u root -p'PASSWORD'`
 	You must do this if the password has any of the following characters: * ? [ < > & ; ! | $ ( )
 
+`mariadb-10`中的`user`表结构跟mysql的不太一样，注意导出数据时避免`mysql`数据库
+
 ### mysql5.0默认old_passwords = 1，高版本的client连接时会报ERROR 2049 (HY000):
 Connection using old (pre-4.1.1)，在client中加--skip-secure-auth可使用old
 password，但最好的方法是修改密码，让其使用新的加密方式

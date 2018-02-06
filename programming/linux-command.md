@@ -4,8 +4,13 @@ getenforce/setenforce控制SELinux，centos默认开启，ubuntu默认关闭
 yum install lrzsz
 atyle --style=kr --mode=c -H 格式化代码
 `yum provides \*/Intrinsic.h` 查看哪个package提供了对应的头文件
+ubuntu系统下使用如下：
+- `apt-get install apt-file; apt-file update`
+- `apt-file find Python.h`
 
 DMI Desktop Management Interface; SMBIOS, System Management BIOS
+
+`history -c` clears your history in the current shell.
 
 ### update-alternatives - maintain symbolic links determining default commands,
 比如在多个JDK版本中切换，针对java/javac需要单独切换

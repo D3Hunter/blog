@@ -205,6 +205,7 @@ Incrementing the `extraNonce` field entails recomputing the `merkle tree`, as th
 - `Tor` is a distributed 'onion' network, that makes it more difficult for an adversary to track any one peer on the network.
 - `Onion routing` is a technique for anonymous communication over a computer network. In an onion network, messages are encapsulated in layers of encryption, analogous to layers of an onion. The encrypted data is transmitted through a series of network nodes called onion routers, each of which "peels" away a single layer, uncovering the data's next destination. When the final layer is decrypted, the message arrives at its destination. The sender remains anonymous because each intermediary knows only the location of the immediately preceding and following nodes.
 - `Merged mining` is the process of allowing two different crypto currencies based on the same algorithm to be mined simultaneously.
+- `midstate`:可加快`double sha256`的计算，通过改变header中nonce，header前64字节的hash可以保存，这样只需要计算剩下来的字节。
 ### Merged Mining
 - Auxiliary Proof-of-Work (POW): This is the way that merged mining can exist; it is the relationship between two blockchains for one to trust the other's work as their own and accept AuxPOW blocks.
 - Merged Mining: The act of using work done on one blockchain on more than one chain, using Auxiliary POW.
