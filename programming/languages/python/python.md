@@ -99,6 +99,8 @@ python中`/`是浮点除法，在大数处理时会有精度损失，可使用`d
 
 python按位取反操作`~`，是按有符号的方式处理的
 
+python如果有非`daemon thread`运行是不会退出的，`os._exit`会全部退出，但是不会执行相应的清理任务。
+
 ### Problems
 `TypeError: __call__() takes exactly 2 arguments (1 given)`: pip install setuptools==33.1.1
 
