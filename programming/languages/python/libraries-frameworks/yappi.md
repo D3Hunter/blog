@@ -23,4 +23,4 @@ scnt：scheduled count
     _MainThread    0      140663324436224  0.291468  1
 
 ### API
-默认`yappi`记录`cputime`，可通过`yappi.set_clock_type("wall")`设置时间记录类型
+默认`yappi`记录`cputime`（可以用来profile cpu使用情况），可通过`yappi.set_clock_type("wall")`设置时间记录类型为walltime（profile响应时间构成）
