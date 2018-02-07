@@ -101,6 +101,10 @@ python按位取反操作`~`，是按有符号的方式处理的
 
 python如果有非`daemon thread`运行是不会退出的，`os._exit`会全部退出，但是不会执行相应的清理任务。
 
+`dict`没有`contains`，需要用`xxx in dict`和`xxx not in dict`
+
+`2to3`可以把python2的代码专程python3的代码
+
 ### Problems
 `TypeError: __call__() takes exactly 2 arguments (1 given)`: pip install setuptools==33.1.1
 

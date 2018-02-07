@@ -15,6 +15,7 @@ Run with: $0 action [argument]
     valid actions are :
     start
     stop
+    restart
     status
     top [interval]
 EOF
@@ -77,6 +78,11 @@ case $action in
         ;;
     stop)
         stop
+        ;;
+    restart)
+        stop
+        sleep 1
+        start
         ;;
     top)
         view_in_top

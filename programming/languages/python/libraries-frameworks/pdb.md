@@ -1,4 +1,5 @@
 设置断点：`import pdb; pdb.set_trace()`
+pdb只能调试单个线程，中断过程中，其他线程还是正常运行的
 获得当前运行线程：`p threading._active`
 
 获取某个线程的调用栈,参考以下python代码
