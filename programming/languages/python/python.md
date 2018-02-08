@@ -105,6 +105,8 @@ python如果有非`daemon thread`运行是不会退出的，`os._exit`会全部�
 
 `2to3`可以把python2的代码专程python3的代码
 
+遍历文件的每一行：`for line in stream:`
+
 ### Problems
 `TypeError: __call__() takes exactly 2 arguments (1 given)`: pip install setuptools==33.1.1
 

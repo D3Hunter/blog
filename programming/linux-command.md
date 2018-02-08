@@ -12,6 +12,12 @@ DMI Desktop Management Interface; SMBIOS, System Management BIOS
 
 `history -c` clears your history in the current shell.
 
+grep和awk默认都是有缓冲的，要立即显示使用如下参数：
+`top -bp $pid -d 5 | grep --line-buffered 'python' | awk -W interactive '{print $9}'`
+top默认会接受来自stdin的指令，在脚本中将其输出到文件时会报错`failed tty get`, 添加`-b`切换到batch mode
+
+获取ip地址：`ifconfig | sed -En 's/127.0.0.1//;s/10\.//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'`
+
 ### update-alternatives - maintain symbolic links determining default commands,
 比如在多个JDK版本中切换，针对java/javac需要单独切换
 update-alternatives --config java
