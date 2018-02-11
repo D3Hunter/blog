@@ -41,3 +41,45 @@ gc方法
 - copy：hotspot eden／survivor部分采用的算法
 - mark-compact：用在tenured space，
 - mark-sweep：用在tenured space，如CMS
+
+safe-point: 暂停线程的方式：
+- preemptive suspension
+- voluntary suspension
+safe-region:针对已经进入wait状态（sleep或blocked）的线程
+
+Hotspot中的gc算法
+- Serial
+- ParNew，Serial的多线程版本，除和SerialOld外只能和CMS配合
+- Parallel Scavenge：与CMS关注响应时间不同，该算法关注throughput
+    - 可使用`-XX:+UseAdaptiveSizePolicy`，开启后JVM会自动调整如新生代大小等参数，该调节方式称为GC自适应调节车略`GC Ergonomics`
+    - 该算法跟G1都没有使用传统的GC代码框架，而是单独实现
+- SerialOld：
+- Parallel Old：Parallel Scavenge的老年代版本
+- CMS：关注响应时间，分为下面几个阶段
+    - initial Mark：需要STW，仅标记gc roots能`直接`关联到的对象，速度很快
+    - concurrent Mark
+    - remark：需要STW，修正concurrent Mark期间变动的标记，比initial Mark慢，远比concurrent Mark快
+    - concurrent Sweep
+    ------
+    - 无法处理floating garbage（标记后生成的垃圾）
+    - 内存碎片，可通过一些参数调节
+- G1：面向服务端应用的算法
+    - 并行和并发
+    - 分代收集
+    - 空间整合
+    - 可预测的停顿
+    ------
+    - heap划分成多个大小相等的region
+    - 和其他gc算法类似，使用Remembered Set避免全堆扫描
+    ------
+    - Initial Marking
+    - Concurrent Marking
+    - Final marking
+    - Live Data Counting and Evacuation
+
+内存分配策略
+- 对象优先在Eden中分配
+- 大对象直接进入老年代
+- 长期存活的对象进入老年代
+- 动态对象年龄判定
+- 空间分配担保
