@@ -95,3 +95,44 @@ constant_pool_count比实际数量大1，计数从1开始，0是为了表达长�
 `ACC_SUPER`：是否允许使用`invokespecial`字节码指令的新语义，该指令在JDK1.0.2发生过改变，为了区分，之后的版本编译出来的类都会有该标志
 Code属性在方法表的属性集合中（interface和abstract方法没有）
 因为指令使用一个字节表示，指令集被估计设计成非正交的，即并非每种数据类型和每种操作都有对应的指令，必要时需要做类型转换来支持。
+
+### 类加载
+- 加载
+- 链接
+    - 验证
+    - 准备
+    - 解析（有时可以再初始化后开始解析）
+- 初始化
+- 使用
+- 卸载
+
+必须立即初始化类的情况（以下方式称为对类的主动引用）
+1. 遇到new/getstatic/putstatic/invokedynamic指令
+2. 使用java.lang.reflect包对类反射调用时
+3. 初始化类时，如果父类还么初始化，需要先初始化父类
+4. 虚拟机启动时，包含`main()`的主类需要先初始化
+5. 1.7动态语言支持，如果java.lang.invoke.MethodHandle实例最后解析的REF_getstatic/REF_putstatic/REF_invokeStatic等句柄所在类未初始化时
+
+被动引用（跟JDK有关，有些在1.7某些版本下成立，在1.7其他版本或1.8下就不成立）
+- 通过子类引用父类定义的static成员，HotSpot下只会出发父类加载，不会触发子类
+- 创建某类的一个数组，会触发一个数组类加载，不会触发引用类
+
+加载
+- 通过类的fully qualified name获取其binary stream
+    - zip包，如jar、war
+    - 网络读取
+    - 运行时生成，动态代理等
+    - 从其他文件生成，如jsp
+    - 从数据库中读取，可能较少见
+- binary stream转换成PermGen中的数据结构
+- 创建对于的Class对象代表该类
+- Parents Delegation Model
+- 如果基础类需要调用用户类，如JNDI需要调用SPI代码（这些代码在用户的ClassPath下，基础类所在的Bootstrap加载器找不到），Java团队使用的一个不太优雅的设计，及线程上下文加载器，JNDI使用该加载器去加载SPI实现类，也就是父加载器调用子加载器来加载。java中涉及SPI的加载都是采取这种方式：JNDI、JDBC、JCE、JAXB和JBI等。
+    - Thread Context Classloader如果创建线程时未指定，则等于父线程的，如果全局未设置，则等于AppClassloader
+- HotSwap和Hot Deployment，java模块化如`OSGi`和`Jigsaw`
+
+验证：确保Class文件格式符合当前虚拟机要求
+解析：将常量池中的符号引用替换为直接引用的过程
+初始化：
+- clinit由源码中的类初始化相关的语句按顺序收集而成，代码只能访问定义在该语句前的变量，定义在之后的变量可以赋值，不能访问
+- 由于上面的主动引用，虚拟机会先执行父类的clinit

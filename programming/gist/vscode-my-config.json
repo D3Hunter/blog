@@ -1,6 +1,8 @@
 {
     "window.zoomLevel": 0,
     "workbench.colorTheme": "Quiet Light",
+    "Windows下使用Monokai": null,
+    "workbench.colorTheme": "Monokai",
     "files.insertFinalNewline": true,
     "python.linting.pylintEnabled": false
 }
