@@ -136,3 +136,13 @@ Code属性在方法表的属性集合中（interface和abstract方法没有）
 初始化：
 - clinit由源码中的类初始化相关的语句按顺序收集而成，代码只能访问定义在该语句前的变量，定义在之后的变量可以赋值，不能访问
 - 由于上面的主动引用，虚拟机会先执行父类的clinit
+
+### 代码执行
+方法调用在class文件里面都是一个常量池的符号引用，实际执行时需要变成直接引用（解析阶段处理，Resolution），但有些需要动态解析。
+- invokestatic
+- invokespecial：和前面一种，这两种在类加载阶段就能转换成直接引用。init、private方法、父类方法和final表示的方法
+- invokevirtual：根据操作数栈顶确定对象实际类型，再去找对应方法
+- invokeinterface
+- invokedynamic，前四种分派逻辑在虚拟机，这种的分派逻辑由用户指定
+
+重载方法在编译阶段就确定了，是静态的
