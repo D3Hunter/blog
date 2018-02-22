@@ -45,7 +45,7 @@ class Company(object):
 
         self.year = re.split('\.|-', self.create_time)[0]
         # 页面上有的时间是字符串
-        if not valid_int(self.year) or int(self.year) >= 2017:
+        if u'尚未获投' not in self.phase and (not valid_int(self.year) or int(self.year) >= 2017):
             self._init_detail(token)
     def _init_detail(self, token):
         # 有些公司没有详细的信息，url为官网地址
@@ -83,7 +83,7 @@ def process_company_table(companies, table, token):
     return True
 
 def get_all_companies(start_page=1):
-    url_template = "http://www.cyzone.cn/vcompany/list-3495-0-{}-2-3/0"
+    url_template = "http://www.cyzone.cn/vcompany/list-0-0-{}-2-3/0"
     page_num = start_page
     companies = []
     try:
@@ -120,7 +120,7 @@ def write_to_excel(companies, filename):
         sheet = book.get_sheet(0)
         start_row = len(sheet.get_rows())
     else:
-        sheet = book.add_sheet("Sheet 1")
+        sheet = book.add_sheet(u"北京")
 
     for r in range(len(companies)):
         company = companies[r]
