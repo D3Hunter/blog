@@ -58,6 +58,13 @@ PEP 8 is the de-facto code style guide for Python.
 
 python -m site --user-site
 
+### 读取交互式模式下的历史输入
+``` python
+import readline
+for i in range(readline.get_current_history_length()):
+    print(readline.get_history_item(i + 1))
+```
+
 ### basic:
 command line argument: import sys; len(sys.argv); sys.argv
 [] list, () tuple, {} dict
@@ -106,6 +113,8 @@ python如果有非`daemon thread`运行是不会退出的，`os._exit`会全部�
 `2to3`可以把python2的代码专程python3的代码
 
 遍历文件的每一行：`for line in stream:`
+
+后台运行脚本，`stdout`做了缓冲，可以使用`python -u xxxx.py`来避免
 
 ### Problems
 `TypeError: __call__() takes exactly 2 arguments (1 given)`: pip install setuptools==33.1.1

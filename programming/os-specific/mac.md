@@ -29,6 +29,7 @@ sudo lsof -iTCP -sTCP:LISTEN -n
 ### commands
 进程线程数 `ps -M <pid> | wc -l`
 ldd: `otool -L`
+使用对应的app打开某个文件:`open xxxx.xls`, 可通过`-a`指定应用
 
 ### brew 没有特定软件
 - `brew install coreutils`
