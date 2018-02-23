@@ -22,7 +22,7 @@ def get_soup(url):
         http_session = requests.Session()
         http_session.headers['User-Agent'] = 'Chrome/63.0.3239.132'
     doc = http_session.get(url)
-    return BeautifulSoup(doc.content, 'html.parser')
+    return BeautifulSoup(doc.content, 'lxml')
 
 def valid_int(str):
     try:
@@ -38,6 +38,7 @@ class Company(object):
         cells = row.find_all('td')
         self.name = cells[1].text.strip()
         self.city = ''
+        self.last_financing_money = ''
         self.phase = cells[2].text.strip()
         self.last_financing_date = ''
         self.field = cells[3].text.strip()
@@ -61,7 +62,9 @@ class Company(object):
         self.name = cell.find('a').text.strip()
         self.detail_url = cell.find('a')['href']
         self.city = ''
-        cell = cell.find_next_sibling().find_next_sibling()
+        cell = cell.find_next_sibling()
+        self.last_financing_money = cell.find(attrs={'class': 'money'}).text.strip()
+        cell = cell.find_next_sibling()
         self.phase = cell.text.strip()
         cell = cell.find_next_sibling().find_next_sibling()
         self.field = cell.text.strip()
@@ -90,7 +93,8 @@ class Company(object):
         time.sleep(2 + random())
 
     def write_to_sheet(self, sheet, row):
-        items = [self.name, self.city, self.phase, self.field, self.create_time, self.last_financing_date, self.detail]
+        items = [self.name, self.city, self.field, self.create_time,
+            self.phase, self.last_financing_money, self.last_financing_date, self.detail]
         for col in range(len(items)):
             sheet.write(row, col, items[col])
 
@@ -105,10 +109,10 @@ class CompanyExtractor(object):
     def get_all_companies(self):
         return self.companies
 
-    def extract(self, start_page=1):
+    def extract(self, start_page=1, end_page=10000):
         page_num = start_page
         try:
-            while True:
+            while page_num <= end_page:
                 print('Crawling page {}'.format(page_num))
                 soup = get_soup(self.url.format(page_num))
                 stop = self._process_page(soup)
@@ -131,8 +135,8 @@ class CompanyExtractor(object):
         return self._process_company_table(table, token)
 
     def _process_company_table(self, table, token):
-        try:
-            for row in self.find_rows(table):
+        for row in self.find_rows(table):
+            try:
                 if token is None:
                     item = Company(row)
                 else:
@@ -142,12 +146,12 @@ class CompanyExtractor(object):
                     print('should stop return True, stop crawling')
                     return True
                 self.companies.append(item)
-        except RemoteDisconnected as e:
-            print("remote server rejected our request")
-            raise
-        except:
-            print("failed to process row {}".format(row))
-            traceback.print_exc()
+            except RemoteDisconnected as e:
+                print("remote server rejected our request")
+                raise
+            except:
+                print("failed to process row {}".format(row))
+                traceback.print_exc()
         return False
 
 
@@ -168,7 +172,7 @@ def write_to_excel(companies, filename):
     else:
         sheet = book.add_sheet(u"Sheet 1")
 
-    title = [u'名称', u'城市', u'融资阶段', u'领域', u'创建时间', u'最新融资时间', u'详情']
+    title = [u'名称', u'城市', u'领域', u'创建时间', u'融资阶段', u'融资金额', u'融资时间', u'详情']
     for col in range(len(title)):
         sheet.write(start_row, col, title[col])
     for r in range(len(companies)):
