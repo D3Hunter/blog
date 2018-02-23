@@ -146,3 +146,48 @@ Code属性在方法表的属性集合中（interface和abstract方法没有）
 - invokedynamic，前四种分派逻辑在虚拟机，这种的分派逻辑由用户指定
 
 重载方法在编译阶段就确定了，是静态的
+
+### 早期优化
+javac基本不做代码优化，Hotspot优化主要集中在JIT
+javac使用java编写
+
+C#中的范型通过类型膨胀（真实范型）实现，java使用类型擦除（伪泛型）实现，`List<int>`和`List<String>`是不同的类型，而java中是同一个类型
+
+### 晚期优化
+HotSpot同时有解释器和编译器（不是指javac，而是将bytecode编译为本地代码的部分，如JIT），两者各有优势，解释器可以立即开始执行，启动快；随着时间推移，编译器能带来更高的执行效率。解释器的存在，允许编译器进行在大多数时候都能提高效率的激进优化，并在假设不成立时回退到解释执行
+
+Tiered Compilation
+- 解释执行
+- C1（Client Compiler），简单可靠的优化，必要时加入性能监控逻辑
+- C2（Server Compiler），会启用编译好时较长的优化，甚至会根据性能监控信息做一些不可靠的激进优化
+
+被JIT编译的HotSpot code有两类：
+- 多次调用的方法：整个方法作为编译对象
+- 多次执行的循环体（方法调用次数少，但内部存在多次执行的循环体）：也是整个方法作为编译对象，但是当前方法可能正在执行，会使用OSR（栈上替换）来直接替换
+
+热点探测方法：
+- Sample based hot spot detection:定期查看各线程栈顶方法。简单高效，但不准确
+- Counter based hot spot detection：为每个方法维护一个计数器
+    - Counter Decay／Counter Half Life Time，在GC时完成
+    - HotSpot有调用计数器和回边计数器（用来统记循环体执行次数
+
+查看JIT结果(有些参数需要Debug或fastDebug编译的jdk)
+- `-XX:+PrintCompilation`
+- `-XX:+PrintInlining`
+- `-XX:+PrintAssembly`,需要HSDIS插件支持
+- `-XX:+PrintOptoAssembly`
+
+优化技术
+- 公共子表达式消除，语言无关
+- 数组范围检查消除，语言相关
+- 方法內联
+    - 除了消除了对应的方法调用，还使其他优化手段成为可能，比如有些代码在内联后看实际上是Dead Code
+- 逃逸分析，目前并不成熟，因为不能保证进行逃逸分析的性能收益必定高于它的消耗
+    - 栈上分配
+    - 同步消除，不会被其他线程访问的数据，不需要做同步
+    - 标量替换，非逃逸对象，可以把对象展开成一系列标量
+
+### java内存模型
+cache coherence
+cpu／compiler instruction reordering
+java虚拟机规范通过JMM来屏蔽各硬件和操作系统的内存访问差异，以使java达到在各平台上都能有一致的效果
