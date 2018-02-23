@@ -4,5 +4,6 @@
     "Windows下使用Monokai": null,
     "workbench.colorTheme": "Monokai",
     "files.insertFinalNewline": true,
-    "python.linting.pylintEnabled": false
+    "python.linting.pylintEnabled": false,
+    "files.trimTrailingWhitespace": true
 }
