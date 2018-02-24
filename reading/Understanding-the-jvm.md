@@ -191,3 +191,27 @@ Tiered Compilation
 cache coherence
 cpu／compiler instruction reordering
 java虚拟机规范通过JMM来屏蔽各硬件和操作系统的内存访问差异，以使java达到在各平台上都能有一致的效果
+java内存模型的主要模型是定义程序中各个变量的访问规则，即在虚拟机中将变量存储到内存和从内存中取出变量这样的底层细节。
+
+volatile变量对所有线程立即可见，对其write操作都能立即反映在其他线程中，即volatile在各个线程是一致的，但java中运算操作不是原子的（其他语言也一样），导致volatile变量运算也是非原子的
+
+java中volatile
+- 用于Concurrent Programming
+- Adds visibility to the variable
+- 单独的read和write是atomic的，这也意味这assign操作（write）也是atomic的
+    - 由于assign操作的atomic属性，以及happens-before属性可以实现：让一个线程检查某个被其他线程修改的变量的值来实现线程间同步
+- 如果write操作依赖与当前操作，则不是atomic的，比如arithmetic操作会有一个read-update-write的过程
+- 拥有happens-before效果，volatile write前面的其他write，会对happends-before的read都可见
+    - `double-locking singleton需要该特性避免成员write被reorder到singleton write之后，保证其他线程看到的是完全初始化后的对象`
+
+c/c++中的volatile
+- 用于特定内存访问，比如内存映射I/O
+- Disables optimizations on the variable
+- 虽然很多时候单独的read/write是atomic，但并不总是成立
+    - 就算是atomic，由于没有happens-before属性，仍然不能做线程间同步用，编译器及cpu的reordering会导致逻辑错误
+    - atomic依赖于具体的代码的编写、编译器、CPU和BUS位数
+    - 在x86和IA32，正确对齐的数据的read和write是atomic的
+    - 正确对齐的16bit数据，在8086是atomic，8088不是，因为8086有16bit总线，而8088只有8bit
+    - 如果两个变量在同一个对齐的区域內，比如两个short在同一个4字节对齐区域，如果write操作只支持以4字节为单位，也会导致非atomic
+- 如果write操作依赖与当前操作，跟前者一样也不是atomic的
+- 在线看代码的汇编：https://gcc.godbolt.org/
