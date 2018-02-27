@@ -2,7 +2,7 @@ javaAgent是从JDK1.5引入
 由底层叫instrument的JVMTIAgent实现（Linux下对应的动态库是libinstrument.so
 因为javaagent功能就是它来实现的，另外instrument agent还有个别名叫JPLISAgent
     (Java Programming Language Instrumentation Services Agent)
-调试用到的JVMTIAgent：-agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:6134
+调试用到的JVMTIAgent：-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=localhost:6134
 
 javaagent需要在META-INF/MAINIFEST.MF添加Premain-Class
 -javaagent参数需要放到main所在类前面，否则不会执行

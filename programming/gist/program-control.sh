@@ -39,6 +39,7 @@ case $target in
     *)
         echo "invalid target $target"
         print_help
+        exit
         ;;
 esac
 
@@ -106,6 +107,21 @@ function view_in_top() {
     fi
 }
 
+function view_in_gcutil() {
+    regex=$1
+    name=$2
+    delay=$3
+    pid=$(getpid "$regex")
+    if [ "$pid" != "" ]; then
+        if [ "$delay" = "" ]; then
+            delay=1000
+        fi
+        jstat -gcutil $pid $delay
+    else
+        echo "$name hasn't started yet."
+    fi
+}
+
 function start_record_cpu() {
     regex=$1
     filename=$2
@@ -139,6 +155,9 @@ case $action in
         ;;
     top)
         view_in_top "$ps_regex" "$program_name" "$argument"
+        ;;
+    gcutil)
+        view_in_gcutil "$ps_regex" "$program_name" "$argument"
         ;;
     start-record)
         start_record_cpu "$ps_regex" "$argument"

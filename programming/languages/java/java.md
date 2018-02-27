@@ -2,8 +2,24 @@ class必须放到对应包名的目录下才能由java找到
 -Dname=value会将其放到System.properity中
 
 java <class-name>中class-name格式为点分或/分，不包含最后的.class
+
+### JDK classes
 ResourceBundle 国际化
 wait notify notifyAll需要获得object的monitor
+
+Pattern && Matcher
+- Matcher.find()可以用来查找所有满足条件的子串，`group(0)`是匹配的整个串，内部的group从`1`开始
+- `Greedy quantifiers` first matches as much as possible.，如`.*`
+- `Reluctant quantifiers` first matches as little as possible. 如`.*?`
+- `possessive quantifier` is just like the greedy quantifier, but it doesn't backtrack. So it starts out with .* matching the entire string, leaving nothing unmatched. 如`.*+`
+
+ObjectOutputStream/ObjectInputStream:
+- writeObject/readObject会记录已经写／读的对象，以避免多次读取，可能会导致OOM
+- writeUnshared／readUnshared不会记录对象，但是仍然往内部数组放null，也可能导致OOM
+    - 查看以下调用代码`writeObject0 -> writeClass -> handles.assign -> insert`
+- 解决以上问题的方法：
+    - 重新创建stream对象
+    - 调用`reset()`，该方法会清除掉内部记录的信息
 
 ### classloader
 - Bootstrap classes(Bootstrap class loader) - Classes that comprise the Java platform,

@@ -18,6 +18,9 @@ top默认会接受来自stdin的指令，在脚本中将其输出到文件时会
 
 获取ip地址：`ifconfig | sed -En 's/127.0.0.1//;s/10\.//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'`
 
+### file read/import progress
+pv -f xxx.sql 2> output.log | mysql -uroot -proot test
+
 ### update-alternatives - maintain symbolic links determining default commands,
 比如在多个JDK版本中切换，针对java/javac需要单独切换
 update-alternatives --config java
@@ -157,7 +160,7 @@ SOCKS本身并不是安全的，但是dynamic forwarding时SOCKS数据通过ssh�
 
 
 ### linux
-kill: If sig is 0, then no signal is sent, but error checking is still performed; this 
+kill: If sig is 0, then no signal is sent, but error checking is still performed; this
 can be used to check for the existence of a process ID or process group ID.
 
 ssh支持连接复用，只要一个终端连接上了，后续的窗口可免密码登陆

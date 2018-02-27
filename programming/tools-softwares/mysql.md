@@ -50,8 +50,18 @@ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
 `mysql -u username -p db_name < /path/to/table_name.sql`
 `mysql -u root -p'PASSWORD'`
 	You must do this if the password has any of the following characters: * ? [ < > & ; ! | $ ( )
+查看导入进度：`pv -f xxx.sql 2> output.log | mysql -uroot -proot test`
+    - `sed -u 's/\r/\n/g' output.log | tail`
 
 `mariadb-10`中的`user`表结构跟mysql的不太一样，注意导出数据时避免`mysql`数据库
+
+导入性能：
+- 10G的文件，60239973行(4核 8G)
+    - 如果该表格有`primary key`, 一个多小时大概导入2/3
+    - 去掉`primary key`, 30分钟完全导入
+- 如果要做数据转换，将其合并处理成另外一张表：
+    - 把表A先导入mysql，然后读取mysql，转换，再入库到B表
+    - 直接读取并解析表A的`A.sql`文件（每个insert一行），转换成B的格式，然后存到mysql中，这样可以节省大量中间过程，而且读取磁盘并解析要比读取mysql要快
 
 ### mysql5.0默认old_passwords = 1，高版本的client连接时会报ERROR 2049 (HY000):
 Connection using old (pre-4.1.1)，在client中加--skip-secure-auth可使用old
@@ -81,3 +91,6 @@ The DECIMAL and NUMERIC types store exact numeric data values. These types are u
 
 ### join
 the default is `INNER JOIN` if you just specify `JOIN`.
+
+### Data types
+int 4字节，BIGINT 8字节，可指定是否有符号，默认为SIGNED
