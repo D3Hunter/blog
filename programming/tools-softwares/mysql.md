@@ -56,7 +56,7 @@ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
 `mariadb-10`中的`user`表结构跟mysql的不太一样，注意导出数据时避免`mysql`数据库
 
 导入性能：
-- 10G的文件，60239973行(4核 8G)
+- 10G的文件，60239973行(4核 8G SSD硬盘)
     - 如果该表格有`primary key`, 一个多小时大概导入2/3
     - 去掉`primary key`, 30分钟完全导入
 - 如果要做数据转换，将其合并处理成另外一张表：
