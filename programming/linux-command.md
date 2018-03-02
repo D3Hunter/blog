@@ -142,6 +142,8 @@ remote forwarding默认不开启，需要在/etc/ssh/sshd_config中设置Gateway
 当remote forwarding不可用，但可在example.com上访问client时，可通过在example.com上做-L，来实现-R，即：
     在example.com上执行ssh localhost -L 9000:client:5432
 
+避免输入(yes/no):`ssh -o "StrictHostKeyChecking no" user@host`
+
 #### dynamic forwarding
 ssh user@example.com -D 1080 # 本地监听1080作为SOCKS代理，通过example.com转发数据
 SOCKS本身并不是安全的，但是dynamic forwarding时SOCKS数据通过ssh发送，则是安全的
@@ -158,6 +160,8 @@ SOCKS本身并不是安全的，但是dynamic forwarding时SOCKS数据通过ssh�
 硬挂载将模拟本地磁盘，在IO操作未完成前一直阻塞（这在NFS服务器出问题时会导致应用hang）
 软挂载
 
+### 创建新文件系统
+非交互式创建`echo "n\np\n1\n\n\n\nw" | fdisk /dev/vdb; mkfs.ext4 /dev/vdb`
 
 ### linux
 kill: If sig is 0, then no signal is sent, but error checking is still performed; this

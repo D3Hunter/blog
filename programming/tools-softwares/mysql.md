@@ -94,3 +94,16 @@ the default is `INNER JOIN` if you just specify `JOIN`.
 
 ### Data types
 int 4字节，BIGINT 8字节，可指定是否有符号，默认为SIGNED
+
+### Partitions
+Partitions are flexible, as you can add, drop, redefine, merge, or split existing partitions.
+- RANGE
+- LIST
+- HASH
+- KEY
+When you start building your queries, you want to make sure that the query is using the partitions. You can do this by including the `EXPLAIN PARTITIONS` statement before your select statement.
+如果在`where`子句中有对column的function调用，那么有可能会做全表操作，而不是只操作某些partition
+如果数据做了修改，mysql会自动移动对应数据
+
+### insert
+如果在一次事物中插入了过多的行，会占用大量undo空间
