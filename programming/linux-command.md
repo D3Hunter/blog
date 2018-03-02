@@ -18,6 +18,8 @@ top默认会接受来自stdin的指令，在脚本中将其输出到文件时会
 
 获取ip地址：`ifconfig | sed -En 's/127.0.0.1//;s/10\.//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'`
 
+rsync - a fast, versatile, remote (and local) file-copying tool. rsync会对比src和dst之间的差别，并只拷贝变动的部分。
+
 ### file read/import progress
 pv -f xxx.sql 2> output.log | mysql -uroot -proot test
 
