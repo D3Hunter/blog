@@ -16,6 +16,8 @@ grep和awk默认都是有缓冲的，要立即显示使用如下参数：
 `top -bp $pid -d 5 | grep --line-buffered 'python' | awk -W interactive '{print $9}'`
 top默认会接受来自stdin的指令，在脚本中将其输出到文件时会报错`failed tty get`, 添加`-b`切换到batch mode
 
+awk计算sum有精度限制，此时可以使用`bc`（`paste`生成表达式）来计算：`cat numbers.txt | paste -sd+ | bc -l`
+
 获取ip地址：`ifconfig | sed -En 's/127.0.0.1//;s/10\.//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'`
 
 rsync - a fast, versatile, remote (and local) file-copying tool. rsync会对比src和dst之间的差别，并只拷贝变动的部分。
