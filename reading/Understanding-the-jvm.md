@@ -215,3 +215,39 @@ c/c++中的volatile
     - 如果两个变量在同一个对齐的区域內，比如两个short在同一个4字节对齐区域，如果write操作只支持以4字节为单位，也会导致非atomic
 - 如果write操作依赖与当前操作，跟前者一样也不是atomic的
 - 在线看代码的汇编：https://gcc.godbolt.org/
+
+happens-before
+- JMM中定义的两项操作的偏序关系，即如果A happens-before B，那么A产生的影响（包括内存修改、消息发送和方法调用）都能被B看到
+- Program Order Rule
+- Monitor Lock Rule
+- Volatile Variable Rule
+- Thread Start Rule
+- Thread Termination Rule
+- Thread Interruption Rule
+- Finalizer Rule
+- Transitivity：传递性
+
+线程
+- New
+- Runnable
+- Waiting: 之后进入Blocked，因为被notify后都需要重新获取monitor
+- Timed Waiting
+- Blocked
+- Terminated
+
+线程安全强度
+- 不可变（final）
+- 绝对线程安全，代价很大
+- 相对线程安全，对某些单独的操作是线程安全的，Java大部分线程安全类属于此类
+- 线程兼容：对象本身不是线程安全的，但是通过同步手段可以保证在并发下安全的使用
+- 线程对立
+线程安全实现
+- 互斥同步（Critical Section, Mutex, Semaphore等）
+- 非阻塞同步（Test-and-set, Fetch-and-Increment，Swap, CAS，LL/SC）,CAS不能处理ABA问题
+- 无同步方案：可重入代码，TLS
+锁优化
+- Adaptive Spinning
+- Lock Elimination
+- Lock Coarsening: 加锁粒度控制
+- Lightweight Locking
+- Biased Locking
