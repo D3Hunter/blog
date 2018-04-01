@@ -9,3 +9,4 @@ class文件中存储的access权限只有`public`和`default（package-private�
 
 attributes
 - `ConstantValue`属性指针对`static field`，`instance field`的`final`标识的都被合并到了`<init>`中
+
