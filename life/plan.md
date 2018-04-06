@@ -1,5 +1,6 @@
 ## Long Term
 云层之上的风景、更大的世界
+或许是掌握一个能够不断产生利润，不在需要打工就能养活自己的方式，以带给自己足够的安全感。
 ## Middle Term
 - financial freedom
     - stock market investgation
