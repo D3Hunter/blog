@@ -78,15 +78,6 @@ ForkJoinTask<V>: superclass of RecursiveTask<V> and RecursiveAction.
     a template engine: a Java library to generate text output (HTML web pages, e-mails,
     configuration files, source code, etc.) based on templates and changing data.
 
-### tomcat(any servlet container)
-查看servlet API版本：servlet-api.jar中META-INF/MANIFEST.MF
-应用可以目录结构存在，也可以为Web ARchive, or WAR file
-    WEB-INF中存放应用相关数据classes/lib/web.xml
-
-$CATALINA_HOME/common/lib为应用与tomcat同享
-$CATALINA_BASE/shared/lib应用间共享
-/META-INF/context.xml: can be used to define Tomcat specific configuration options
-
 ### Application Server(Java EE Container) VS Servlet Container(Web Container)
 A servlet-container supports only the servlet API (including JSP, JSTL).
 
@@ -101,6 +92,7 @@ a design principle in which custom-written portions of a computer program receiv
 Java Management Extensions (JMX)
 Java Message Service（JMS）
 JAXB:通过xml标记直接得到某个xml结构的bean
+JAX-WS(Java API for XML Web Services): an API for creating web services, particularly SOAP services.
 
 ### ServiceLoader
 service为对应接口或抽象类
@@ -195,3 +187,14 @@ The throughput collector(UseParallelGC) can use multiple threads to process the 
 |Parallel (ParNew)             |Concurrent Mark Sweep                  |-XX:+UseConcMarkSweepGC -XX:+UseParNewGC|
 |G1                            |                                       |-XX:+UseG1GC                            |
 +------------------------------+---------------------------------------+----------------------------------------+
+
+### 字节码保护
+- 字节码混淆
+- classloader层做字节码加密，但这样无论在java或者jvmti层做都会暴露加密规则
+- 服务端动态下发加密代码和密钥，避免暴露代码
+- 上述方法的缺点在于，jvm层仍能看到解密后的内容，通过tools.jar也能将运行时的类dump出来
+- 动态编译依赖加密后的代码可以将依赖接口化
+
+### java source code parser
+- eclipse jdt ASTParser
+- JavaParser

@@ -1,5 +1,7 @@
 requires jdk `1.7+`
 
+编译rpm包如果版本号中有`-`会报不识别
+
 ### gradle wrapper
 it is not necessary for Gradle to be installed to use the `Gradle wrapper`. `gradlew` will download and cache `gradle`
 

@@ -33,7 +33,7 @@ retransformClasses：
 - starting from the `initial class file bytes`
     - The `initial class file bytes` represent the bytes passed to `ClassLoader.defineClass` or `redefineClasses` (before any transformations were applied),
     - however they might not exactly match them.
-    - 验证了下每次的`file bytes`都是不同的对象，内容基本一样（参考javadoc，部分顺序可能存在差别），数据来源可能是从内存中定义的类反向生成的，或者磁盘读取（对网络读取的字节码无效）
+    - 验证了下每次的`file bytes`都是不同的对象，内容基本一样（参考javadoc，部分顺序可能存在差别），数据来源可能是提前存储下来的（但这样太耗内存了），或者磁盘读取（对网络读取的字节码无效）。从Class对象反向生成bytecode得到的是transform之后的内容。
 - for each transformer that was added with `canRetransform` false, skip it.
 - for each transformer that was added with `canRetransform` true, the `transform` method is called in these transformers
 - the transformed class file bytes are installed as the new definition of the class
