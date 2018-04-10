@@ -36,6 +36,10 @@ ObjectOutputStream/ObjectInputStream:
 
 Bootstrap Class path and system class path
 
+Ld: defining loader
+Li: initializing loader
+每个类D使用的相关类C都是以D的Ld作为C的Li来查找的，如果找不到就会报NoClassDefError.
+
 ### Plumbr
 内存检测工具，JVMTI写的
 https://www.javacodegeeks.com/2014/03/migrating-from-javaagent-to-jvmti-our-experience.html

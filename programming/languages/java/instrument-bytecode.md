@@ -18,6 +18,16 @@
 MethodNode的accept会复现一遍该node
 为类添加getter，如果field为父类的private会报错，需要调整其access
 
+插码方式
+- 静态逻辑插入，通过id来执行对应的执行逻辑
+    - jvm-sandbox
+    - pinpoint
+    - APP dynamic
+- 只能用静态方法编写aspect，插码直接调用对应方法
+    - btrace
+- 把执行逻辑weave到target class上
+    - newrelic
+
 #### Instrumentation
 三种方式
 - Static Instrumentation，不同的classpath
