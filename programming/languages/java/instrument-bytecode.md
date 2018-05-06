@@ -18,7 +18,9 @@
 MethodNode的accept会复现一遍该node
 为类添加getter，如果field为父类的private会报错，需要调整其access
 
-插码方式
+不使用Instrumentation接口也能做到插码，可以在`ClassLoader.defineClass`做拦截，进行transform即可，一些AOP框架可能就是使用该技术
+
+插码策略（Policy）
 - 静态逻辑插入，通过id来执行对应的执行逻辑
     - jvm-sandbox
     - pinpoint
@@ -27,6 +29,16 @@ MethodNode的accept会复现一遍该node
     - btrace
 - 把执行逻辑weave到target class上
     - newrelic
+- 将原方法改名，使用新方法替代
+    - 一些AOP实现
+- 创建target的子类，override对应方法
+    - guice的AOP实现
+    - 对target有限制
+- 使用proxy机制，实现接口并增强现有类型
+
+插码阶段和机制（Mechanism）
+- source code level/compile time/code insertion
+- bytecode level/loadtime or runtime/interception
 
 #### Instrumentation
 三种方式

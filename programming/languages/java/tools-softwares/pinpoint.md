@@ -12,7 +12,7 @@
         - 运行时组InterceptorScopeInvocation
             - 存放运行时组内共享信息Attachment
             - 限定买点进入时机：Always、Boundary（不可嵌套）、Internal（可嵌套）。可用来限制不必要的埋点进入。
-            - 也可以成为InterceptorScopeRuntimeContext
+            - 也可以称为InterceptorScopeRuntimeContext
         - Trace 某请求上下文
         - Span 表示整个Trace内的信息
         - SpanEvent运行时经过的某个埋点

@@ -13,10 +13,8 @@
 `git checkout master`之后执行git merge feature2，将feature2中新增内容merge到master上，如果master没动过就是fastforward
 `git remote -v`
 `git remote set-url origin <url>`
-`git rebase --interactive` <要修改commit message的地方>
 `git pull --rebase` 避免多余的merge commit
 `git pull --prune` 删掉remote不存在的本地branch
-`git rebase master`，rebase到master上，同上，这样做后可能需要force push到origin
 `git commit --amend`
 `git log --graph --oneline --all`
 `git log --follow -p -- file`查看某文件的历史记录
@@ -24,9 +22,14 @@
 `gitk --all`显示所有branch
 `git reset --merge <>`将当前branch回归到某个点
 `git diff`、diff都是得到的是new相对于old的变化diff old new
+
+`git rebase --interactive` <要修改commit message的地方>
+`git rebase master`，rebase到master上，同上，这样做后可能需要force push到origin
 `git rebase -i --root`合并前两个commit
 `git rebase --onto commit-id^ commit-id`去掉某个commit
 `git rebase --onto master next topic`
+`git rebase --root`可用来处理init commit
+
 `git config --global --unset <config>`
 `git reset --hard origin/master` 将本地branch设置成origin的HEAD
 `git config --global core.pager 'less -x1,5'` 4个空格显示

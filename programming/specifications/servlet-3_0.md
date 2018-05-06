@@ -215,6 +215,9 @@ particular request URI is as follows:
 1. First, the `<url-pattern>` matching filter mappings in the same order that these elements appear in the deployment descriptor. 即先按url匹配，后面跟着按servlet-name匹配的
 2. Next, the `<servlet-name>` matching filter mappings in the same order that these elements appear in the deployment descriptor
 
+filter的栈式调用结构（先处理request的filter，后处理response）是有其使用调用栈方式调用决定的
+另一种实现方式是双接口，分别对应in和out，可以更灵活的调整filter顺序，目前没看到哪个app-server这么做。
+
 ### Filters and the RequestDispatcher
 New since version 2.4 of the Java Servlet specification is the ability to configure filters to be invoked under request dispatcher `forward()` and `include()` calls.
 By using the new `<dispatcher>` element in the deployment descriptor, the developer can indicate for a `filter-mapping `whether he would like the filter to be applied to requests.

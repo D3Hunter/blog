@@ -30,6 +30,22 @@ sudo lsof -iTCP -sTCP:LISTEN -n
 进程线程数 `ps -M <pid> | wc -l`
 ldd: `otool -L`
 使用对应的app打开某个文件:`open xxxx.xls`, 可通过`-a`指定应用
+
+dtrace cannot control executables signed with restricted entitlements
+- 在另一个窗口dtruss当前窗口pid：`sudo dtruss -p <pid> -f`
+- 在当前窗口执行dtruss对应程序
+
+networksetup用来管理网络相关
+- networksetup -listallnetworkservices
+- networksetup -getXXXXproxy Wi-Fi
+- networksetup -setXXXXproxy Wi-Fi
+- networksetup -setXXXXproxystate Wi-Fi on/off
+- networksetup -getproxybypassdomains Wi-Fi
+- networksetup -setproxybypassdomains Wi-Fi xxx
+
+系统配置文件位置
+- /Library/Preferences/SystemConfiguration
+
 ### finder
 finder显示隐藏文件`CMD + SHIFT + .`, 或者在terminal输入`defaults write com.apple.finder AppleShowAllFiles YES`,然后重启finder
 底部显示path：`View->Show Path`

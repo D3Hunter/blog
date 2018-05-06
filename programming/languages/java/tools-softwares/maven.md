@@ -10,16 +10,18 @@ plugin 帮助: `mvn help:describe -Dplugin=war -Dfull=true`
 `-DrepositoryId=antpool`决定了通过`settings.xml`中的哪个`server`获取credentials
 
 ### Questions
-#### maven dependency:tree 报错 "Could not resolve dependencies for project"
-`mvn test-compile dependency:tree`
-#### Create empty mvn project
+Create empty mvn project
 `mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false`
 
-#### Config mirror repository
+Config mirror repository
 `settings.xml`配置中，更改mirror，修改repository地址：
 - `http://maven.oschina.net/content/groups/public/`
 - `http://maven.aliyun.com/nexus/content/groups/public`
 `<mirrorOf>*</mirrorOf>`
+
+dependency repositories和plugin epositories需要使用独立的tag来指定
+- reposittories
+- pluginRepositories
 
 ### Plugins
 - maven-compiler-plugin: set `source` and `target`
@@ -27,16 +29,24 @@ plugin 帮助: `mvn help:describe -Dplugin=war -Dfull=true`
     - source file encoding
     - copy resources to build directory
 - maven-jar-plugin
+    - addMavenDescriptor设为false去掉jar中的pom
 - maven-assembly-plugin
     - 去掉最后的id`<appendAssemblyId>false</appendAssemblyId>`
     - 文件名称`<finalName>`
     - 如果生成`dir`会警告`is not a regular file`, 在配置添加：`<attach>false</attach>`
     - Entry longer than 100 characters: `<tarLongFileMode>gnu</tarLongFileMode>`
     - attach = false, 避免assembly生成的文件被deploy
+    - dependencySet allows inclusion and exclusion of project dependencies in the assembly
+    - dependencySet 如果没有include默认是当前module的依赖
+    - Transitive*, 传递依赖相关配置
+    - outputFileNameMapping可设置dependency的最终名称，不仅对module有效，对三方依赖也有效
 - maven-antrun-plugin: 解压文件
 - maven-dependency-plugin
     - 拷贝依赖
     - unpack某个artifact，比如jre，如果是本地文件，使用maven-antrun-plugin
+    - 有时模块间相互依赖，执行`dependency:tree`会提示下载不到依赖，可先去掉在执行，并不影响看到当前pom中的其它依赖
+- maven-git-commit-id-plugin
+    - 添加git相关信息
 
 ### Maven Default Lifecycle Phases
 - validate

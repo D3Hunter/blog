@@ -1,0 +1,1 @@
+-Dlog4j.debug 用来诊断log4j配置文件读取是否正确
