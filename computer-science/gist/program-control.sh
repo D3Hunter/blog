@@ -70,7 +70,7 @@ function start() {
         echo "pid of $name is $(getpid "$regex")"
     else
         pushd $dir> /dev/null
-        nohup $cmd &> /dev/null &
+        nohup $cmd &> nohup.out &
         popd > /dev/null
 
         # wait a while to get pid, in case there're delay in $cmd
