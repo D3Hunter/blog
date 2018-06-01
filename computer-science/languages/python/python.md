@@ -255,3 +255,13 @@ To define a source code encoding, `a magic comment` must be placed into the sour
 More precisely, the first or second line must match the following regular expression:
 
     ^[ \t\v]*#.*?coding[:=][ \t]*([-_.a-zA-Z0-9]+)
+
+### 更改pip源
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+`~/.pip/pip.conf`
+`~/Library/Application\ Support/pip/pip.conf`
+
+[global]
+index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+

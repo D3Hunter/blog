@@ -42,9 +42,25 @@ networksetup用来管理网络相关
 - networksetup -setXXXXproxystate Wi-Fi on/off
 - networksetup -getproxybypassdomains Wi-Fi
 - networksetup -setproxybypassdomains Wi-Fi xxx
+- 避免networksetup输入密码
+    - `sudo visudo` to modify the file `/etc/sudoers`.
+    - `your_username ALL=(ALL) NOPASSWD: /usr/sbin/networksetup`
+    - Using `sudo networksetup ...` shouldn't require a password anymore.
 
 系统配置文件位置
 - /Library/Preferences/SystemConfiguration
+
+### 绑定keyboard short到某个shell script
+- Open Automator
+- New Document -> Service
+- Add the 'Run Shell Script' module and insert your code killall -KILL Dock
+- Set the 'Service receives no input', save and quit.
+- Install your newly created service by opening it in Finder and choose 'Install'.
+    - 看左上角应用菜单->服务
+- Attach a keystroke to this service:
+    - Open 'System preferences' -> 'Keyboard' -> 'Keyboard shortcuts' -> 'Services'
+    - Find the service and attach a keystroke to it.
+
 
 ### finder
 finder显示隐藏文件`CMD + SHIFT + .`, 或者在terminal输入`defaults write com.apple.finder AppleShowAllFiles YES`,然后重启finder

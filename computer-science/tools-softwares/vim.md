@@ -6,7 +6,7 @@ u1|u rever-buffer到
 `D`删除光标到行尾
 `dw`删除字
 `dt'`删除直到'，'可以换成任意字符
-[n]<>可以增加减少缩进
+`[n]<>`可以增加减少缩进
 注释多行 Shift I # Esc
 选中文本，然后`u/U`进行case转换
 使用`P`（insert粘贴）而不是`p`（append粘贴）来粘贴
@@ -16,6 +16,8 @@ Ctrl+O/I(TAB) to older/newer cursor position
 lcd/pwd/grep
 可以用V模式，替换一片区域，但是仍然不能选择
 行号：set number/nonumber
+
+避免paste时indent错误：`set paste`粘贴后执行`set nopaste`
 
 ### session
 mksession ~/mysession.vim

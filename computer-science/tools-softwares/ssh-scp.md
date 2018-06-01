@@ -8,11 +8,21 @@
 
 互信登陆只需要编写~/.ssh/authorized_keys就可以
 
+On the remote host, there are two relevant processes:
+- an instance of the ssh daemon (sshd), which is relaying the input and output of the remote program to the local terminal;
+- a shell, which is running that for loop.
+关闭本地时同时kill远端，需要分配tty保证信号被正确relay过去
+
+如果不做重定向的话，nohup的stdout/stderr仍然与当前shell连接，如果用ssh执行导致不会退出（lingering）
+
+### 配置项
 避免断开
 - 在client端`~/.ssh/config`添加`ServerAliveInterval 30`
 - 在server端`/etc/ssh/sshd_config`中添加`ClientAliveInterval 60`
 
 ssh支持连接复用，只要一个终端连接上了，后续的窗口可免密码登陆
+
+关闭用户名密码登陆：`PasswordAuthentication no`
 
 #### local/remote forwarding:
 ssh user@example.com -L bind_address:9000:some-host:5432 # forward any tcp traffic on 9000 to some-host:5432 through example.com，本地监听9000

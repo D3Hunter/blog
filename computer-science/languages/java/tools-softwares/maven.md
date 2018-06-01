@@ -47,6 +47,13 @@ dependency repositories和plugin epositories需要使用独立的tag来指定
     - 有时模块间相互依赖，执行`dependency:tree`会提示下载不到依赖，可先去掉在执行，并不影响看到当前pom中的其它依赖
 - maven-git-commit-id-plugin
     - 添加git相关信息
+- Animal Sniffer Maven plugin
+    - 用来检查jdk runtime兼容性
+- versions plugin
+    - mvn versions:set -DnewVersion=1.0.0
+    - mvn versions:revert
+    - mvn versions:commit
+    - 添加`-DgenerateBackupPoms=false`可不生成backup文件
 
 ### Maven Default Lifecycle Phases
 - validate

@@ -3,6 +3,8 @@ class必须放到对应包名的目录下才能由java找到
 
 java <class-name>中class-name格式为点分或/分，不包含最后的.class
 
+启动过多线程，会导致很多的cpu花在context switch上
+
 ### JDK classes
 ResourceBundle 国际化
 wait notify notifyAll需要获得object的monitor
@@ -62,6 +64,9 @@ https://www.javacodegeeks.com/2014/03/migrating-from-javaagent-to-jvmti-our-expe
 - java -XX:+PrintFlagsFinal -version
 - jar cvf program.jar -C path/to/classes .
 - JMH - Java Microbenchmark Harness 用来做基准测试
+- 控制heap的shrink和expand
+    - +XX:MinHeapFreeRatio
+    - +XX:MaxHeapFreeRatio
 
 逆向和代码混淆相关
 - jarjar用来重命名类

@@ -3,6 +3,8 @@
 - `Http Streaming`: Similar to long polling but the server responds with a header with "Transfer Encoding: chunked" and hence we do not need to initiate a new request every time the server sends some data
 - `Java Applet, Flash, Silverlight`: They provide the ability to connect to socket servers over tcp/ip but since they are plugins, developers don't want to depend on them.
 - `WebSockets`: they are the new API which tries to address the short comings of above methods in the following manner:
+- server-side routing: server decides, whole page refresh
+- client-side routing: client decides, partical refresh, slow initial load
 
 ## RFC 6202
 In order to improve this situation, several `server-push programming`

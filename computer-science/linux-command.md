@@ -22,6 +22,8 @@ awk计算sum有精度限制，此时可以使用`bc`（`paste`生成表达式）
 
 rsync - a fast, versatile, remote (and local) file-copying tool. rsync会对比src和dst之间的差别，并只拷贝变动的部分。
 
+IUS repository：提供最新的package，yum内原有的包仍然可以安装
+
 ### file read/import progress
 pv -f xxx.sql 2> output.log | mysql -uroot -proot test
 
@@ -168,3 +170,10 @@ Bochs 类似kvm／zen/QEMU
 ### 关闭history记录
 配置中添加`set +o history`
 删除`.bash_history`
+
+### creating swap file
+- dd if=/dev/zero of=/swapfile bs=1024 count=65536
+- mkswap /swapfile
+- swapon /swapfile
+- cat /proc/swaps
+
