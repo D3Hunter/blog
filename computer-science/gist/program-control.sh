@@ -7,6 +7,18 @@ argument=$3
 
 local_ip=$(ifconfig | sed -En 's/127.0.0.1//;s/10\.//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')
 
+function wait_container_start_completed() {
+    filename=$1
+    message=$2
+    count=0
+    while ! grep "${message}" "${filename}" &> /dev/null; do
+        sleep 1
+        count=$((count + 1))
+        echo -n "\rBeen waiting for ${count} seconds"
+    done
+    echo
+}
+
 function print_help() {
     cat << EOF
 controling life cycle of non-service programs.
