@@ -1,4 +1,5 @@
 A `test plan` describes a series of steps JMeter will execute when run.
+
 `Thread group` elements are the beginning points of any test plan.
 The controls for a thread group allow you to:
 - Set the number of threads
@@ -33,6 +34,10 @@ The JMeter test tree contains elements that are both hierarchical and ordered. S
 
 ### perfmon
 perfmon抓取保存的数据在elapse列中，且数值都乘了1000
+
+使用perfmon采集数据，如果结果文件为空，可在ServerAgent端查看日志是否出错
+
+在`bin/jmeter.properties`中设置`jmeterPlugin.perfmon.interval=2000`
 
 ### 把采集到的性能数据存储，使用Grafana展现
 JMeter’s Backend Listener allows to plug an external database to store test results and performance metrics.

@@ -1,5 +1,20 @@
 命令替换`$(cmd)`和符号``cmd``差不多
 
+### bash下的数组用法
+```
+arr=(Hello World)
+arr[0]=Hello
+arr[1]=World
+```
+
+- `${arr[*]}`         # All of the items in the array
+- `${!arr[*]}`        # All of the indexes in the array
+- `${#arr[*]}`        # Number of items in the array
+- `${#arr[0]}`        # Length of item zero
+
+如果要向function传递array对象，需要使用`"${arr[*]}"`的形式
+
+
 ### `()`和`{}`都是对一串的命令进行执行，但有所区别：
 - ()只是对一串命令重新开一个子shell进行执行
 - {}对一串命令在当前shell执行
@@ -85,3 +100,6 @@ if中用`-a` `-o` 表示 AND OR
 
 pushd / popd
 dirname "$0"
+
+find不会用exit status表示状态，但可用如下方法确定是否有结果：`find /tmp -name something | egrep '.*'`
+

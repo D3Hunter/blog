@@ -3,6 +3,7 @@ pexpect: expect的python版本
 virtualenv: create isolated Python environments
 
 ### Requirements files
+pip freeze > requirements.txt
 pip install -r requirements.txt
 
 use 'import modu' over 'from modu import sqrt' over 'from modu import *' to
@@ -45,8 +46,8 @@ PEP 8 is the de-facto code style guide for Python.
     if not attr:
     if attr is None:
 - Access a Dictionary Element
-    Don’t use the `dict.has_key()` method. Instead, use `x in d` syntax,
-    or pass a default argument to `dict.get()`.
+    - Don’t use the `dict.has_key()` method. Instead, use `x in d` syntax,
+    - or pass a default argument to `dict.get()`.
 - Short Ways to Manipulate Lists
     List comprehensions provide a powerful, concise way to work with lists.
     Also, the map() and filter() functions can perform operations on lists

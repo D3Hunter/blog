@@ -157,10 +157,13 @@ Requested array size exceeds VM limit
 ### java逆向
 对于混淆代码，可以先把field等改成长名字，避免跟方法/类混淆，减少理解难度
 ### class name
-binary name   use '.'
-internal form of binary name, use '/'
-descriptor(只针对field和method)
-signature
+- `binary name` use '.'
+- `internal form of binary name` use '/'
+- `fully qualified class name(FQCN)` also known as `binary names`
+- FQCN的定义参考Java Language Specification 6.7
+- Canonical Names基本等同于FQCN, 只是有时member class在parent和child中可以用不通的FQCN表示，而其Canonical Names只能使用其定义类表示
+- Class.getName返回的是一种特殊的格式，里面有`Lclassname;`的用法，这种用法还用于`Descriptors and Signatures`
+- `Descriptors and Signatures`参考Java Virtual Machine Specification 4.3
 
 ### 打开JMX
 -Dcom.sun.management.jmxremote.port=8999 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=10.128.6.238
@@ -186,6 +189,7 @@ java.lang.OutOfMemoryError: unable to create new native thread
 HotSpot JVM may use one of 6 combinations of garbage collection algorithms listed below.
 `UseParallelOldGC`会自动设置`UseParallelGC`
 The throughput collector(UseParallelGC) can use multiple threads to process the old generation as well. That is the default behavior in JDK 7u4 and later releases, and that behavior can be enabled in earlier JDK 7 JVMs by specifying the `-XX:+UseParallelOldGC` flag. 即此时单独设置`UseParallelGC`同时也设置了`UseParallelOldGC`
+```
 +------------------------------+---------------------------------------+----------------------------------------+
 |Young collector               |Old collector                          |JVM option                              |
 +------------------------------+---------------------------------------+----------------------------------------+
@@ -196,6 +200,7 @@ The throughput collector(UseParallelGC) can use multiple threads to process the 
 |Parallel (ParNew)             |Concurrent Mark Sweep                  |-XX:+UseConcMarkSweepGC -XX:+UseParNewGC|
 |G1                            |                                       |-XX:+UseG1GC                            |
 +------------------------------+---------------------------------------+----------------------------------------+
+```
 
 ### 字节码保护
 - 字节码混淆

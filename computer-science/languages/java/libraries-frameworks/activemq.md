@@ -3,7 +3,11 @@ open source messaging and Integration Patterns server.
 disable jmx support(thread name starts with rmi): set `useJmx` to false
 set `persistent=false` to disable persistent
 You can monitor the status of the connection with the broker via the `addTransportListener()` method on the `ActiveMQConnection`.
+
 by default there is one thread allocated by every `session`. This basically means that session will use its ThreadPoolExecutor to execute its tasks.
+
+If you want to consume concurrently from a queue, then you must use a different session for each consumer. This is because you must have a session per thread. The JMS contract is that only 1 session is used by one thread at once - which if you're using consumers means that only 1 consumer can receive messages at once if using the same session. So if you want concurrent consumption of messages, you need to `use different sessions for each consumer`.
+
 
 ### Quick Start
 - `activemq start`

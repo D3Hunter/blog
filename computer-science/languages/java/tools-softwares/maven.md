@@ -30,6 +30,7 @@ dependency repositories和plugin epositories需要使用独立的tag来指定
     - copy resources to build directory
 - maven-jar-plugin
     - addMavenDescriptor设为false去掉jar中的pom
+    - `<Class-Path>.</Class-Path>`可以直接添加classpath，会跟`<addClasspath>`的结果合并
 - maven-assembly-plugin
     - 去掉最后的id`<appendAssemblyId>false</appendAssemblyId>`
     - 文件名称`<finalName>`
@@ -54,8 +55,11 @@ dependency repositories和plugin epositories需要使用独立的tag来指定
     - mvn versions:revert
     - mvn versions:commit
     - 添加`-DgenerateBackupPoms=false`可不生成backup文件
+- exec-maven-plugin: 执行某个脚本
+- maven-clean-plugin：执行额外的clean操作
+    - 删除目录可以用`<include>**/GENERATED_DIR/**</include>`
 
-### Maven Default Lifecycle Phases
+## Maven Default Lifecycle Phases
 - validate
 - generate-sources
 - process-sources
