@@ -10,8 +10,6 @@ ubuntu系统下使用如下：
 
 DMI Desktop Management Interface; SMBIOS, System Management BIOS
 
-`history -c` clears your history in the current shell.
-
 grep和awk默认都是有缓冲的，要立即显示使用如下参数：
 `top -bp $pid -d 5 | grep --line-buffered 'python' | awk -W interactive '{print $9}'`
 top默认会接受来自stdin的指令，在脚本中将其输出到文件时会报错`failed tty get`, 添加`-b`切换到batch mode
@@ -41,17 +39,6 @@ enca filename查看文件编码
 enconv -L zh_CN -x UTF-8 filename转换编码
 iconv -f encoding -t encoding inputfile
 convmv -f UTF-8 -t GBK -notest filename 文件名编码转换
-
-### terminal出现乱码
-`terminal`的输出变乱（按回车会打印PS1但并不换行，输入也不显示），是`echo`被关闭导致,可使用`reset`，或`stty echo`打开echo（`stty -echo`用来关闭echo）
-bash里`\[\]`用来表示non-printable字符的开始结束，否则针对过长的命令，会导致bash不能正确显示输入
-对应到ascii代码为`\001`和`\002`，在不能使用`\[\]`的情况可以使用这两个，如gdb prompt
-参考：https://superuser.com/questions/301353/escape-non-printing-characters-in-a-function-for-a-bash-prompt/301355
-
-### job 管理
-jobs/disown/fg/bg/跟作业管理相关，disown解除关系（不再在shell接受到HUP时向该进程发送HUP）
-使用时jobspec需要加前缀%
-先将作业stop（Ctrl-z）然后bg即可将作业放置后台
 
 ### ubuntu开启root的ssh登陆
 - sudo passwd root
@@ -166,10 +153,6 @@ Bochs 类似kvm／zen/QEMU
 `supervise` maintains status information in a binary format inside the directory `s/supervise`, which must be writable to `supervise`.  The status information can be read by  `svstat`
 `auditd`  is  the userspace component to the Linux Auditing System. It’s responsible for writing audit records to the disk.
 `audispd`  is  an  audit  event multiplexor(dispatcher). It has to be started by the audit daemon in order to get events. It takes audit events and distributes them to child programs that want to analyze events in realtime.
-
-### 关闭history记录
-配置中添加`set +o history`
-删除`.bash_history`
 
 ### creating swap file
 - dd if=/dev/zero of=/swapfile bs=1024 count=65536

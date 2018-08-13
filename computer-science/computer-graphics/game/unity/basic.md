@@ -51,3 +51,10 @@ A GameObject can only contain one Constraint component of the same kind. For exa
 Rotations in 3D applications are usually represented in one of two ways, `Quaternions` or `Euler angles`. Each has its own uses and drawbacks. Unity uses Quaternions internally, but shows values of the equivalent Euler angles in the inspector to make it easy for you to edit. Euler angles suffer from `Gimbal Lock`.
 When dealing with handling rotations in your scripts, you should use the Quaternion class and its functions to create and modify rotational values.
 
+`File > Build Settings…` is the menu item to access the Build Settings window. The first time you view this window in a project, it will appear blank. If you build your game while this list is blank, only the currently open scene will be included in the build. If you want to quickly build a test player with only one scene file, just build a player with a blank scene list.
+
+Preset 一些预设的参数值，可保存并付给别的GameObject
+
+### random
+In probability and statistics, the `quantile function`, associated with a probability distribution of a random variable, specifies the value of the random variable such that the probability of the variable being less than or equal to that value equals the given probability. It is also called the `percent-point function` or `inverse cumulative distribution function`. 可以用来计算`Continuous weighted random distribution`. 在unity里使用`AnimationCurve`
+

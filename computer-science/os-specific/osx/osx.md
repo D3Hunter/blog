@@ -16,8 +16,6 @@ profiles->keys->left options as ESC+
 
 高级设置：Scroll wheel sends arrow keys when in alternate screen mode，避免滚动命令行历史
 
-
-
 ### 查看listen的端口
 ```
 sudo lsof -iTCP -sTCP:LISTEN
@@ -49,6 +47,13 @@ networksetup用来管理网络相关
 
 系统配置文件位置
 - /Library/Preferences/SystemConfiguration
+
+`sysctl` hw.physicalcpu hw.logicalcpu查看是否开启超线程
+`id` 可查看当前uid及所属gid
+`ps -j`可将uid转换成username，需要放在-f前面
+
+更换sed为gnu-sed：`brew reinstall gnu-sed --with-default-names`，使用`/usr/local/bin/sed`
+
 
 ### 绑定keyboard short到某个shell script
 - Open Automator

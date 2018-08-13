@@ -145,3 +145,16 @@ bean生命周期管理方式：
     InitializingBean/DisposableBean分别调用afterPropertiesseSet/destroy
     JSR250提供了PostConstruct和PreDestroy，这种方式不依赖Spring
         这种方式比前者优先级更高
+
+### XML Schema-based configuration
+XML Schema-based configuration支持使用namespace的格式
+支持对配置文件扩展：Extensible XML authoring，用户自定义schema
+- Authoring an XML schema to describe your custom element(s).
+- Coding a custom `NamespaceHandler` implementation (this is an easy step, don’t worry).
+- Coding one or more `BeanDefinitionParser` implementations (this is where the real work is done).
+- Registering the above artifacts with Spring (this too is an easy step).
+    - `META-INF/spring.handlers`
+    - `META-INF/spring.schemas`
+
+When using XML-based configuration metadata, you use the `'id'` or `'name'` attributes to specify the bean identifier(s).
+
