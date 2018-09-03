@@ -27,3 +27,8 @@ A `mode` of a `continuous probability distribution` is often considered to be an
 In mathematics, a `moment` is a specific quantitative measure, used in both mechanics and statistics, of the shape of a set of points.
 
 Given random variables X, Y, ..., that are defined on a probability space, the `joint probability distribution` for X, Y, ... is a probability distribution that gives the probability that each of X, Y, ... falls in any particular range or discrete set of values specified for that variable. In the case of only two random variables, this is called a `bivariate distribution`, but the concept generalizes to any number of random variables, giving a `multivariate distribution`.
+
+A `sigmoid function` is a mathematical function having a characteristic `"S"-shaped curve` or `sigmoid curve`. Often, sigmoid function refers to the special case of the `logistic function`.
+A `logistic function` or `logistic curve` is a common "S" shape (sigmoid curve)
+
+A square matrix that is not invertible is called `singular` or `degenerate`. 
