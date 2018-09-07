@@ -1,3 +1,4 @@
+## zip/deflate
 使用`deflateInit`压缩的，需要使用`inflateInit`，或者使用`inflateInit2`，`wbit`为`15`或者
 - `MAX_WBITS+17`,文档上写15可以，但32(MAX_WBITS+17)为什么也可以？另外
 - MAX_WBITS+32可自动判断zlib/gzip，+16只能是gzip
@@ -18,3 +19,19 @@
 - -15 ~ -8 raw deflate
 - 8 ~ 15 zlib wrapping
 - 24 ~ 31 gzip wrapping (header和trailing基本为空), (可以使用gunzip工具解压)
+
+## Binary delta compression
+`Binary delta compression (BDC)` is a technology used in software deployment for distributing patches.
+
+### Delta encoding
+`Delta encoding` is a way of storing or transmitting data in the form of `differences (deltas)` between sequential data rather than complete files; more generally this is known as `data differencing`.
+
+`Delta encoding` is sometimes called `delta compression`, particularly where archival histories of changes are required (e.g., in revision control software).
+
+常见的应用场景
+- Delta encoding in HTTP
+- Delta copying
+- Online backup
+- Git等VCS，diff等工具
+- 其他类型的sequential data的压缩处理，比如时间、递增的数等等
+

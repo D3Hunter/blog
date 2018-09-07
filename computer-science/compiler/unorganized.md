@@ -21,3 +21,5 @@ In compiler construction, a `basic block` is a straight-line code sequence with 
 
 In compiler design, `static single assignment` form (often abbreviated as SSA form or simply SSA) is a property of an intermediate representation (IR), which requires that each variable is assigned exactly once, and every variable is defined before it is used.
 
+In computer science, an `induction variable` is a variable that gets increased or decreased by a fixed amount on every iteration of a loop or is a linear function of another induction variable.
+

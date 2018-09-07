@@ -32,3 +32,22 @@ A `sigmoid function` is a mathematical function having a characteristic `"S"-sha
 A `logistic function` or `logistic curve` is a common "S" shape (sigmoid curve)
 
 A square matrix that is not invertible is called `singular` or `degenerate`. 
+
+In probability theory and statistics, a sequence or other collection of random variables are `independent and identically distributed (i.i.d.)` if each random variable has the same probability distribution as the others and all are mutually independent.
+
+In statistics, a `statistic is sufficient` with respect to a statistical model and its associated unknown parameter if "no other statistic that can be calculated from the same sample provides any additional information as to the value of the parameter"
+
+In probability theory and statistics, the `binomial distribution` with parameters `n` and `p` is the discrete probability distribution of the number of successes in a sequence of `n` independent experiments.
+
+conjugate(/ˈkɒndʒʊɡət/): Joined in a reciprocal relation, especially having the same real parts and equal magnitudes but opposite signs of imaginary parts.
+
+In the mathematical field of topology, a `homeomorphism` or `topological isomorphism` or `bi continuous function` is a continuous function between topological spaces that has a continuous inverse function.
+
+In mathematics, a `manifold` is a topological space that locally resembles `Euclidean space` near each point. More precisely, each point of an n-dimensional manifold has a neighbourhood that is homeomorphic to the Euclidean space of dimension n. In this more precise terminology, a manifold is referred to as an `n-manifold`.
+
+In geometry, a `simplex` (plural: simplexes or simplices) is a generalization of the notion of a `triangle` or `tetrahedron` to arbitrary dimensions. Specifically, a `k-simplex` is a k-dimensional polytope which is the convex hull of its k + 1 vertices.
+
+In statistics, a `unimodal probability distribution` or `unimodal distribution` is a probability distribution which has a single peak. If there is a single mode, the distribution function is called "`unimodal`".
+
+In geometry, `bisection` is the division of something into two equal or congruent parts, usually by a line, which is then called a `bisector`. A `line segment bisector` passes through the midpoint of the segment. Particularly important is the `perpendicular bisector` of a segment, which, according to its name, meets the segment at right angles.
+
