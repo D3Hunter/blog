@@ -22,6 +22,8 @@ rsync - a fast, versatile, remote (and local) file-copying tool. rsync会对比s
 
 IUS repository：提供最新的package，yum内原有的包仍然可以安装
 
+文件按行长度排序: `cat testfile | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2-`
+
 ### file read/import progress
 pv -f xxx.sql 2> output.log | mysql -uroot -proot test
 
@@ -159,4 +161,12 @@ Bochs 类似kvm／zen/QEMU
 - mkswap /swapfile
 - swapon /swapfile
 - cat /proc/swaps
+
+### audit
+记录系统内的操作
+- 添加audit：`auditctl -w /etc/shadow -k shadow-file -p rwxa`
+    - 监控rwxa操作
+    - `-w`监控的文件名
+    - `-k`指定日志中显示的key
+- 查看记录：`ausearch -f /etc/passwd`
 

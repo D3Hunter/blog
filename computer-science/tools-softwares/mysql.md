@@ -1,18 +1,29 @@
 查询当前配置变量：`show variables like 'old%';`
+
 `show tables from database;`
+
 建表语句：`show create table tale_name;`
+
 `show databases;`
+
 当前数据库：`select database()`
+
 当前用户：`SELECT USER()`
+
 快速插入大量数据 `insert into user select * from user;`
+
 execution plan also known as the `EXPLAIN` plan： `explain select * from users;`可以得到一系列op
+
+`mysql`命令行执行`-v`可以查看结果,`v`越多越详细`-vvv`
+
 ### my.cnf位置
 mysql --help可查看my.cnf的位置即读取顺序
+
 /etc/my.cnf /etc/mysql/my.cnf /usr/etc/my.cnf ~/.my.cnf
 ### mysql bind address
 如果mysql当前绑定到127.0.0.1，还需要修改mysql配置bind-address：
-/etc/mysql/my.cnf或/etc/mysql/mysql.conf.d/mysqld.cnf
-设置成0.0.0.0可以监听所有网卡
+- /etc/mysql/my.cnf或/etc/mysql/mysql.conf.d/mysqld.cnf
+- 设置成0.0.0.0可以监听所有网卡
 
 MySQL converts TIMESTAMP values from the current time zone to UTC for storage, and back from UTC to the current time zone for retrieval. (This does not occur for other types such as DATETIME.)
 
@@ -20,13 +31,12 @@ show procedure status;
 show columns in xxx.xxx;
 
 ### table size
-MyISAM的表可从information_schema.tables获取行数和表大小
-    或select count(1), 两者行号都在表的.MYD文件中
-InnoDB不行
-SHOW TABLE STATUS查看某个表使用的什么数据引擎
-    也可以用show create table
-    在MyISAM下table_row, data_length, index_length为正确指，在Innodb下为内存索引大小近似
-    结果从INFORMATION_SCHEMA TABLES来
+- MyISAM的表可从information_schema.tables获取行数和表大小, 或select count(1), 两者行号都在表的.MYD文件中
+- InnoDB不行
+- `SHOW TABLE STATUS`查看某个表使用的什么数据引擎
+    - 也可以用show create table
+    - 在MyISAM下table_row, data_length, index_length为正确指，在Innodb下为内存索引大小近似
+    - 结果从INFORMATION_SCHEMA TABLES来
 
 ### 获取一个月前的timestamp和date时间：
 h2
@@ -40,9 +50,9 @@ mysql
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '111111' WITH GRANT OPTION;
 flush privileges;
 ###忘记mysql密码可按下面的方式：
-停掉mysql
-mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
-免密登陆，修改密码：update user set Password=PASSWORD('root') where User='root';
+- 停掉mysql
+- mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
+- 免密登陆，修改密码：update user set Password=PASSWORD('root') where User='root';
 
 ### import, export
 `mysqldump -u$user -p$pass -S $socket --all-databases > db_backup.sql`
@@ -50,6 +60,7 @@ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
 `mysql -u username -p db_name < /path/to/table_name.sql`
 `mysql -u root -p'PASSWORD'`
 	You must do this if the password has any of the following characters: * ? [ < > & ; ! | $ ( )
+
 查看导入进度：`pv -f xxx.sql 2> output.log | mysql -uroot -proot test`
     - `sed -u 's/\r/\n/g' output.log | tail`
 
@@ -64,12 +75,12 @@ mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
     - 直接读取并解析表A的`A.sql`文件（每个insert一行），转换成B的格式，然后存到mysql中，这样可以节省大量中间过程，而且读取磁盘并解析要比读取mysql要快
 
 ### mysql5.0默认old_passwords = 1，高版本的client连接时会报ERROR 2049 (HY000):
-Connection using old (pre-4.1.1)，在client中加--skip-secure-auth可使用old
-password，但最好的方法是修改密码，让其使用新的加密方式
-set old_passwords = 0;
-update user set password = password('testpass') where user = 'testuser';
-select user,password from user;可看到密码长度变了
-flush privileges;
+- Connection using old (pre-4.1.1)，在client中加--skip-secure-auth可使用old
+- password，但最好的方法是修改密码，让其使用新的加密方式
+- set old_passwords = 0;
+- update user set password = password('testpass') where user = 'testuser';
+- select user,password from user;可看到密码长度变了
+- flush privileges;
 
 
 ### 本地密码保存
@@ -89,9 +100,6 @@ The DECIMAL and NUMERIC types store exact numeric data values. These types are u
 ### functions
 `last_insert_ID`: The ID that was generated is maintained in the server on a per-connection basis.
 
-### join
-the default is `INNER JOIN` if you just specify `JOIN`.
-
 ### Data types
 int 4字节，BIGINT 8字节，可指定是否有符号，默认为SIGNED
 
@@ -106,4 +114,9 @@ When you start building your queries, you want to make sure that the query is us
 如果数据做了修改，mysql会自动移动对应数据
 
 ### insert
-如果在一次事物中插入了过多的行，会占用大量undo空间
+如果在一次事务中插入了过多的行，会占用大量undo空间
+
+### connection parameters
+- `rewriteBatchedStatements` Default: false, 会将多条sql拼接在一起，batch执行时只返回一个值
+- `continueBatchOnError` Default: true, batch执行返回多值，一个出错继续执行
+

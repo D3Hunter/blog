@@ -10,4 +10,6 @@
 - `\s` When the UNICODE flag is not specified, it matches any whitespace character
 - `\S` When the UNICODE flag is not specified, matches any non-whitespace character;
     - 如果无法指定DOTALL模式，可使用`[\s\S]`替代
+- `\w` Matches any word character including underscore. Equivalent to `[A-Za-z0 -9_]`. Use it in the search field.
+- `\W` Matches any non-word character. Equivalent to `[^A-Za-z0-9_]`.
 

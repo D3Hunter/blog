@@ -53,8 +53,10 @@ arr[1]=World
 - $1～$n 位置变量
 
 ### shell引号:
-单引号内容表示`literal`意思, 即不能包含单引号, 但可以利用类似C里的"sss" "sss"自动拼接，来添加变量或‘
+单引号内容表示`literal`意思, 即不能包含单引号, 但可以利用类似C里的"sss" "sss"自动拼接，来添加变量或`'`
+
 双引号内容除了$\和反引号外表示`literal`意思,且\能够转义$ ` " \ <newline>,若\跟其他字符\会被当作literal
+
 所以:
 - echo "\\n"  dash传给echo的字符串为[\n]    echo再转义则会输出换行
 - echo "\\\n" dash传给echo的字符串为[\\n]   echo再转义则会输出\n
@@ -62,44 +64,58 @@ arr[1]=World
 `sh(dash)`的`echo`基本等于`bash`的`echo -e`
 
 ### for循环
-有效：var="aa abb"; for i in $var; do echo "$i"; done
-    使用Makefile的变量也不行，需要复制过来
-    Makefile里用$$来引用bash变量
-无效：for i in "aa abb"; do echo "$i"; done
-无效：var="aa abb"; for i in "$var"; do echo "$i"; done
+##### 变量值循环
+有效：`var="aa abb"; for i in $var; do echo "$i"; done`
+- 使用Makefile的变量也不行，需要复制过来
+- Makefile里用$$来引用bash变量
 
-对文件内每一行
+无效：`for i in "aa abb"; do echo "$i"; done`
+
+无效：`var="aa abb"; for i in "$var"; do echo "$i"; done`
+
+##### 对文件内每一行
+```
 cat peptides.txt | while read line
 do
     # do something with $line here
 done
+```
 
-迭代数组for fname in a.txt b.txt c.txt
+##### 迭代数组
+`for fname in a.txt b.txt c.txt`
+
+```
 for file in *.jtl; do
     wc -l $file |cut -d' ' -f 1 | awk '{print "'${file}'  "  $0/600.0}';
 done
+```
+
+`for i in {1..100}; do ...; done`
+
 `for i in $(seq 1 10); do ...;done`
 
 ### misc
 `n>&digit-` 将文件描述符`digit`作为`n`并关闭`digit`,不指定`digit`相当于关闭`n`,`n`默认为`stdout`,`n<&digit-`同理
 
-`if [ ]; then...;fi`
-`set  a b c` 设置到位置变量中
-`set -x` 类似与verbose
-bash里的strstr：if [[ ${image_name} == *"apache"* ]];
+- `if [ ]; then...;fi`
+- `set  a b c` 设置到位置变量中
+- `set -x` 类似与verbose
+- bash里的strstr：if [[ ${image_name} == *"apache"* ]];
 
-`cat`多行导入
-`cat <<EOF` 读入标准输入直到遇到`EOF`为止，可包含变量。也可不使用终止符,而用`Ctrl-D`
+- `cat`多行导入
+- `cat <<EOF` 读入标准输入直到遇到`EOF`为止，可包含变量。也可不使用终止符,而用`Ctrl-D`
 
 IFS(Internal Field Seprator) 会影响set设置位置变量，及echo是否使用”扩起来，比如$@ $*
 
-: 是no-op,可接受参数
-if中用`-a` `-o` 表示 AND OR
-`-bash: [: too many arguments`  使用的变量被IFS拆分为多个参数 需要用双引号扩起来
-`shell`的实际解释器为`#!`设置的,要注意控制台`shell(bash)`与实际脚本使用`shell(sh或叫做dash)`的不同
+- `:` 是no-op,可接受参数
+- `if`中用`-a` `-o` 表示 AND OR
+- `-bash: [: too many arguments`  使用的变量被IFS拆分为多个参数 需要用双引号扩起来
+- `shell`的实际解释器为`#!`设置的,要注意控制台`shell(bash)`与实际脚本使用`shell(sh或叫做dash)`的不同
 
-pushd / popd
-dirname "$0"
+- pushd / popd
+- dirname "$0"
 
 find不会用exit status表示状态，但可用如下方法确定是否有结果：`find /tmp -name something | egrep '.*'`
+
+`ANSI-C Quoting`: Words of the form `$'string'` are treated specially. The word expands to string, with backslash-escaped characters replaced as specified by the ANSI C standard. The expanded result is single-quoted, as if the dollar sign had not been present. 比如指定`column sort awk`等命令使用`tab`做分隔符
 

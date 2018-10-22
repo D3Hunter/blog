@@ -5,6 +5,8 @@ java <class-name>中class-name格式为点分或/分，不包含最后的.class
 
 启动过多线程，会导致很多的cpu花在context switch上
 
+`JSR 223` Scripting for the JavaTM Platform, since `1.6`
+
 ### JDK classes
 ResourceBundle 国际化
 wait notify notifyAll需要获得object的monitor

@@ -68,3 +68,7 @@ git show <SHA> -- <path-to-file>
 - find . -type f -not -path "./.git/*" -exec dos2unix {} \;
 - git commit -a -m 'dos2unix conversion'
 - echo "* text=auto" > .gitattributes
+
+### Git development model
+1. branching model: https://nvie.com/posts/a-successful-git-branching-model/
+

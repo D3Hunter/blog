@@ -1,5 +1,6 @@
 ## 装机
 install `brew`,`item2`,`oh my zsh`,`git`
+
 隐私设置屏保立即需要密码`Ctrl-Shift-关机健`
 
 ### java多版本，需要重启
@@ -25,9 +26,14 @@ sudo lsof -iTCP -sTCP:LISTEN -n
 ```
 
 ### commands
-进程线程数 `ps -M <pid> | wc -l`
-ldd: `otool -L`
-使用对应的app打开某个文件:`open xxxx.xls`, 可通过`-a`指定应用
+
+`osascript` -- execute OSA scripts (AppleScript, JavaScript, etc.)
+
+命令行启动提示：`osascript -e 'display notification "check data center" with title "Time out"'`
+
+- 进程线程数 `ps -M <pid> | wc -l`
+- ldd: `otool -L`
+- 使用对应的app打开某个文件:`open xxxx.xls`, 可通过`-a`指定应用
 
 dtrace cannot control executables signed with restricted entitlements
 - 在另一个窗口dtruss当前窗口pid：`sudo dtruss -p <pid> -f`
@@ -48,9 +54,9 @@ networksetup用来管理网络相关
 系统配置文件位置
 - /Library/Preferences/SystemConfiguration
 
-`sysctl` hw.physicalcpu hw.logicalcpu查看是否开启超线程
-`id` 可查看当前uid及所属gid
-`ps -j`可将uid转换成username，需要放在-f前面
+- `sysctl` hw.physicalcpu hw.logicalcpu查看是否开启超线程
+- `id` 可查看当前uid及所属gid
+- `ps -j`可将uid转换成username，需要放在-f前面
 
 更换sed为gnu-sed：`brew reinstall gnu-sed --with-default-names`，使用`/usr/local/bin/sed`
 
@@ -68,10 +74,10 @@ networksetup用来管理网络相关
 
 
 ### finder
-finder显示隐藏文件`CMD + SHIFT + .`, 或者在terminal输入`defaults write com.apple.finder AppleShowAllFiles YES`,然后重启finder
-底部显示path：`View->Show Path`
-title显示path：`defaults write com.apple.finder _FXShowPosixPathInTitle -bool true; killall Finder`
-拷贝当前路径到剪切板：`Opt + Cmd + c`，选中文件时复制的是所选文件的路径，不选则是当前文件夹
+- finder显示隐藏文件`CMD + SHIFT + .`, 或者在terminal输入`defaults write com.apple.finder AppleShowAllFiles YES`,然后重启finder
+- 底部显示path：`View->Show Path`
+- title显示path：`defaults write com.apple.finder _FXShowPosixPathInTitle -bool true; killall Finder`
+- 拷贝当前路径到剪切板：`Opt + Cmd + c`，选中文件时复制的是所选文件的路径，不选则是当前文件夹
 ### brew 没有特定软件
 - `brew install coreutils`
 - `sudo ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum`
