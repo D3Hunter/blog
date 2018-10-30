@@ -1,56 +1,80 @@
 ### 2016
-- 斯普特尼克恋人，村上春树
-- 1Q84，村上春树
-- 万物既伟大又渺小，James Herriot
-- 三体1-3，刘慈欣
-- 冰与火之歌1-5
-- 乡土中国，费孝通
-- 生育制度，费孝通
-- 群体性孤独，Sherry Turkle
-- 挪威的森林，村上春树
-- 学会提问-批判性思维指南，M. Nell Browne. Stuart M. Keeley
-- 社会性动物，Elliot Aronson
-- 乌合之众，Gustave Le Bon
-- 天黑以后，村上春树
-- 策略思维，Avinash K.Dixit
-- 沉默的大多数，王小波
-- 世界上有趣的事情太多，张佳玮
-- 人生的智慧，Arthur Schopenhauer
-- 学术与政治，Max Weber
-- 渴望生活-梵高传，欧文斯通
-- 故事-材质、结构、风格和银幕制作的原理，
-- 血酬定律-中国历史上的生存游戏，吴思
-- 潜规则-中国历史上的真实游戏，吴思
-- 舞舞舞，村上春树
-- 艺术的故事，E.H.Gombrich
-- 你的灯亮着吗：发现问题的真正所在，Donald C.Cause. Gerald M.Weinberg
-- 没有色彩的多崎作和他的巡礼之年，村上春树
-- 浪漫主义的根源，Isaiah Berlin
-- 枪炮、病菌和钢铁-人类社会的起源，Jared Diamond
+1. 斯普特尼克恋人，村上春树
+2. 1Q84，村上春树
+3. 万物既伟大又渺小，James Herriot
+4. 三体1-3，刘慈欣
+5. 冰与火之歌1-5
+6. 乡土中国，费孝通
+7. 生育制度，费孝通
+8. 群体性孤独，Sherry Turkle
+9. 挪威的森林，村上春树
+10. 学会提问-批判性思维指南，M. Nell Browne. Stuart M. Keeley
+11. 社会性动物，Elliot Aronson
+12. 乌合之众，Gustave Le Bon
+13. 天黑以后，村上春树
+14. 策略思维，Avinash K.Dixit
+15. 沉默的大多数，王小波
+16. 世界上有趣的事情太多，张佳玮
+17. 人生的智慧，Arthur Schopenhauer
+18. 学术与政治，Max Weber
+19. 渴望生活-梵高传，欧文斯通
+20. 故事-材质、结构、风格和银幕制作的原理，
+21. 血酬定律-中国历史上的生存游戏，吴思
+22. 潜规则-中国历史上的真实游戏，吴思
+23. 舞舞舞，村上春树
+24. 艺术的故事，E.H.Gombrich
+25. 你的灯亮着吗：发现问题的真正所在，Donald C.Cause. Gerald M.Weinberg
+26. 没有色彩的多崎作和他的巡礼之年，村上春树
+27. 浪漫主义的根源，Isaiah Berlin
+28. 枪炮、病菌和钢铁-人类社会的起源，Jared Diamond
+
 ### 2017
-- 治理中国-从革命到改革，李侃如
-- 嫌疑犯X的献身，东野圭吾
-- The Garbage Collection Handbook，Antony Hosking, J. Eliot B. Moss, Richard Jones
-- Code Complete 2，Steve McConnell
-- 源泉，Ayn Rand
-- 投资中最简单的事，邱国鹭
-- 禅与摩托车维修艺术，Robert M. Pirsig
-- 教父1-3，Mario Puzo
-- 追风筝的人，Khaled Hosseini
-- The Art of UNIX Programming，Eric S.Raymond
-- 中国大历史，黄仁宇
-- 娱乐至死，Neil Postman
-- 美丽新世界，Aldous Huxley
-- 无缘社会，日本NHK特别节目录制组
-- 高效程序员的45个习惯，Venkat Subramaniam Andy Hunt
-- 细说红楼梦，白先勇
-- 1984，George Orwell
-- 21世纪资本论，Thomas Piketty
-- Netty in Action，Norman Maurer, Marvin Allen Wolfthal
-- Java Performance: The Definitive Guide，Scott Oaks
-- 局外人，Albert Camus
-- 追忆逝水年华，Marcel Proust
-- 思考-快与慢，Daniel Kahneman
-- 中国历代政治得失，钱穆
-- 万历十五年，黄仁宇
+1. 治理中国-从革命到改革，李侃如
+2. 嫌疑犯X的献身，东野圭吾
+3. The Garbage Collection Handbook，Antony Hosking, J. Eliot B. Moss, Richard Jones
+4. Code Complete 2，Steve McConnell
+5. 源泉，Ayn Rand
+6. 投资中最简单的事，邱国鹭
+7. 禅与摩托车维修艺术，Robert M. Pirsig
+8. 教父1-3，Mario Puzo
+9. 追风筝的人，Khaled Hosseini
+10. The Art of UNIX Programming，Eric S.Raymond
+11. 中国大历史，黄仁宇
+12. 娱乐至死，Neil Postman
+13. 美丽新世界，Aldous Huxley
+14. 无缘社会，日本NHK特别节目录制组
+15. 高效程序员的45个习惯，Venkat Subramaniam Andy Hunt
+16. 细说红楼梦，白先勇
+17. 1984，George Orwell
+18. 21世纪资本论，Thomas Piketty
+19. Netty in Action，Norman Maurer, Marvin Allen Wolfthal
+20. Java Performance: The Definitive Guide，Scott Oaks
+21. 局外人，Albert Camus
+22. 追忆逝水年华，Marcel Proust
+23. 思考-快与慢，Daniel Kahneman
+24. 中国历代政治得失，钱穆
+25. 万历十五年，黄仁宇
+
+### 2018
+1. 万万没想到-用理工科思维理解世界，万维钢
+2. 智识分子-做个复杂的现代人万维钢
+3. 改变-问题形成和解决的原则，Paul Watzlawick, John H. Weakland, Richard Fisch
+4. 经验的疆界，James G.March
+5. 告别百年激进，温铁军
+6. 别想那只大象，George Lakoff
+7. 巨人的陨落，Ken Follett
+8. 3G资本帝国，Cristiane Correa
+9. 大国政治的悲剧，John Mearsheimer
+10. 使女的故事，Margaret Atwood
+11. 人月神话，Fred Brooks
+12. 金融的本质，Ben Shalom Bernanke
+13. 硬球-政治是这么玩的，Chris Matthews
+14. 终结贫穷之路，徐滇庆 / 柯睿思 / 李昕
+15. 邓小平时代，傅高义
+16. 变化社会中的政治秩序，Samuel P. Huntington
+17. 世界是平的-21世纪简史，Thomas L. Friedman
+18. 通往奴役之路，Friedrich Hayek
+19. 独裁者手册，Bruce Bueno de Mesquita, Alastair Smith
+20. 中国为什么有前途，翟东升
+21. The Definitive of ANTLR 4 Reference，Terence Parr
 
