@@ -1,3 +1,27 @@
+### 2015
+1. 股市真规则，Pat Dorsey
+2. 把时间当做朋友，李笑来
+3. 围城，钱钟书
+4. 穆斯林的葬礼，霍达
+5. 活着，余华
+6. 肖申克的救赎，Stephen Edwin King
+7. 全球通史，Leften Stavros Stavrianos
+8. 不能承受的生命之轻，Milan Kundera
+9. 富兰克林自传，Franklin Benjamin
+10. 忏悔录，Jean-Jacques Rousseau
+11. 苏菲的世界，Jostein Gaarder
+12. 海边的卡夫卡，村上春树
+13. 清醒思考的艺术，Rolf Dobelli
+14. 爱的艺术，Erich Fromm
+15. 关键对话，Kerry Patterson、Joseph Grenny、Ron McMillan
+16. 来自上层的革命，David Kotz、Fred Weir
+17. 谈话的力量，Alan Garner
+18. 如何说孩子才会听-如何听孩子才肯说，Adele Faber · Elaine Mazlish
+19. 中国文化的深层结构，孙隆基
+20. 穷查理宝典，Peter D. Kaufman
+21. 自控力，Kelly McGonigal
+22. 高难度谈话，Douglas Stone
+
 ### 2016
 1. 斯普特尼克恋人，村上春树
 2. 1Q84，村上春树
@@ -77,4 +101,8 @@
 19. 独裁者手册，Bruce Bueno de Mesquita, Alastair Smith
 20. 中国为什么有前途，翟东升
 21. The Definitive of ANTLR 4 Reference，Terence Parr
-
+22. 沙丘，Frank Herbert
+23. 沙丘救世主，Frank Herbert
+24. 超新星纪元，刘慈欣
+25. 乞力马扎罗的雪，Ernest Miller Hemingway
+26. 深入理解JVM，周志明
