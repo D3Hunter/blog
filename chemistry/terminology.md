@@ -43,3 +43,66 @@ The `limiting reagent` (or limiting reactant, LR) in a chemical reaction is the 
 `Redox` (short for `reduction–oxidation reaction`) (pronunciation: /ˈrɛdɒks/ redoks or /ˈriːdɒks/ reedoks[1]) is a chemical reaction in which the oxidation states of atoms are changed.
 
 `Stoichiometry` /ˌstɔɪkiˈɒmɪtri/ is the calculation of reactants and products in chemical reactions.
+
+`ionic` formed by the electrostatic attraction of oppositely charged ions
+
+`ion` an atom or molecule with a net electric charge due to the loss or gain of one or more electrons
+
+`cation` a positively charged ion, i.e. one that would be attracted to the cathode in electrolysis.The opposite of `anion`.
+
+`anion` a negatively charged ion, i.e. one that would be attracted to the anode in electrolysis
+
+There are two `charges` positive (+) and negative (-). `Like charges` means both are + or both are -. `Unlike charges` means one is + and the other is -. Like charges: Always repel such as + and + or - and - Unlike chargeS: Always attract such as + and - or - and +
+
+`calcite` A white or colourless mineral consisting of `calcium carbonate`. It is a major constituent of sedimentary rocks such as limestone and is deposited in caves to form stalactites and stalagmites.
+
+`calcium` The chemical element of atomic number 20, a soft grey metal.
+
+`carbonate` A salt of the anion `CO₃²⁻`, typically by reaction with carbon dioxide.
+
+`carbon` The chemical element of atomic number 6, a non-metal which has two main forms (diamond and graphite) and which also occurs in impure form in charcoal, soot, and coal.
+
+`dioxide` An oxide containing two atoms of oxygen in its molecule or empirical formula.
+
+`oxide` A binary compound of `oxygen` with another element or group.
+
+`oxygen` A colourless, odourless reactive gas, the chemical element of atomic number 8 and the life-supporting component of the air.
+
+`thermodynamics` The branch of physical science that deals with the relations between heat and other forms of energy (such as mechanical, electrical, or chemical energy), and, by extension, of the relationships between all forms of energy.
+
+`equilibrium` A state in which a process and its reverse are occurring at equal rates so that no overall change is taking place.
+
+`kinetics` The branch of chemistry or biochemistry concerned with measuring and studying the rates of reactions.
+
+`magnetite` A grey-black magnetic mineral which consists of an oxide of iron and is an important form of iron ore.
+
+`ore` A naturally occurring solid material from which a metal or valuable mineral can be extracted profitably.
+
+`supercritical` Above a critical threshold
+
+`critical` Relating to or denoting a point of transition from one state to another.
+
+`yttrium` The chemical element of atomic number 39, a greyish-white metal generally included among the rare earth elements.
+
+`chelate` A compound containing a ligand (typically organic) bonded to a central metal atom at two or more points.
+
+`ligand` An ion or molecule attached to a metal atom by coordinate bonding.
+
+`chlorine` The chemical element of atomic number 17, a toxic, irritant, pale green gas.
+
+In organic chemistry, `transesterification` is the process of exchanging the organic group R″ of an `ester` with the organic group R′ of an `alcohol`. 
+
+`ester` An organic compound made by replacing the hydrogen of an acid by an alkyl or other organic group. Many naturally occurring fats and essential oils are esters of fatty acids.
+
+`alkyl` Of or denoting a hydrocarbon radical derived from an alkane by removal of a hydrogen atom.
+
+`alkane` Any of the series of saturated hydrocarbons including methane, ethane, propane, and higher members. Alkanes have the general formula: `CnH₂n₊₂`
+
+`methane` A colourless, odourless flammable gas which is the main constituent of natural gas. It is the simplest member of the alkane series of hydrocarbons. Chemical formula: `CH₄`
+
+`ethane` A colourless, odourless, flammable gas which is a constituent of petroleum and natural gas. It is the second member of the alkane series.
+
+`propane` A flammable hydrocarbon gas of the alkane series, present in natural gas and used as bottled fuel.
+
+`alloy` A metal made by combining two or more metallic elements, especially to give greater strength or resistance to corrosion.
+
