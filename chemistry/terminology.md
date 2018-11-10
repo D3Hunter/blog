@@ -106,3 +106,67 @@ In organic chemistry, `transesterification` is the process of exchanging the org
 
 `alloy` A metal made by combining two or more metallic elements, especially to give greater strength or resistance to corrosion.
 
+One characteristic of science is that it uses common words from our everyday language but gives them precise meanings. In everyday language, a "`substance`" is just another name for `matter`. However, in chemistry, a substance is a single, pure form of matter.
+
+`oscillate` Vary in magnitude or position in a regular manner about a central point.
+
+The term `vapor` denotes the gaseous form of a substance that is normally a solid or liquid. Thus, we speak of ice ( the solid form of water), liquid water, and water vapor ( steam) .
+
+A `physical property` of a substance is a characteristic that we can observe or measure without changing the identity of the substance.
+
+A `chemical property` refers to the ability of a substance to change into another substance.
+
+An `intensive property` is a property that is independent of the mass of the sample. An `extensive property` is a property that does depend on the mass ( " extent" ) of the sample.
+
+`selenium` The chemical element of atomic number 34, a grey crystalline non-metal with semiconducting properties.
+
+`helium` The chemical element of atomic number 2, an inert gas which is the lightest member of the noble gas series.
+
+The number of `significant figures` in a numerical value is the number of digits that can be j ustified by the data . The number of significant figures in the result of a calculation cannot exceed the number in the data (you can't generate reliability on a calculator ! )
+
+The `precision` of a measurement is reflected in the number of significant figures justified by the procedure and depends on how close repeated measurements are to one another. The `accuracy` of a series of measurements is the closeness of their average value to the true value.
+
+More often than not, measurements are accompanied by two kinds of error. A `systematic error` is an error present in every one of a series of repeated measurements. An example is the effect of a speck of dust on a pan, which distorts the mass of each sample in the same direction (the speck makes each sample appear heavier than it is) . A `random error` is an error that varies at random and can average to zero over a series of observations.
+
+A `force`, F, is an influence that changes the state of motion of an obj ect.
+
+`Acceleration`, the rate of change of velocity, is proportional to applied force.
+
+`Velocity`, the rate of change of position, has both magnitude and direction;
+
+The magnitude of the velocity of an object---the rate of change of position regardless of the direction of the motion-is called its `speed`, `v`.
+
+`bromine` The chemical element of atomic number 35, a dark red fuming toxic liquid with a choking, irritating smell. It is a member of the halogen group and occurs chiefly in the form of salts in seawater and brines.
+
+`phosphorus` The chemical element of atomic number 15, a poisonous, combustible non-metal which exists in two common allotropic forms, white phosphorus, a yellowish waxy solid which ignites spontaneously in air and glows in the dark, and red phosphorus, a less reactive form used in making matches.
+
+In chemistry, we use a practical definition of `energy` as the capacity to do work, with `work` defined as motion against an opposing force. 
+
+`Names of units` derived from the names of people are always `lower case` (as for joule, named for the scientist J. P. Joule), but their abbreviations are always uppercase (as in `J` for joule).
+
+There are three contributions to energy: `kinetic energy`, `potential energy`, and `electromagnetic energy`.
+- `Kinetic energy`, EK, is the energy that a body possesses due to its motion.
+- `The potential energy`, Ep, of a n object is the energy that i t possesses on account of its position in a field of force. There is no single formula given for the potential energy of an object, because the potential energy depends on the nature of the forces that it experiences. However, two simple cases are important in chemistry: `gravitational potential energy` (for a particle in a gravitational field) and `Coulomb potential energy` (for a charged particle in an electrostatic field).
+- What we have termed " `electromagnetic energy`" i s the energy of the electromagnetic field, such as the energy carried through space by radio waves, light waves, and x-rays.
+
+The `total energy`, E, of a particle is the sum of its kinetic and potential energies
+
+`nucleus/nuclei` The positively charged central core of an atom, consisting of protons and neutrons and containing nearly all its mass.
+
+`dissipate` Cause (energy) to be lost through its conversion to heat.
+
+`the law of conservation of energy`, the observation that energy can be neither created nor destroyed. 
+
+In fact, chemists use the existence of atoms as the definition of an element: an `element` is a `substance` composed of only one kind of `atom`. 
+
+The number of protons in a n element's atomic nucleus is called the `atomic number`, `Z`, of that element.
+
+`mass spectrometer`, a device for determining the mass of an atom
+
+`neutrons` and `protons` are very similar apart from their charge; they are jointly known as `nucleons`
+
+The total number of protons and neutrons in a nucleus is called the `mass number`, `A`, of the atom. 
+
+Atoms with the same atomic number ( belonging t o the same element) b u t with different mass numbers are called `isotopes` of the element.
+
+A part of chemistry is `analysis`: the discovery of which elements have combined together to form a su bstance. Another aspect of chemistry is `synthesis` : the process of combining elements to produce compounds or converting one compound into another.
