@@ -106,3 +106,4 @@
 24. 超新星纪元，刘慈欣
 25. 乞力马扎罗的雪，Ernest Miller Hemingway
 26. 深入理解JVM，周志明
+27. Language Implementation Patterns，Terence Parr
