@@ -107,3 +107,4 @@
 25. 乞力马扎罗的雪，Ernest Miller Hemingway
 26. 深入理解JVM，周志明
 27. Language Implementation Patterns，Terence Parr
+28. 第五项修炼，Peter Senge
