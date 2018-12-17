@@ -72,3 +72,10 @@ git show <SHA> -- <path-to-file>
 ### Git development model
 1. branching model: https://nvie.com/posts/a-successful-git-branching-model/
 
+### Subtree Merging and You
+1. `git remote add -f Bproject /path/to/Bproject`
+2. `git merge -s ours --allow-unrelated-histories --no-commit Bproject/master`
+3. `git read-tree --prefix=dir-Bproject/ -u Bproject/master`
+4. `git commit -m "Merge Bproject project as our subdirectory"`
+5. `git pull -s subtree Bproject master`
+

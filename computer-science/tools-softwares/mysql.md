@@ -101,7 +101,8 @@ The DECIMAL and NUMERIC types store exact numeric data values. These types are u
 `last_insert_ID`: The ID that was generated is maintained in the server on a per-connection basis.
 
 ### Data types
-int 4字节，BIGINT 8字节，可指定是否有符号，默认为SIGNED
+- int 4字节，BIGINT 8字节，可指定是否有符号，默认为SIGNED
+- `timestamp`类型等同于`TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`, 如果不需要`on update`功能，要在后面指定默认值避免默认情况
 
 ### Partitions
 Partitions are flexible, as you can add, drop, redefine, merge, or split existing partitions.

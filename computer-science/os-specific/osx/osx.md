@@ -85,3 +85,12 @@ networksetup用来管理网络相关
 ### 截屏
 Command + Shift + 3/4: 结果保存到桌面，分别为截取整个屏幕／选择截取
 Ctrl + Command + Shift + 3/4: 结果保存到剪切板，分别为截取整个屏幕／选择截取
+
+### 更改文件类型的默认application
+1. From the Mac file system, select a file of the general format type you wish to change the default application for
+2. Pull down the “File” menu and choose “Get Info” (or hit Command+i) to access the Get Info window
+3. Click the “Open with:” sub menu, then click on the contextual menu and select the new application to associate all files of this format type with
+
+### 去掉`[NAME] is an application downloaded from the internet. Are you sure you want to open it?`弹窗:
+- `xattr -d -r com.apple.quarantine /Path/to/application/`
+
