@@ -20,9 +20,20 @@ awk计算sum有精度限制，此时可以使用`bc`（`paste`生成表达式）
 
 rsync - a fast, versatile, remote (and local) file-copying tool. rsync会对比src和dst之间的差别，并只拷贝变动的部分。
 
+文件按行长度排序: `cat testfile | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2-`
+
+### IUS
 IUS repository：提供最新的package，yum内原有的包仍然可以安装
 
-文件按行长度排序: `cat testfile | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2-`
+IUS的原则是不覆盖原stack的package，IUS的package命名规则为: `{name}{major_version}{minor_version}u`
+
+centos 安装 git2.X 示例：
+``` shell
+$ sudo yum install https://centos7.iuscommunity.org/ius-release.rpm
+$ sudo yum erase git
+$ sudo yum install epel-release 
+$ sudo yum install git2u
+```
 
 ### file read/import progress
 pv -f xxx.sql 2> output.log | mysql -uroot -proot test
