@@ -18,7 +18,13 @@ To figure out what ASTs should look like, let’s start with a list of design gu
 - Convenient: Easy to walk
 - Meaningful: Emphasize operators, operands, and the relationship between them rather than artifacts from the grammar
 
-##### Patterns
+Visitors that directly emit text with print statements work fine as long as the order of input and output constructs is very similar. Otherwise, we could use:
+- output driven: “pulls” information from the input model according to the output order.
+- input driven: compute information and translate phrases, then emit output
+
+Besides, computing output strings in a general-purpose programming language ain’t exactly pretty. All is not lost, though. We can use `templates`, which are the best of both worlds.
+
+### Patterns
 1. Mapping grammers to recusive-decent recognizers
 2. LL(1) recusive-decent lexer
 3. LL(1) recusive-decent parser
@@ -99,27 +105,13 @@ retargeting strategy
 - altering or swapping in new templates. The template hierarchy stays the same
 - changing the template hierarchy. assemble different hierarchies using the templates themselves
 
-#### pretty printing papers
+### pretty printing papers
 - M Van Den Brand: Generation of Formatters for Context-free Languages
 - M De Jonge: Pretty-Printing for Software Reengineering
 - M van den Brand: The Asf+Sdf Meta-environment: A Component-Based Language Development Environment
 - M De Jonge: A Pretty-Printer for Every Occasion
 - M van den Brand: Industrial applications of ASF+SDF
 
-#### DSL papers
+### DSL papers
 - Marjan Mernik: When and how to develop domain-specific languages
-
-### Visitor Pattern
-In object-oriented programming and software engineering, the `visitor design pattern` is a way of separating an algorithm from an object structure on which it operates. A practical result of this separation is the ability to add new operations to existent object structures without modifying the structures. It is one way to follow the `open/closed principle`.
-
-The `visitor pattern` requires a programming language that supports `single dispatch`, as common object-oriented languages...Thus, the implementation of the `visit` method is chosen based on both the dynamic type of the element and the dynamic type of the visitor. This effectively implements `double dispatch`.
-
-In software engineering, `double dispatch` is a special form of `multiple dispatch`, and a mechanism that dispatches a function call to different concrete functions depending on the runtime types of two objects involved in the call.
-
-
-Visitors that directly emit text with print statements work fine as long as the order of input and output constructs is very similar. Otherwise, we could use:
-- output driven: “pulls” information from the input model according to the output order.
-- input driven: compute information and translate phrases, then emit output
-
-Besides, computing output strings in a general-purpose programming language ain’t exactly pretty. All is not lost, though. We can use `templates`, which are the best of both worlds.
 
