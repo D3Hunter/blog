@@ -108,3 +108,4 @@
 26. 深入理解JVM，周志明
 27. Language Implementation Patterns，Terence Parr
 28. 第五项修炼，Peter Senge
+29. 从优秀到卓越，Jim Collins
