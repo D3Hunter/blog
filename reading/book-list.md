@@ -81,7 +81,7 @@
 
 ### 2018
 1. 万万没想到-用理工科思维理解世界，万维钢
-2. 智识分子-做个复杂的现代人万维钢
+2. 智识分子-做个复杂的现代人，万维钢
 3. 改变-问题形成和解决的原则，Paul Watzlawick, John H. Weakland, Richard Fisch
 4. 经验的疆界，James G.March
 5. 告别百年激进，温铁军
@@ -110,3 +110,4 @@
 28. 第五项修炼，Peter Senge
 29. 从优秀到卓越，Jim Collins
 30. 从0到1，Peter Thiel, Blake Masters
+31. 系统之美，Denera Meadows
