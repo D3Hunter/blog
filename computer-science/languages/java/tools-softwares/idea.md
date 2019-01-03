@@ -4,6 +4,8 @@
 ctrl-W: expand selection
 Cmd-shift-m: move to matching brace
 
+如果使用了`Scanner.java`，`mac`上需要用`⌘-D`来输入`EOF`
+
 ### 超大文件IDEA不做语法标记：
 idea.properties
 ```
