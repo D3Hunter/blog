@@ -28,3 +28,27 @@
 - `-renamesourcefileattribute SourceFile`
 - `-keepattributes SourceFile,LineNumberTable`
 
+### 其他配置项
+- proguard保留类名同时会保留包名，除非`-applymapping mapping.txt`
+- `-useuniqueclassmembernames`这个有可能不管用
+- `-repackageclasses`把混淆的类放到同一个包下面, 配合`-classobfuscationdictionary windows.txt`可以为混淆类赋予不同的名字
+    - 一下脚本可以生成随机名称
+    - 需要在`spring``mybatis`等设置的Scan目录下
+``` python
+import string
+element=list(string.ascii_lowercase)
+def gen_alphabet_seq(length):
+    if length == 1:
+        return element
+    result = []
+    sub_result = gen_alphabet_seq(length-1)
+    for ele in element:
+        tmp_result = [ele + item for item in sub_result]
+        result += tmp_result
+    return result
+
+for ele in gen_alphabet_seq(3):
+    print ele
+```
+- `-keepparameternames`对于`keep`的`method`，同时保留`method`的`parameter`
+- `-dontusemixedcaseclassnames`，如果要在mac／windows上混淆一个目录，加上因为文件系统不支持大小写导致类文件重复
