@@ -11,3 +11,4 @@
 - The `org.eclipse.mat.api:overview` argument creates a ZIP file containing the overview report. This argument is optional.
 - The `org.eclipse.mat.api:top_components` argument creates a ZIP file containing the top components report. This argument is optional.
 
+`mat`也是java编写，分析大文件时可在`MemoryAnalyzer.ini`配置`max heap`
