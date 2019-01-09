@@ -111,3 +111,7 @@
 29. 从优秀到卓越，Jim Collins
 30. 从0到1，Peter Thiel, Blake Masters
 31. 系统之美，Denera Meadows
+
+### 2019
+1. 创业维艰，Ben Horowitz
+

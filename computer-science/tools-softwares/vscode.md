@@ -1,3 +1,5 @@
+`Option + Enter`：选择所有满足查询条件的值。菜单栏看不到，只能在`Open Keyboard Shortcuts`查看
+
 ### Problems
 `Can’t be updated when it’s running from a read-only`:
 1. 退出
