@@ -181,3 +181,16 @@ Bochs 类似kvm／zen/QEMU
     - `-k`指定日志中显示的key
 - 查看记录：`ausearch -f /etc/passwd`
 
+### linux 带宽测试
+One both machines run:
+
+`sudo apt-get install iperf`
+
+We'll start an iperf server on one of the machines:
+
+`iperf -s`
+
+And then on the other computer, tell iperf to connect as a client:
+
+`iperf -c <address of other computer>`
+
