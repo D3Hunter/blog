@@ -114,4 +114,5 @@
 
 ### 2019
 1. 创业维艰，Ben Horowitz
+2. 卓有成效的管理者，Peter F. Drucker
 
