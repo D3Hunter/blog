@@ -94,3 +94,9 @@ Ctrl + Command + Shift + 3/4: 结果保存到剪切板，分别为截取整个�
 ### 去掉`[NAME] is an application downloaded from the internet. Are you sure you want to open it?`弹窗:
 - `xattr -d -r com.apple.quarantine /Path/to/application/`
 
+### chrome显示滚动条
+This is a Mac setting that `Chrome` is obeying. Go to `System Preferences > General` and change `Show scroll bars` setting to `Always`。不过这样设置后，其他应用也会跟着改变，比如`iterm2`里面就很丑
+
+### zsh对vim自动补齐报错
+vim自动补齐`_arguments:451: _vim_files: function definition file not found`, 执行`exec zsh`解决
+

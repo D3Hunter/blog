@@ -1,3 +1,5 @@
+计算`foreign key`和`primary／unique key`的执行顺序，可以从表的依赖图上先序遍历；另一种简单方式时，把所有`foreign key`放后面即可。
+
 the default is `INNER JOIN` if you just specify `JOIN`.
 
 `CARTESIAN JOIN`: The `CARTESIAN JOIN` is also known as `CROSS JOIN`. In a `CARTESIAN JOIN` there is a join for each row of one table to every row of another table.
