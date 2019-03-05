@@ -17,4 +17,10 @@ idea.properties
 #---------------------------------------------------------------------
 idea.max.intellisense.filesize=2500
 ```
+### live templates
+只支持有限的函数，substring支持较弱（只有`substringBefore`），但可以使用`regularExpression`替代
 
+- `regularExpression()`中的`pattern`使用java的字符串解析方式，即如果要使用pattern中使用`\`，则要先使用java的方式转义一次
+- `clipboard()`获取剪切板内容
+
+参考[predefined_functions](https://www.jetbrains.com/help/idea/2018.3/edit-template-variables-dialog.html#predefined_functions)
