@@ -18,5 +18,5 @@
 - Do not extract the app straight into the Applications directory; extract it into the Downloads folder, then drag and drop it into the Applications directory
 
 ### 命令行使用`code`
-`Install code command to PATH`可在命令行使用`code`, `code -`可接收控制台输入，如`ls |code -`
-
+- `Install code command to PATH`可在命令行使用`code`, `code -`可接收控制台输入，如`ls |code -`
+- `code --wait/-w`可以等待编辑的文件被关闭
