@@ -119,6 +119,8 @@ python如果有非`daemon thread`运行是不会退出的，`os._exit`会全部�
 
 `sorted`函数可以使用key来选择排序依据`operator.itemgetter`
 
+dictionary按value降序排序：`sorted(dict.items(), key=lambda kv: kv[1], reverse=True)`
+
 ### subprocess
 `subprocess.Popen`如果不处理输入输出，默认后台运行，即使python退出仍然会运行
 `subprocess.run`阻塞运行

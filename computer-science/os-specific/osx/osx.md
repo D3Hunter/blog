@@ -100,3 +100,10 @@ This is a Mac setting that `Chrome` is obeying. Go to `System Preferences > Gene
 ### zsh对vim自动补齐报错
 vim自动补齐`_arguments:451: _vim_files: function definition file not found`, 执行`exec zsh`解决
 
+### 命令行操作剪切板
+`pbcopy` `pbpaste` provide copying and pasting to the pasteboard (the Clipboard) from command line
+- `pbcopy [-help] [-pboard {general | ruler | find | font}]`
+- `pbpaste [-help] [-pboard {general | ruler | find | font}] [-Prefer {txt | rtf | ps}]`
+
+实例：`echo 'xxxx' | pbcopy`
+

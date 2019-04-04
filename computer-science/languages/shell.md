@@ -101,6 +101,7 @@ done
 - `set  a b c` 设置到位置变量中
 - `set -x` 类似与verbose
 - bash里的strstr：if [[ ${image_name} == *"apache"* ]];
+- 如果`if`使用命令的`exit code`做判断，如`grep`，则不需要添加`[]`
 
 - `cat`多行导入
 - `cat <<EOF` 读入标准输入直到遇到`EOF`为止，可包含变量。也可不使用终止符,而用`Ctrl-D`

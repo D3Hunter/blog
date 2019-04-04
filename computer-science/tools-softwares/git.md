@@ -23,6 +23,7 @@
 - `gitk --all`显示所有branch
 - `git reset --merge <>`将当前branch回归到某个点
 - `git diff`、diff都是得到的是new相对于old的变化diff old new
+- 创建新分支，但不switch：`git branch -l new-branch-name --no-track`
 
 ### rebase 相关
 - `git rebase --interactive` <要修改commit message的地方>

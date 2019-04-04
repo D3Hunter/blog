@@ -1,3 +1,5 @@
+`Antlr 4`相比`Antlr 3`中不建议将`action`放到`grammer`中，除了为提高`grammer`的复用性，也是认识到所有的`action`其实就是一个`Visitor`的实现，这样就把`grammer`(语法识别)和`action`(`contex-sensitive analysis`)分离开。去除`AST`构建语法也类似。
+
 `antlr`可生成`visitor`和`listener`两种接口，前者更灵活，后者更简单
 
 `fragment`里的作为逻辑词法结构，不会作为独立的token

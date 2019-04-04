@@ -1,14 +1,22 @@
-计算`foreign key`和`primary／unique key`的执行顺序，可以从表的依赖图上先序遍历；另一种简单方式时，把所有`foreign key`放后面即可。
-
-the default is `INNER JOIN` if you just specify `JOIN`.
-
-`CARTESIAN JOIN`: The `CARTESIAN JOIN` is also known as `CROSS JOIN`. In a `CARTESIAN JOIN` there is a join for each row of one table to every row of another table.
+### 计算`create table`,`foreign key`和`primary／unique key`的执行顺序
+- 以`table`对象为节点（包含各种约束关系），`foreign key`为边构成依赖图，进行拓扑排序。缺点是无法处理循环外键
+- 对上述节点进行细分，仍以`table`对象为节点，但从中去掉`foreign key`，这样所有节点都是独立的，没有依赖关系。`foreign key`统一放后面
+- 另一种思考方式是，不以对象为节点，而以原子`sql`语句为节点，这样一个`table`对象,变成一个单纯的`create table`语句，多个`alter table`语句,以此构成依赖图，并进行拓扑排序，就可以发现前一条里说的特点
 
 By the SQL standard, a `foreign key` must reference either the `primary key` or a `unique key` of the parent table. If the primary key has multiple columns, the foreign key must have the same number and order of columns.
 
 Any `primary key` must be `unique` and `non-null`.
 
 If you don't specify an `ORDER BY`, then there is NO ORDER defined.
+
+### Table Join
+- `[INNER] JOIN`: returns rows when there is a match in both tables.
+- `LEFT [OUTER] JOIN`: returns all rows from the left table, even if there are no matches in the right table.
+- `RIGHT [OUTER] JOIN`: returns all rows from the right table, even if there are no matches in the left table.
+- `FULL [OUTER] JOIN`: It combines the results of both left and right outer joins.
+- `[CARTESIAN] or [CROSS] JOIN`: returns the Cartesian product of the sets of records from the two or more joined tables.
+- `NATURAL [LEFT] JOIN`: semantically equivalent to an `INNER JOIN` or a `LEFT JOIN` with a `USING` clause that names all columns that exist in both tables.
+k
 
 ### JDBC
 `CLOB` `NCLOB`是`text`类型需要用`setString`

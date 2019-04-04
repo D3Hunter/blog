@@ -121,3 +121,46 @@ When you start building your queries, you want to make sure that the query is us
 - `rewriteBatchedStatements` Default: false, 会将多条sql拼接在一起，batch执行时只返回一个值
 - `continueBatchOnError` Default: true, batch执行返回多值，一个出错继续执行
 
+### Identifier(quoted with backtick)
+An identifier may be `quoted` or `unquoted`. If an identifier contains `special characters` or is a `reserved word`, you must quote it whenever you refer to it.(Exception: A `reserved word` that follows a period in a qualified name must be an identifier, so it need not be quoted.)
+
+标识符中如果包含'`'，则必须使用两个'`'表示
+
+Permitted characters in unquoted identifiers:
+- ASCII: [0-9,a-z,A-Z$_] (basic Latin letters, digits 0-9, dollar, underscore)
+- Extended: U+0080 .. U+FFFF
+
+Permitted characters in quoted identifiers include the full Unicode Basic Multilingual Plane (BMP), except U+0000:
+- ASCII: U+0001 .. U+007F
+- Extended: U+0080 .. U+FFFF
+
+ASCII NUL (U+0000) and supplementary characters (U+10000 and higher) are not permitted in quoted or unquoted identifiers.
+
+Identifiers may begin with a digit but unless quoted may not consist solely of digits.
+
+Database, table, and column names cannot end with `space` characters.
+
+### identifier大小写
+`mysql`中`database`, `table`, and `trigger`以文件形式存储，名称大小写受底层文件系统影响，实际由`lower_case_table_names`配置决定。该参数同样影响table aliases
+- `mysql/mariadb`中`lower_case_table_names`默认值：`Default Value: 0 (Unix), 1 (Windows), 2 (Mac OS X)`
+
+`lower_case_table_names`
+- If set to 0, table names are stored as specified and comparisons are case-sensitive.
+- If set to 1, table names are stored in lowercase on disk and comparisons are not case sensitive.
+- If set to 2, table names are stored as given but compared in lowercase.
+
+Column, index, stored routine, event, and resource group names are `not case-sensitive` on any platform, nor are column aliases.
+
+However, names of `logfile groups` are case-sensitive. This differs from standard SQL.
+
+`quote(backtick)`不影响`case`，包含`special characters` 和 `reserved word`的`identifier`必须加上`backtick`
+
+`mysql`不能在`TEXT` or `BLOB`上添加`index／primary key／unique key`
+
+### mysql字符串
+A `string` is a sequence of bytes or characters, enclosed within either `single quote` (') or `double quote` (") characters. Examples:
+
+https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html
+https://dev.mysql.com/doc/refman/8.0/en/identifiers.html
+https://dev.mysql.com/doc/refman/8.0/en/keywords.html
+

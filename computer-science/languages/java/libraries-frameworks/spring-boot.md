@@ -8,6 +8,8 @@ spring-boot或者调用`getLocalHost`特别慢，将`hostname`放到`/etc/hosts`
 
 `ConfigurationProperties`标记的类成员需要有对应的`setter`，否则不会根据`prefix`设置值
 
+`Converter`可用来实现自定义类型转换，如在`application.properties`中`String`到`Date`转换
+
 ### Features
 - Create stand-alone Spring applications
 - Embed Tomcat, Jetty or Undertow directly (no need to deploy WAR files)
