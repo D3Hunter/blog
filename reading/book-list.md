@@ -121,3 +121,9 @@
 6. 流浪地球；刘慈欣
 7. 创新公司，皮克斯的启示；Ed Catmull, Amy Wallace
 8. 精益创业；Eric Ries
+9. 创新与企业家精神；Peter F. Drucker
+10. 寻路中国；Peter Hessler
+11. 解忧杂货铺；东野圭吾
+12. 白夜行；东野圭吾
+13. 成为乔布斯；Brent Schlender，Rick Tetzeli
+14. 房思琪的初恋乐园；林奕含
