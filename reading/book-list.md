@@ -127,3 +127,4 @@
 12. 白夜行；东野圭吾
 13. 成为乔布斯；Brent Schlender，Rick Tetzeli
 14. 房思琪的初恋乐园；林奕含
+15. 沙丘之子；Frank Herbert
