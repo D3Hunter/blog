@@ -1,0 +1,22 @@
+- `steroid` 类固醇: Any of a large class of organic compounds with a characteristic molecular structure containing four rings of carbon atoms (three six-membered and one five). They include many `hormones`, `alkaloids`, and `vitamins`.
+- `Arthritis` 关节炎
+- `Paracetamol`, 扑热息痛 also known as `acetaminophen` 对乙酰氨基酚 and APAP, is a medication used to treat pain and fever.
+- `abscess` 脓肿 a swollen area within body tissue, containing an accumulation of pus.
+- `swollen` 肿胀 become larger or rounder in size, typically as a result of an accumulation of fluid.
+- `pus` 脓液 a thick yellowish or greenish opaque liquid produced in infected tissue, consisting of dead white blood cells and bacteria with tissue debris and serum.
+- `serum` 血清 an amber-colored, protein-rich liquid that separates out when blood coagulates.
+- `Purulent` consisting of, containing, or discharging pus.
+- `Paranasal sinuses` 鼻旁窦 are a group of four paired air-filled spaces that surround the `nasal cavity`.
+- `nostril` 鼻孔 either of two external openings of the nasal cavity in vertebrates(脊椎动物) that admit air to the lungs and smells to the olfactory（嗅觉） nerves.
+- `nasal septum` 鼻中隔
+- `nasal cavity` 鼻腔 is a large, air-filled space above and behind the nose in the middle of the face
+- `mucus` 粘液 A slimy substance, typically not miscible with water, secreted by the mucous membranes and glands of animals for lubrication, protection, etc.
+- `nasal mucosa` 鼻黏膜
+- `Nasal polyps (NP)` 鼻息肉 are noncancerous growths within the nose or sinuses.
+- `nasal discharge` 鼻涕
+- `rhinosinusitis` or `sinusitis` 鼻窦炎
+- `fungal` 真菌 Of or caused by a fungus or fungi.
+- `fungus` 菌类 Any of a group of spore-producing(孢子) organisms feeding on organic matter, including moulds, yeast, mushrooms, and toadstools(毒菌).
+- `Allergic Fungal Sinusitis` 过敏性真菌性鼻窦炎
+- `nasal obstruction` 鼻塞
+- `allergic mucin` 过敏性粘蛋白
