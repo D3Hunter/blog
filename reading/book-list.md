@@ -128,3 +128,4 @@
 13. 成为乔布斯；Brent Schlender，Rick Tetzeli
 14. 房思琪的初恋乐园；林奕含
 15. 沙丘之子；Frank Herbert
+16. 管理：任务、责任、实践；Peter F. Drucker
