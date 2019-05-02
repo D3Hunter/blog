@@ -51,3 +51,16 @@ In statistics, a `unimodal probability distribution` or `unimodal distribution` 
 
 In geometry, `bisection` is the division of something into two equal or congruent parts, usually by a line, which is then called a `bisector`. A `line segment bisector` passes through the midpoint of the segment. Particularly important is the `perpendicular bisector` of a segment, which, according to its name, meets the segment at right angles.
 
+### Lattice
+lattice有两个定义，一个是在集合论里，一个在代数里
+
+In algebra, the `absorption law` or `absorption identity` is an `identity` linking a pair of `binary operations`.
+
+A `lattice` is both a `join-semilattice` and a `meet-semilattice`. The interaction of these two semilattices via the `absorption law` is what truly distinguishes a `lattice` from a `semilattice`.
+
+In a `partially ordered set` P, the `join` and `meet` of a subset S are respectively the `supremum` (least upper bound) of S, denoted ⋁S, and `infimum` (greatest lower bound) of S, denoted ⋀S.
+
+`Join` and `meet` can also be defined as a `commutative, associative and idempotent partial binary operation` on pairs of elements from P. If a and b are elements from P, the join is denoted as a ∨ b and the meet is denoted a ∧ b.
+
+The word "`partial`" in the names "partial order" or "partially ordered set" is used as an indication that not every pair of elements needs to be comparable. Partial orders thus generalize `total orders`, in which every pair is comparable.
+
