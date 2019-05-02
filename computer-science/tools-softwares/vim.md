@@ -74,7 +74,6 @@ sudo apt-get install exuberant-ctags自带的tags不好用
 ## window
 - split/vsplit(sp/vs) file
 - hide/only/close
-- `bd` 关闭buffer
 - `ctrl-w` 上下左右
 - `ctrl-w ctrl-w`    - move cursor to another window (cycle)
 - `ctrl-w =`  让所有window等大小
@@ -97,3 +96,5 @@ sudo apt-get install exuberant-ctags自带的tags不好用
 - blast          编辑最后一个缓冲区
 - bdelete        删除一个缓冲区
 - sbuffer 3
+- `bd(bdelete)`: makes the buffer unlisted, but doesn't purge marks, options, the buffer name, the buffer number, and so on. If you reload the buffer that information is retained
+- `bw(bwipeout)`: on the other, gets rid of all of that (everything that is associated with the buffer), so that if you reopen the buffer it will be as if vim never saw that buffer before during this session.
