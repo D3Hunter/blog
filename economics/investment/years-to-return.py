@@ -13,15 +13,17 @@ for i in range(GROWTH_MAX):
     growth = (i + 1) / 100.0
     for j in range(PE_MAX):
         pe = (j + 1) * 5
-        matrix[i].append(get_number_of_years(growth, pe))
+        n = get_number_of_years(growth, pe)
+        rate = (math.pow(2, 1/n) - 1) * 100
+        matrix[i].append((n, rate))
 
-str = "PE/Growth "
+str = "PE/Growth   "
 for i in range(PE_MAX):
     pe = (i + 1) * 5
-    str += "%6d" % (pe, )
-print str
+    str += "%-13d" % (pe, )
+print(str)
 for i in range(GROWTH_MAX):
     str = "%9d%%" % (i + 1,)
     for j in range(PE_MAX):
-        str += "%6.2f" % (matrix[i][j],)
-    print str
+        str += '%6.2f(%5.2f)' % (matrix[i][j][0], matrix[i][j][1])
+    print(str)
