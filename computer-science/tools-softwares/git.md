@@ -24,6 +24,8 @@
 - `git reset --merge <>`将当前branch回归到某个点
 - `git diff`、diff都是得到的是new相对于old的变化diff old new
 - 创建新分支，但不switch：`git branch -l new-branch-name --no-track`
+- 从日期开始的log: `git log --since '2019-04-19 00:00:00' --oneline`
+- 从commit开始的log: `git log xxxxx..HEAD --oneline`
 
 ### rebase 相关
 - `git rebase --interactive` <要修改commit message的地方>
@@ -34,11 +36,11 @@
 - `git rebase --root`可用来处理init commit
 
 ### config相关
-`git config --global --unset <config>`
-`git reset --hard origin/master` 将本地branch设置成origin的HEAD
-`git config --global core.pager 'less -x1,5'` 4个空格显示
-`git config --global core.editor emacs`
-`git apply`可用来`apply patch`，但会根据patch中的label自动匹配需要修改的文件
+- `git config --global --unset <config>`
+- `git reset --hard origin/master` 将本地branch设置成origin的HEAD
+- `git config --global core.pager 'less -x1,5'` 4个空格显示
+- `git config --global core.editor emacs`
+- `git apply`可用来`apply patch`，但会根据patch中的label自动匹配需要修改的文件
 
 ### `git difftool`
 - 默认使用diff.tool的配置
