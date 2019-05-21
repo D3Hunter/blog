@@ -17,6 +17,9 @@ idea.properties
 #---------------------------------------------------------------------
 idea.max.intellisense.filesize=2500
 ```
+
+如果该值小于代码文件大小，可能会导致代码里显示语法错误。更好的做法是将该值设置足够大，然后打开大文件，`Analyse->Configure current file analyse`来关闭analyse，避免CPU飙升。
+
 ### live templates
 只支持有限的函数，substring支持较弱（只有`substringBefore`），但可以使用`regularExpression`替代
 
