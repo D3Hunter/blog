@@ -131,3 +131,7 @@
 16. 管理：任务、责任、实践；Peter F. Drucker
 17. Engineering a Compiler；Keith D.Cooper & Linda Torczon
 18. 褚时健传；周桦
+19. 原则；Ray Dalio
+20. 盲眼钟表匠；Richard Dawkins
+21. 历史的教训；Will Durant，Ariel Durant
+
