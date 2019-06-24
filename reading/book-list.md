@@ -135,3 +135,4 @@
 20. 盲眼钟表匠；Richard Dawkins
 21. 历史的教训；Will Durant，Ariel Durant
 22. 债务危机；Ray Dalio
+23. JavaScript: The Definitive Guide, Sixth Edition；David Flanagan
