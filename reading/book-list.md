@@ -136,3 +136,4 @@
 21. 历史的教训；Will Durant，Ariel Durant
 22. 债务危机；Ray Dalio
 23. JavaScript: The Definitive Guide, Sixth Edition；David Flanagan
+24. The Not So Short Introduction to LATEX 2e；Tobias Oetiker, Hubert Partl, Irene Hyna and Elisabeth Schlegl
