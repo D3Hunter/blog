@@ -137,3 +137,4 @@
 22. 债务危机；Ray Dalio
 23. JavaScript: The Definitive Guide, Sixth Edition；David Flanagan
 24. The Not So Short Introduction to LATEX 2e；Tobias Oetiker, Hubert Partl, Irene Hyna and Elisabeth Schlegl
+25. 态度改变与社会影响；Philip Zimbardo, Michael R. Leippe
