@@ -138,3 +138,4 @@
 23. JavaScript: The Definitive Guide, Sixth Edition；David Flanagan
 24. The Not So Short Introduction to LATEX 2e；Tobias Oetiker, Hubert Partl, Irene Hyna and Elisabeth Schlegl
 25. 态度改变与社会影响；Philip Zimbardo, Michael R. Leippe
+26. 能力陷阱（逆向管理，Act like a leader, Think like a leader)；Herminia Ibarra

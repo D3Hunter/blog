@@ -17,3 +17,8 @@
     - 如果报：`Peer authentication failed for user "postgres"`，则使用`sudo -u postgres psql -U postgres`
 - `ALTER USER my_user_name with password 'my_secure_password';`或使用`\password`
 
+### PostgreSQL开启plpgsql调试
+- postgresql.conf（一般在data目录下）中设置shared_preload_libraries = '$libdir/plugin_debugger'
+- create extension pldbgapi;
+- 然后在对应function上，右键菜单debugging
+

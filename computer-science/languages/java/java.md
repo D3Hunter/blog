@@ -214,3 +214,13 @@ The throughput collector(UseParallelGC) can use multiple threads to process the 
 ### java source code parser
 - eclipse jdt ASTParser
 - JavaParser
+
+### JNDI(Java Naming and Directory Interface)
+主要用于service location lookup，或配置文件外部化，应用只需依赖一个name，而由JNDI提供该name对应的对象／服务。比较常见的是用来配置数据库连接资源。尤其是在应用开发人员和部署人员是两批人的情况
+
+在需要将应用从development -> integration -> test -> production的迁移过程中，可以减少出错及配置／运维工作
+
+该技术有很多替代方案，如：
+- 使用Host name alias或者DNS
+- 由应用执行环境提供enviroonment variable
+- zookeeper?

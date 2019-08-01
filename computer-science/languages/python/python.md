@@ -268,3 +268,4 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple
 [global]
 index-url = https://pypi.tuna.tsinghua.edu.cn/simple
 
+`reStructuredText (RST, ReST, or reST)` is a file format for textual data used primarily in the Python programming language community for technical documentation.

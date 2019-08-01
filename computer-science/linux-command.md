@@ -6,6 +6,7 @@
     - `apt-get install apt-file; apt-file update`
     - `apt-file find Python.h`
 - yum install lrzsz
+- 通过uid获取用户名`getent passwd "500"`
 
 DMI Desktop Management Interface; SMBIOS, System Management BIOS
 

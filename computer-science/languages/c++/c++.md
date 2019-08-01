@@ -1,3 +1,5 @@
+- `C++`编译后的符号会被`mangle`，`gdb`设置断点时需要加对应的符号名称。如果只知道部分，可以去`ELF`文件中查找实际名称
+
 ## history
 - ISO C++98
 - ISO C++03
@@ -107,3 +109,4 @@ The following four requirements are guaranteed for all atomic operations:
 - `Read-read coherence`
 - `Read-write coherence`
 - `Write-read coherence`
+

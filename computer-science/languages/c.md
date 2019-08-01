@@ -175,9 +175,12 @@ make SHELL='sh -x'
 - unused      determined unused DSOs
 - help        display this help message and exit
 
-`readelf -a` 查看符号是变量还是函数(`nm`看不出来)
-readelf -s --wide
-`ldd -v` 可显示所依赖的库版本
+常用命令
+- `readelf -a` 查看符号是变量还是函数(`nm`看不出来)
+- readelf -s --wide
+- `ldd -v` 可显示所依赖的库版本
+- ldd 使用ldconfig生成的cache查找so
+- chrpath更改rpath
 
 #### 仅静态链接部分library：
 `gcc <objectfiles> -Wl,-Bstatic -lstatic1 -lstatic2 -Wl,-Bdynamic -ldynamic1 -ldynamic2`
@@ -187,7 +190,7 @@ readelf -s --wide
 常用命令及选项
 - list/list -
 - break/delete/info break
-- info inferiors/locals/args/signals [signal]
+- info source/inferiors/locals/args/signals [signal]
 - inferior <N>
 - handle signal <op>
 - file/attach/kill/continue/run后面可接参数（或再命令行使用`--args`)
@@ -248,3 +251,6 @@ detach-on-fork
 直接运行`/lib/libc.so.6`可查看其信息
 缩减二进制尺寸
 http://www.amigacoding.de/index.php?topic=168.0
+
+### POSIX
+in the case of `stat()`, `fstatat()`, and `lstat()`—`execute (search)` permission is required on all of the directories in pathname that lead to the file. 否则会报`EACCESS(13)`
