@@ -23,6 +23,7 @@
 - `gitk --all`显示所有branch
 - `git reset --merge <>`将当前branch回归到某个点
 - `git diff`、diff都是得到的是new相对于old的变化diff old new
+- 在包含中文时，git默认的分词效果不好，按字符比较更直观一些：`git diff --color-words=.`，或者使用自定义的regex来做分词
 - 创建新分支，但不switch：`git branch -l new-branch-name --no-track`
 - 从日期开始的log: `git log --since '2019-04-19 00:00:00' --oneline`
 - 从commit开始的log: `git log xxxxx..HEAD --oneline`

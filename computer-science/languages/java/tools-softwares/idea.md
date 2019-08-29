@@ -1,10 +1,7 @@
-在`Before Launch`中添加External tools，可在debug前执行脚本，用来实现`一键编译部署启动调试`
-设置默认maven：`File->Others Settings->Default Preferences`
-
-ctrl-W: expand selection
-Cmd-shift-m: move to matching brace
-
-如果使用了`Scanner.java`，`mac`上需要用`⌘-D`来输入`EOF`
+- 在`Before Launch`中添加External tools，可在debug前执行脚本，用来实现`一键编译部署启动调试`
+- 设置默认maven：`File->Others Settings->Default Preferences`
+- 如果使用了`Scanner.java`，`mac`上需要用`⌘-D`来输入`EOF`
+- IDEA DEBUG时默认是用idea自己的编译系统，如果对maven有依赖可以使用maven来编译`Maven -> Runner -> Delegate build and run actions to Maven`
 
 ### 超大文件IDEA不做语法标记：
 idea.properties
