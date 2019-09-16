@@ -141,4 +141,4 @@
 26. 能力陷阱（逆向管理，Act like a leader, Think like a leader)；Herminia Ibarra
 27. 千面英雄；Joseph Campbell
 28. 管理梯队；Ram Charan, Stephen Drotter, James Noel
-
+29. 谢狗；Phil Knight
