@@ -142,3 +142,4 @@
 27. 千面英雄；Joseph Campbell
 28. 管理梯队；Ram Charan, Stephen Drotter, James Noel
 29. 鞋狗；Phil Knight
+20. 躁郁之心（上、下两部）；Kay Redfield Jamison
