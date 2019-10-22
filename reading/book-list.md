@@ -145,3 +145,4 @@
 30. 躁郁之心（上、下两部）；Kay Redfield Jamison
 31. 最好的告别；Atul Gawande
 32. The Art of Multiprocessor Programming；Maurice Herlihy, Nir Shavit
+33. 隐藏的意识；John Bargh
