@@ -30,3 +30,35 @@ MDI行业 万华化学
 
 
 技术产品也是分行业的，客户群，应用场景等
+
+有些公司会跟职工签订两份合同，一份劳动合同，一份劳务合同。比如课外辅导、房产经纪等。这时候在财务报表上，工资的一部分体现在职工薪酬上，一部分体现在购买商品、接受劳务支付的现金上。
+
+净收入，或者净营业收入，是指在所有收入中减去非经常性收入等非营业收入的剩余。
+
+Registration of securities 有价证券注册
+Foreign private issuers 外国私人发行人
+pursuant 根据
+Securities Exchange Act 证券交易法
+Equity Securities 股本证券，即一般所指的股票,大致可分为普通股及优先股
+Employment Agreements 就业协议
+Fiscal year 财政年度 财务年度
+Cash compensation 现金补偿，现金薪酬
+non-vested restricted Class A common shares 未归属限制性A类普通股
+Share Incentive Plan 股权激励计划
+Equal annual installments 年均等额（按年等额分期付款)
+Exercise Price (股权、期权)执行价格
+Committees of the Board of Directors 董事会委员会
+American Depositary Shares (ADS) refers to individual shares offered by foreign companies on a US exchange.
+Dividend Policy 股利政策
+Intangible assets, net 净无形资产
+Goodwill 商誉
+LIABILITIES AND EQUITY 负债和权益
+Total current liabilities 流动负责合计
+par value 面值
+shares issued and outstanding 已发行和流通的股票
+shares authorized 授权可发行股票，即可发行的股票数上限
+Impairment loss 减值损失
+Government subsidies 政府补贴
+CONSOLIDATED STATEMENTS 合并报表
+labor disputes 劳资纠纷
+Accrued employee payroll and welfare benefits 应计员工工资和福利
