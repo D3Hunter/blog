@@ -147,4 +147,4 @@
 32. The Art of Multiprocessor Programming；Maurice Herlihy, Nir Shavit
 33. 隐藏的意识；John Bargh
 34. 怎样选择成长股（Common Stocks and Uncommon Profits and Other Writings）；Philip A. Fisher
-
+35. 朱镕基答记者问；《朱镕基答记者问》编辑组
