@@ -81,3 +81,21 @@
 4. `git commit -m "Merge Bproject project as our subdirectory"`
 5. `git pull -s subtree Bproject master`
 
+### merge two repository
+#### 背景信息
+如果一开始在repository `A`上开发，但`A`丢失了，只能在`A`的备份（没有`A`的git history）上新建了repository `B`，然后继续开发。之后repository `A`又找到了，此时如果希望合并`A`和`B`，需要使用`git`的`graft`功能：
+
+#### 操作步骤
+- 在`B`上`git checkout master`
+- `git remote add A /path/to/A`
+- `git fetch A`
+- `echo 'xxxxxx yyyyyy' >> .git/info/grafts`
+    - `xxxxxx`: `B`的第一个commit（作为child）
+    - `yyyyyy`: `A`的最后一个commit（作为parent）
+- `git filter-branch`
+- 这样得到的结果`xxxxxx`仍然是等同于完全新提交，A的历史并不能在文件历史中体现
+    - 此时可以通过`git rebase -i yyyyyy`，将`xxxxxx`跟某个commit合并(`squash`)，这样文件历史就可以被保留
+- 得到的新`tree`，有可能无法`push`到B的`remote repository`
+    - 一种方案是新开一个`remote repo`，然后`push`到remote
+- 如果历史中多了一个`refs/original/refs/heads/master`，可通过如下命令删除
+    - `git update-ref -d refs/original/refs/heads/master`
