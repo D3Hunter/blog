@@ -151,3 +151,6 @@
 36. 中国论；Henry Kissinger
 37. Concurrent programming in Java - Design Principles and Patterns；Doug Lea
 38. 世界秩序；Henry Kissinger
+
+### 2020
+1. 大外交；Henry Kissinger
