@@ -157,3 +157,4 @@
 2. 贫穷的本质；Abhijit V.Banerjee / Esther Duflo
 3. 朱镕基讲话实录（1-4卷）；朱镕基
 4. 叫魂：1768年中国妖术大恐慌；孔飞力
+5. 国家兴衰探源；Mancur Olson
