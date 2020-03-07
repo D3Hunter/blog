@@ -159,3 +159,4 @@
 4. 叫魂：1768年中国妖术大恐慌；孔飞力
 5. 国家兴衰探源；Mancur Olson
 6. 权利与繁荣；Mancur Olson
+7. 集体行动的逻辑；Mancur Olson
