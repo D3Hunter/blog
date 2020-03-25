@@ -161,3 +161,4 @@
 6. 权利与繁荣；Mancur Olson
 7. 集体行动的逻辑；Mancur Olson
 8. 公共事物的治理之道；Elinor Ostrom
+9. 大国的崩溃；沙希利·浦洛基
