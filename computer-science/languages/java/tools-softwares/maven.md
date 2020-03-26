@@ -101,3 +101,9 @@ Dependency scope is used to limit the transitivity of a dependency, and also to 
 - test: only available for the test compilation and execution phases. This scope is not transitive.
 - system: The artifact is always available and is not looked up in a repository.
 - import
+
+### module filter
+maven执行时仅针对部分module，使用`--projects`或`-pl`:
+- 仅编译module-a: `mvn -pl module-a compile`
+- 不编译module-a: `mvn -pl '!module-a' compile`
+

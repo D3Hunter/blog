@@ -56,3 +56,20 @@ for ele in gen_alphabet_seq(3):
 ```
 - `-keepparameternames`对于`keep`的`method`，同时保留`method`的`parameter`
 - `-dontusemixedcaseclassnames`，如果要在mac／windows上混淆一个目录，加上因为文件系统不支持大小写导致类文件重复
+
+### proguard-maven-plugin
+`proguard-maven-plugin`只有一个`outjar`，因此做不到同时混淆两个存在依赖的`module`，同时结果还在两个`jar`内。
+
+如果一个`project`内module `A`依赖module `B`，如果两者都需要混淆，可以在`A`的`configuration`中添加如下配置，这会使`B`跟`A`一起混淆，并将混淆后的结果放到`A.jar`中（即`assembly`到一起），如果只将`B`内联到`A`，但不混淆`B`，可设置`library=true`
+```xml
+<assembly>
+    <inclusions>
+        <inclusion>
+            <groupId>project</groupId>
+            <artifactId>B</artifactId>
+            <library>false</library>
+        </inclusion>
+    </inclusions>
+</assembly>
+```
+
