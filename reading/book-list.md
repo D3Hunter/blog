@@ -164,4 +164,5 @@
 9. 大国的崩溃；沙希利·浦洛基
 10. 中国历史的教训；习骅
 11. 第二次世界大战回忆录；Winston Churchill
+12. Virtual Machines - Versatile Platforms for Systems and Processes；Jim Smith，Ravi Nair
 
