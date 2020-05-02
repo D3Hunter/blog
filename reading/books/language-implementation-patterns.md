@@ -115,3 +115,8 @@ retargeting strategy
 ### DSL papers
 - Marjan Mernik: When and how to develop domain-specific languages
 
+### AST design guidelines:
+- Dense: No unnecessary nodes
+- Convenient: Easy to walk
+- Meaningful: Emphasize operators, operands, and the relationship between them **rather than artifacts from the grammar**（这是parse tree的缺点）
+
