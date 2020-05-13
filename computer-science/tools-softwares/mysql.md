@@ -55,11 +55,11 @@ flush privileges;
 - 免密登陆，修改密码：update user set Password=PASSWORD('root') where User='root';
 
 ### import, export
-`mysqldump -u$user -p$pass -S $socket --all-databases > db_backup.sql`
-`mysqldump -u <db_username> -h <db_host> -p db_name table_name > table_name.sql`
-`mysql -u username -p db_name < /path/to/table_name.sql`
-`mysql -u root -p'PASSWORD'`
-	You must do this if the password has any of the following characters: * ? [ < > & ; ! | $ ( )
+- `mysqldump -u$user -p$pass -S $socket --all-databases > db_backup.sql`
+- `mysqldump -u <db_username> -h <db_host> -p db_name table_name > table_name.sql`
+- `mysql -u username -p db_name < /path/to/table_name.sql`
+- `mysql -u root -p'PASSWORD'`
+    - You must do this if the password has any of the following characters: * ? [ < > & ; ! | $ ( )
 
 查看导入进度：`pv -f xxx.sql 2> output.log | mysql -uroot -proot test`
     - `sed -u 's/\r/\n/g' output.log | tail`
