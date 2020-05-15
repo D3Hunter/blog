@@ -167,4 +167,5 @@
 12. Virtual Machines - Versatile Platforms for Systems and Processes；Jim Smith，Ravi Nair
 13. 起火的世界：输出自由市场民主酿成种族仇恨和全球动荡；蔡爱眉
 14. 论美国的民主；Alexis de Tocqueville
-
+15. 注定一战？中美能否避免修昔底德陷阱；Graham Allison
+16. 领袖们；Richard Milhous Nixon
