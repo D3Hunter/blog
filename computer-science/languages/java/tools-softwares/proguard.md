@@ -73,3 +73,11 @@ for ele in gen_alphabet_seq(3):
 </assembly>
 ```
 
+### 代码包名问题
+注意包名尽量超过3个字符，以免`混淆后的类名`跟`包名重名`导致后续使用失败，如下面的case：
+```
+com.test.ab.class // 混淆后的ab类
+com.test.ab.common.Config.class // ab包下的没被混淆的Config类
+```
+
+

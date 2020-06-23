@@ -19,6 +19,7 @@ grep和awk默认都是有缓冲的，要立即显示使用如下参数：
 - rsync - a fast, versatile, remote (and local) file-copying tool. rsync会对比src和dst之间的差别，并只拷贝变动的部分。
 - 文件按行长度排序: `cat testfile | awk '{ print length, $0 }' | sort -n -s | cut -d" " -f2-`
 - 文件内容按行反转：`tail -r file.txt`
+- 按日期查找文件：`find /etc/ -type f -ls |grep '25 Sep'`
 
 ### IUS
 IUS repository：提供最新的package，yum内原有的包仍然可以安装

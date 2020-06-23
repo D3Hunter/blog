@@ -28,3 +28,46 @@ Classifying something as an `island language` often depends on our perspective. 
 Issuing Context-Sensitive Tokens with `Lexical Modes`
 
 The `atn` term means `augmented transition network` and is a state machine that can represent a grammar where edges represent grammar elements.
+
+### best practices
+- `parser grammar`和`lexer grammar`要么完全分开，要么合并在一起，不然`parser grammar`还会生成一个单独的`lexer`。如果完全分开，需要在`parser`的`g4`中使用`parser grammar`，否则生成的parser名称会在`g4`名称的基础上在加上一个`Parser`后缀
+- `lexer production name`以大写开头，`parser production name`以小写开头
+
+#### lexer和parser完全分开的示例
+- `parser.g4`开头指定grammar类型和tokenVocab：
+```
+parser grammar XXXParser;
+options {tokenVocab=XXXLexer;}
+```
+- lexer.g4开头指定类型和注释channel
+```
+lexer grammar XXXLexer;
+channels{COMMENTS}
+```
+
+### antlr maven plugin
+```xml
+<plugin>
+    <groupId>org.antlr</groupId>
+    <artifactId>antlr4-maven-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>antlr</id>
+            <goals>
+                <goal>antlr4</goal>
+            </goals>
+            <configuration>
+                <visitor>true</visitor>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+默认输入目录为`${basedir}/src/main/antlr4`，输出目录为`${project.build.directory}/generated-sources/antlr4`
+
+Your input files under antlr4 should be stored in sub directories that reflect the package structure of your java parsers. 此时不需要在g4中指定package，会自动设置
+
+### antlr runtime
+- 同一个parser会累积ATNConfig，可以手动清除：ParserATNSimulator.html#clearDFA()
+

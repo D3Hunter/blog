@@ -107,3 +107,26 @@ vim自动补齐`_arguments:451: _vim_files: function definition file not found`,
 
 实例：`echo 'xxxx' | pbcopy`
 
+### 查看进程树
+`brew install pstree`
+
+### MAC 远程桌面
+#### 证书或相关链无效
+- 首选项 - 安全性 - 始终连接
+
+#### 远程桌面无法验证您希望连接的计算机的身份
+还需要在windows端配置如下：
+- 登陆云主机
+- 应用目录 - windows系统 - 运行（WIN+R）
+- 运行gpedit.msc 计算机配置 —> 管理模板 —> windows组件 —> 远程桌面服务 —> 远程桌面会话主机 —> 安全
+- 远程(RDP)连接要求舍不得指定的安全层 —> 启用 —> 安全层 —> RDP
+- 要求使用网络级别的身份验证对远程连接的用户进行身份 —> 已禁用
+
+### 解压rpm包
+- `brew install rpm2cpio`
+- `/path/to/rpm2cpio.pl freeswitch-1.6.17-7.mga6.src.rpm | cpio -idmv`
+
+### 简单timer，并提醒
+sleep 120; osascript -e 'display notification "Timer" with title "Timer"'
+
+
