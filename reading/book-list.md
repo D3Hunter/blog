@@ -169,3 +169,4 @@
 14. 论美国的民主；Alexis de Tocqueville
 15. 注定一战？中美能否避免修昔底德陷阱；Graham Allison
 16. 领袖们；Richard Milhous Nixon
+17. 毛泽东选集1～4卷；毛泽东
