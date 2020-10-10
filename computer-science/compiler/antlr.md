@@ -71,3 +71,24 @@ Your input files under antlr4 should be stored in sub directories that reflect t
 ### antlr runtime
 - 同一个parser会累积ATNConfig，可以手动清除：ParserATNSimulator.html#clearDFA()
 
+### ambiguity production
+`parser`在遇到`ambiguity`时会选择最前面的一个`alternative`，但这句话说的是`prediction`中前面的，比如下面的`rule`在处理`length(a)`时，`predicition`会预测到`1`和`2`是ambitious的(使用`LL_EXACT_AMBIG_DETECTION`模式才能检测出来)，可能是因为生成的`parser`内部先处理递归的`alternative`(`enterRecursionRule`)，导致这样的`prediction`结果。所以使用`SLL`或`LL`识别的结果是第三个`alternative`，而不是第二个。
+```
+root
+    : identifier_name
+    | identifier_name LP identifier_name RP
+    | root LP identifier_name RP
+    ;
+```
+
+检测ambiguity设置
+```java
+parser.getInterpreter().setPredictionMode(LL_EXACT_AMBIG_DETECTION);
+parser.addErrorListener(new DiagnosticErrorListener());
+```
+
+`ANTLRErrorListener.reportAmbiguity()`的`ambigAlts`参数值，指的是生成的`parser`中的`alternative`序号，等同于对应`rule`去除左递归后的`alternative`的序号
+
+`RuleContext.getRuleIndex`给出当前Context类对应的`Rule index`，这些index定义在生成的parser中，名称为`RULE_rule_name`。注意，如果对rule内部的production添加label，是不会生成额外的index的。
+
+

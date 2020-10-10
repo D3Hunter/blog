@@ -121,6 +121,9 @@ python如果有非`daemon thread`运行是不会退出的，`os._exit`会全部�
 
 dictionary按value降序排序：`sorted(dict.items(), key=lambda kv: kv[1], reverse=True)`
 
+### regexp unicode
+python2中涉及unicode的字符串都要加`u`，否则跟想要的结果不一致，比如匹配中文用的正则`r'[\u4E00-\u9FA5]+'`无法正确匹配中文，python3无该问题
+
 ### subprocess
 `subprocess.Popen`如果不处理输入输出，默认后台运行，即使python退出仍然会运行
 `subprocess.run`阻塞运行

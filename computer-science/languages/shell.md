@@ -120,3 +120,5 @@ find不会用exit status表示状态，但可用如下方法确定是否有结�
 
 `ANSI-C Quoting`: Words of the form `$'string'` are treated specially. The word expands to string, with backslash-escaped characters replaced as specified by the ANSI C standard. The expanded result is single-quoted, as if the dollar sign had not been present. 比如指定`column sort awk`等命令使用`tab`做分隔符
 
+Shell Parameter Expansion: The ‘$’ character introduces parameter expansion, command substitution, or arithmetic expansion.
+

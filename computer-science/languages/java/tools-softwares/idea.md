@@ -24,3 +24,10 @@ idea.max.intellisense.filesize=2500
 - `clipboard()`获取剪切板内容
 
 参考[predefined_functions](https://www.jetbrains.com/help/idea/2018.3/edit-template-variables-dialog.html#predefined_functions)
+
+### 文本替换更改captured group的case：
+- `\l` changes a character to lowercase until the next character in the string.
+- `\u` changes a character to uppercase until the next character in the string.
+- `\L` changes characters to lowercase until the end of the literal string `\E`.
+- `\U` changes characters to uppercase until the end of the literal string `\E`.
+

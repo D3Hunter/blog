@@ -164,3 +164,23 @@ https://dev.mysql.com/doc/refman/8.0/en/identifier-case-sensitivity.html
 https://dev.mysql.com/doc/refman/8.0/en/identifiers.html
 https://dev.mysql.com/doc/refman/8.0/en/keywords.html
 
+### mysql bulk insert test
+Batched insert of mysql-jdbc driver has no performance gain compared to single insert, but bulk insert() has.
+- 1000 completed in 1512
+- 5000 completed in 851
+- 10000 completed in 780
+- 100000 completed in 739
+
+also check [this](https://stackoverflow.com/a/11390363/1347716)
+
+## MySQL一键安装包制作
+- `The system tablespace`: can have one or more data files. By default, a single system tablespace data file, named `ibdata1`, is created in the data directory. 可通过参数`innodb_data_file_path`控制初始大小
+- `Redo Log File`: By default, InnoDB creates two 50MB redo log files in the data directory named `ib_logfile0` and `ib_logfile1`. `innodb_log_file_size` defines the size in bytes of each log file in the log group.
+- `mysqld --initialize --user=mysql`: After MySQL is installed, the data directory must be initialized, including the tables in the mysql system database. 此时root的密码是随机生成的，并输出到控制台
+    - 登陆后通过`ALTER USER 'root'@'localhost' IDENTIFIED BY 'root-password';`修改
+    - `CREATE USER 'root'@'%' IDENTIFIED BY 'root-password';`
+- `errmsg.sys` file that is used by `mysqld` to determine the error messages to display for different error codes.
+    - `lc-messages-dir`: The directory where error messages are located. The server uses the value together with the value of `lc-messages` to produce the location for the error message file.
+- mysql_embedded: The embedded MySQL server library makes it possible to run a full-featured MySQL server inside a client application.
+- mysql linux generic安装包中包含很多无用的内容，可删除以节省空间。如`lib/`下的`libmysqld.a`和`mecab`，`bin/`下的`mysql_embedded`
+

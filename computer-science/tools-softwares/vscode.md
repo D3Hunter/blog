@@ -20,3 +20,24 @@
 ### 命令行使用`code`
 - `Install code command to PATH`可在命令行使用`code`, `code -`可接收控制台输入，如`ls |code -`
 - `code --wait/-w`可以等待编辑的文件被关闭
+
+### run tasks
+```json
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "format finalcial sheet",
+            "type": "shell",
+            "command": "put shell commands here",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent"
+            }
+        }
+    ]
+}
+```
+

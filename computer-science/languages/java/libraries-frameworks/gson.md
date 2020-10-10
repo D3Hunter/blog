@@ -4,3 +4,5 @@ gson支持序列化任意对象，但对于有继承结构的类，在反序列�
 - gson-extras在官方仓库中没有，但`RuntimeTypeAdapterFactory`可以单独使用，可从github上拷贝出来
 - 注意初始化`RuntimeTypeAdapterFactory`的基类需要是interface或者abstract class，或者所有被序列化的实例都是子类对象，否则序列化基类对象时会报错
 
+## internal
+如果类没有无参数构造函数，gson会使用`sun.misc.Unsafe`的`allocateInstance`来创建对象
