@@ -176,3 +176,5 @@
 21. 历史的尘埃；知秋
 22. 复利信徒；李杰
 23. 公司价值分析；李杰
+24. Beautiful Architecture: Leading Thinkers Reveal the Hidden Beauty in Software Design；Edited by Diomidis Spinellis and Georgios Gousios
+
