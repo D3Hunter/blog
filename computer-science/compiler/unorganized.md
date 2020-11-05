@@ -37,6 +37,7 @@ concepts in scope: mathematics, computer science, linguistics and formal languag
         - `CLR(1)`
     - Operator precedence parser
         - 计算器使用该parser将中缀算数运算表达式转为`Reverse Polish notation (RPN)`形式
+        - 包含`shunting yard`和`operator precedence climbing`
 
 ### concepts related to code optimization
 - `peephole optimization` is a kind of optimization performed over a very small set of instructions in a segment of generated code. The set is called a "peephole" or a "window". It works by recognizing sets of instructions that can be replaced by shorter or faster sets of instructions.
