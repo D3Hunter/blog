@@ -46,9 +46,12 @@ mysql
 - DATE_ADD(CURDATE(), INTERVAL -29 DAY)
 - 1000 * (UNIX_TIMESTAMP() - 31*24*60*60)
 
-### 权限相关
-GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '111111' WITH GRANT OPTION;
+### 创建superuser
+```sql
+CREATE USER 'user'@'host' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON *.* TO 'user'@'host' WITH GRANT OPTION;
 flush privileges;
+```
 ###忘记mysql密码可按下面的方式：
 - 停掉mysql
 - mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
@@ -82,7 +85,6 @@ flush privileges;
 - select user,password from user;可看到密码长度变了
 - flush privileges;
 
-
 ### 本地密码保存
 ```
 密码输入时仍然需要使用单引号转义
@@ -95,7 +97,6 @@ mysql_config_editor set --login-path=root --host=localhost --user=root --passwor
 
 ### Fixed-Point Types (Exact Value) - DECIMAL, NUMERIC
 The DECIMAL and NUMERIC types store exact numeric data values. These types are used when it is important to preserve exact precision, for example with monetary data. In MySQL, NUMERIC is implemented as DECIMAL
-
 
 ### functions
 `last_insert_ID`: The ID that was generated is maintained in the server on a per-connection basis.
@@ -176,7 +177,7 @@ also check [this](https://stackoverflow.com/a/11390363/1347716)
 ## MySQL一键安装包制作
 - `The system tablespace`: can have one or more data files. By default, a single system tablespace data file, named `ibdata1`, is created in the data directory. 可通过参数`innodb_data_file_path`控制初始大小
 - `Redo Log File`: By default, InnoDB creates two 50MB redo log files in the data directory named `ib_logfile0` and `ib_logfile1`. `innodb_log_file_size` defines the size in bytes of each log file in the log group.
-- `mysqld --initialize --user=mysql`: After MySQL is installed, the data directory must be initialized, including the tables in the mysql system database. 此时root的密码是随机生成的，并输出到控制台
+- `mysqld --initialize --user=mysql`: After MySQL is installed, the data directory must be initialized, including the tables in the mysql system database. 此时root的密码是随机生成的，并输出到`/var/log/mysqld.log`
     - 登陆后通过`ALTER USER 'root'@'localhost' IDENTIFIED BY 'root-password';`修改
     - `CREATE USER 'root'@'%' IDENTIFIED BY 'root-password';`
 - `errmsg.sys` file that is used by `mysqld` to determine the error messages to display for different error codes.
