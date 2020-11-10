@@ -177,4 +177,5 @@
 22. 复利信徒；李杰
 23. 公司价值分析；李杰
 24. Beautiful Architecture: Leading Thinkers Reveal the Hidden Beauty in Software Design；Edited by Diomidis Spinellis and Georgios Gousios
-
+25. 西游记；吴承恩
+26. 李光耀论中国与世界；Graham Allison，Robert D. Blackwill，Ali Wyne
