@@ -180,3 +180,4 @@
 25. 西游记；吴承恩
 26. 李光耀论中国与世界；Graham Allison，Robert D. Blackwill，Ali Wyne
 27. 大乘妙法莲华经
+28. 印度佛教史；平川彰
