@@ -16,3 +16,30 @@ TCP provides reliability with a mechanism called `Positive Acknowledgment with R
 - fast retransmit
 - fast recovery.
 
+### socket connect/send/recv timeout
+#### system call layer
+- connect 默认timeout：linux下该值在/proc/sys/net/ipv4/tcp_syn_retries，配置文件为/etc/sysctl.conf：net.ipv4.tcp_syn_retries
+- send/recv操作，底层对应到socket的超时参数为SO_RCVTIMEO and SO_SNDTIMEO，默认为0，即无超时
+
+C socket connect没有TIMEOUT设置，实现超时可通过：
+- 设置non-blocking，然后通过select/poll设置超时并选择。（HotSpot实现方式）
+- 使用signal来interrupt connect
+- linux下在connect前设置SO_SNDTIMEO
+
+- RTT - Round Trip Time
+- RTO: round trip timeout
+
+#### java layer
+`Socket.connect(addr, timeout)`和`Socket.setSoTimeout`，HotSpot底层（solaris／linux）在`connect`或`read`前`poll`来实现超时
+
+这俩参数影响的是URLConnection及其子类
+- sun.net.client.defaultConnectTimeout
+- sun.net.client.defaultReadTimeout
+
+#### jdbc layer
+Statement.setQueryTimeout 默认无timeout，设置后会启动一个timer，在超时后向DB发送CANCEL命令
+
+PostgreSQL的jdbc参数
+- connectTimeout为调用Socket.connect的参数
+- socketTimeout就是调用Socket.setSoTimeout
+

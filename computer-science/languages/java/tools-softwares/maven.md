@@ -1,3 +1,8 @@
+### misc
+`packaging`控制工作类型，如果设置为`pom`是不会编译的
+
+`src/main/java`中的`.properties`是不会自动拷贝的，需要设置`build/resources/resource`
+
 ### Concepts
 - goals: aka Mojo - Maven plain Old Java Object
 #### Usefull commands

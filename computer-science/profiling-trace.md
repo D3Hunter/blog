@@ -19,3 +19,21 @@ systemtap、dtrace，strace，ptrace为内核trace相关，也可以处理上层
 gdb/strace/ltrace都使用ptrace API
 应用的kernel技术: kprobes/utrace/uprobes
 strace防止参数被truncate，-s strsize。-o outfile
+
+## profiling / distributed tracing
+[Metrics, tracing, and logging](https://peter.bourgon.org/blog/2017/02/21/metrics-tracing-and-logging.html)
+
+AWS/X-Ray, OpenZipkin, OpenTracing, Instana, Datadog, Librato
+
+Rollups: For windows in time larger than 60 minutes we “roll up” the data in a given period of time using the methodology specified in the metric attributes (average, sum, min, max, or count).
+
+Metrics, tracing, and logging are definitely all parts of a broader picture, and can definitely overlap in some circumstances:
+- `metrics`: the defining characteristic of metrics is that they are `aggregatable`
+    - `request-scoped emtrics`
+    - `aggregatable events`
+- `tracing`: the defining characteristic of tracing is that it deals with information that is `request-scoped`.
+- `logging`: the defining characteristic of logging is that it deals with `discrete events`.
+    - `request-scoped events`
+    - `request-scoped aggretable events`
+
+`metrics` tend to require the fewest resources to manage, as by their nature they “compress” pretty well. Conversely, `logging` tends to be overwhelming, frequently coming to surpass in volume the production traffic it reports on...`tracing` come in between.

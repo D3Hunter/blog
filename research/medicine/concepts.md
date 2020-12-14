@@ -1,3 +1,4 @@
+- Pathology and Medicine(病理学和医学)
 - `steroid` 类固醇: Any of a large class of organic compounds with a characteristic molecular structure containing four rings of carbon atoms (three six-membered and one five). They include many `hormones`, `alkaloids`, and `vitamins`.
 - `Arthritis` 关节炎
 - `Paracetamol`, 扑热息痛 also known as `acetaminophen` 对乙酰氨基酚 and APAP, is a medication used to treat pain and fever.
@@ -20,3 +21,77 @@
 - `Allergic Fungal Sinusitis` 过敏性真菌性鼻窦炎
 - `nasal obstruction` 鼻塞
 - `allergic mucin` 过敏性粘蛋白
+- sterile inflammation: 无菌性炎症 Sterile inflammation occurs when DAMPs are released into the extracellular environment. This occurs mostly when a cell undergoes necrotic, as opposed to apoptotic, cell death.
+- Rotator cuff: 肩袖，肩背部的肌肉群
+- anxiety may cause arm pain.
+- ASMR and Frisson Shivers
+    - Shivers across the skin, trembling limbs, a fluttering heart: we’ve all experienced the electrifying sensations variously called “chills” or “frisson”. Some people even feel so aroused that researchers call the experience a “skin orgasm”.
+    - Have you ever been listening to a great piece of music and felt a chill run up your spine? Or goosebumps tickle your arms and shoulders?
+- `Focal hyperhidrosis`, also known as `primary hyperhidrosis`, is a disease characterized by an excessive sweating localized in certain body regions (particularly palms, feet and underarms).
+- Escherichia coli(E. coli) 大肠杆菌（兼性厌氧）
+- staphylococcus 葡萄球菌属（非厌氧）
+- Staphylococcus aureus(S. aureus) 金黄色葡萄球菌
+- Methicillin-resistant S. aureus 抗甲氧西林 金黄色葡萄球菌
+- Enterococcus 肠球菌（兼性厌氧）
+- Proteus 变形杆菌
+- Prevotella 普氏菌
+- Peptostreptococcus 消化链球菌属
+- Porphyromonas 卟啉单胞菌属
+- Fusobacteria 梭杆菌纲
+- Bacteroides 拟杆菌属
+- Anorectal abscesses 肛门直肠脓肿
+    - Perianal abscess 肛周脓肿 接近外部
+    - Ischiorectal abscess 坐骨直肠 忘内往外的部分
+    - Intersphincteric abscesss 括约肌间，稍往上一点 肌肉内
+    - Supralevator abscess 盆腔直肠脓肿 往内很多的地方
+- exudate 渗出物 分泌物
+- fistulae 瘘
+- tract (连通身体组织或器官的) 道
+- canal 渠道
+- pus 脓
+- swelling 肿胀
+- incontinence 失禁
+- sphincter 括约肌
+- Lay-open of fistula-in-ano 肛瘘切开术
+- Cutting seton 挂线
+- flatus 屁
+- anesthesia 麻醉
+- incision 切口
+- hemorrhoid 痔疮
+- antibiotics 抗生素
+- groin 腹股沟
+- rectal lumen 直肠腔
+- bowel movement 解大便
+- palpable mass 可触及肿块
+- Crohn's disease 克罗丁；节段性回肠炎；克罗恩氏病
+- metronidazole 甲硝唑
+- ciprofloxacin 环丙沙星，合成的第三代喹诺酮类抗菌药物
+- augamentin 阿莫西林 克拉维酸钾
+- amoxicillin-clavulanate 阿莫西林-克拉维酸
+- dentate line 齿线
+- crypt gland 隐窝腺
+- Epidemiology 流行病学
+- Pathophysiology 病理生理学
+- drainage 引流
+- epinephrine ／ adrenaline 肾上腺素
+- Catheter 导管
+- urethral irritation 尿路刺激症
+- urinary retention 尿瀦留
+- constipation 便秘
+- infiltrative 渗透性的；造成渗透的
+- feces(faeces, stool) 粪便
+- digestive tract 消化道
+- diarrhea 腹泻
+- mucous 粘液
+- intestinal 肠的
+- ulcerative colitis(UC) 溃疡性结肠炎
+- colon 结肠
+- Bacillus licheniformis 地衣芽孢杆菌，用于细菌真菌引起的急慢性肠炎腹泻、肠道菌群失调等
+- eosinophil lactobacillus 嗜酸乳杆菌、Enterococcus faecalis 粪链球菌、Bacillus subtilis 枯草杆菌：肠道菌群失调引起的肠功能紊乱，如轻型急性腹泻
+- probiotics 益生菌
+- antibiotics 抗生素
+- irritable bowel syndrome(IBS) 肠易激综合征
+- Crohn's disease is a type of inflammatory bowel disease (IBD). It causes inflammation of your digestive tract, which can lead to abdominal pain, severe diarrhea, fatigue, weight loss and malnutrition. Inflammation caused by Crohn's disease can involve different areas of the digestive tract in different people.
+
+[Perirectal Abscess](https://www.ncbi.nlm.nih.gov/books/NBK507895/)
+

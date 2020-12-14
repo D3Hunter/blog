@@ -24,3 +24,15 @@ Sulong is written in Java and uses the Truffle language implementation framework
 
 With Sulong you can execute C/C++, Fortran, and other programming languages that can be transformed to LLVM bitcode on Graal VM. To execute a program, you have to compile the program to LLVM bitcode by a LLVM front end such as `clang`.
 
+## graalVM
+`GraalVM` is a high-performance runtime that provides significant improvements in application performance and efficiency which is ideal for microservices. It is designed for applications written in Java, JavaScript, LLVM-based languages such as C and C++, and other dynamic languages. It `removes the isolation between programming languages` and `enables interoperability in a shared runtime`.
+
+### Truffle Language Implementation Framework
+The `Truffle framework` (henceforth “Truffle) is an open-source library for building tools and programming languages implementations as interpreters for self-modifying Abstract Syntax Trees. Together with the open-source `GraalVM` compiler, Truffle represents a significant step forward in programming language implementation technology in the current era of dynamic languages.
+
+`GenerateWrapper`: All non-final and non-private methods starting with `execute` are overridden by the generated wrapper. Every execute method must have `VirtualFrame` as the first declared parameter.
+
+`Specialization`: Defines a method of a node subclass to represent one specialization of an operation. A specialization must have at least as many parameters as there are `NodeChild` annotations declared for the enclosing operation node. These parameters are declared in the same order as the `NodeChild` annotations (linear execution order). We call such parameters dynamic input parameters.
+
+`TruffleLanguage.Provider`. Used to register a TruffleLanguage using a `ServiceLoader`. 通过Truffle DSL自动生成
+

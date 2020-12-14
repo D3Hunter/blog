@@ -32,6 +32,16 @@ While "`new-age`" music can be difficult to define, journalist Steven Rea descri
 - `Rock music` is a broad genre of popular music that originated as "rock and roll" in the United States in the early 1950s
     - The sound of rock is traditionally centered on the amplified electric guitar
 - `Jazz` is characterized by swing and blue notes, call and response vocals, polyrhythms and improvisation.
+- `deep house`: a subgenre of house music
+    - Slower, more liquid grooves, and a smooth, stylish, chic demeanor make deep house a more mature, sensuous, simmering metaphor for sex than other genres of electronic dance music. It rarely reaches a climax, but lingers on as a comfortable, hypnotic and relaxing pulse, perfect for the small, dimly lit nightclub.
+- `Lounge music` is a type of easy listening music popular in the 1950s and 1960s.
+- `Chill-out` (shortened as chill; also typeset as chillout or chill out) is a loosely defined form of popular music characterized by slow tempos and relaxed moods
+    - The definition of "chill-out music" has evolved throughout the decades, and generally refers to anything that might be identified as a modern type of easy listening.
+- `Ambient music` is a genre of music that emphasizes tone and atmosphere over traditional musical structure or rhythm. A form of instrumental music, it may lack net composition, beat, or structured melody.
+- `Sonata`, in music, literally means a piece played as opposed to a cantata, a piece sung.
+    - Sonata is a vague term, with varying meanings depending on the context and time period. By the early 19th century, it came to represent a principle of composing large-scale works.
+- A `concerto` is, from the late Baroque era, mostly understood as an instrumental composition, written for one or more soloists accompanied by an orchestra or other ensemble. 协奏曲
+
 
 ### Antonio Lucio Vivaldi
 `Antonio Lucio Vivaldi` (UK: /vɪˈvældi/, US: /vɪˈvɑːldi, -ˈvɔːl-/, Italian: [anˈtɔːnjo ˈluːtʃo viˈvaldi]; 4 March 1678 – 28 July 1741) was an Italian `Baroque musical composer`, virtuoso violinist, teacher, and Roman Catholic priest. Born in Venice, the capital of the Venetian Republic, he is regarded as one of the greatest `Baroque composers`, and his influence during his lifetime was widespread across Europe. He composed many instrumental `concertos`, for the violin and a variety of other instruments, as well as `sacred choral` works and more than forty `operas`. His best-known work is a series of violin concertos known as the `Four Seasons`.

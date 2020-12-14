@@ -129,4 +129,27 @@ vim自动补齐`_arguments:451: _vim_files: function definition file not found`,
 ### 简单timer，并提醒
 sleep 120; osascript -e 'display notification "Timer" with title "Timer"'
 
+### mac python报错问题
+使用`mkvirtualenv`报错`ERROR:root:code for hash md5 was not found.`，查了下网上有说是openssl的问题，但试了下不行，试了下以下方法：
+```bash
+$ brew reinstall python@2
+FormulaUnavailableError: No available formula with the name "/usr/local/opt/python@2/.brew/python@2.rb"
+```
+但是重装过程中报错，网上找到的通过URL安装`python@2.rb`文件的方法失效了，[新的解决方法参考](https://stackoverflow.com/a/63725223)
+```bash
+$ brew unlink openssl # 上面的方案少这一步
+$ brew tap-new <user>/homebrew-python2
+$ brew extract python@2 <user>/homebrew-python2
+$ brew install /usr/local/Homebrew/Library/Taps/<user>/homebrew-python2/Formula/python@2.7.17.rb
+$ # 如果还不行，执行`brew remove python@2`，在执行第三步（reinstall）
+$ source ~/.zshrc # 刷新PATH
+$ # 可能需要重新安装virtualenvwrapper
+```
+
+### multiple thread download
+- axel 多进程，有人反馈很占CPU
+- aria2: 下载github的文件时，要使用github的连接（右键拷贝），使用aws的链接无法直接下载
+    - `aria2c -c -x 10 -s 10`
+- `brew`执行报错：fatal: 'origin' does not appear to be a git repository
+    - 可通过`brew update --verbose`查看具体信息
 

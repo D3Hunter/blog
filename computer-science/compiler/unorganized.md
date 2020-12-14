@@ -19,6 +19,31 @@ concepts in scope: mathematics, computer science, linguistics and formal languag
     - `top-down parse`是leftmost，`bottom-up parse`是`reverse rightmost derivation`
     - `Rightmost derivation` has very large memory requirements
     - `leftmost derivation` and `rightmost derivation`影响grammar中的代码执行顺序，需注意
+- BNF(Backus–Naur form or Backus normal form) is a `metasyntax` notation for context-free grammars, often used to describe the syntax of languages used in computing.
+- EBNF(extended Backus–Naur form) is a family of metasyntax notations, any of which can be used to express a context-free grammar. 可设置可选或重复production，任何EBNF都可转为BNF
+- `Syntax-directed translation` refers to a method of compiler implementation where the source language translation is completely driven by the parser.
+    - `Syntax-directed translation` fundamentally works by adding actions to the productions in a context-free grammar, resulting in a `Syntax-Directed Definition` (`SDD`).
+- `SYNTAX-DIRECTED DEFINITION` is a context-free grammar in which each grammar symbol` X` is associated with two finite sets of values: the `synthesized attributes` of` X` and the `inherited attributes` of` X`, each production `A` is associated with a finite set of expressions called `semantic rules`.
+
+Top-down parsers:
+- easy to understand and easy to customize
+- allows the use of more general grammars
+- being easier to debug
+- having the ability to parse to any non-terminal in the grammar
+- having the ability to pass values (attributes) both up and down the parse tree during parsing.
+- 无法处理左递归（在parse时就要决定当前要使用的production，极端情况下需要无限的lookahead才能确定，`ANTLR`的`ALL(*)`可处理）
+
+bottom-up parsing
+- 可处理左递归，右递归（直接shift）
+- 难以诊断错误
+- 不直观，使用起来不友好
+
+LR
+- shift: shift `item` into stack
+- reduce: pop items on the stack and assembly them into larger one
+
+- shift/reduce conflict
+- reduce/reduce conflict: 使用哪个production
 
 ### parser classification
 不同的文章概念表述略有差异
@@ -39,12 +64,38 @@ concepts in scope: mathematics, computer science, linguistics and formal languag
         - 计算器使用该parser将中缀算数运算表达式转为`Reverse Polish notation (RPN)`形式
         - 包含`shunting yard`和`operator precedence climbing`
 
+### common used languages
+Most computer languages are "technically" not `LL` because they are not even context-free. That would include languages which require identifiers to be declared (C, C++, C#, Java, etc.). C++的预处理（也可把预处理跟语言分开）／模版等。因此 a common parsing strategy is to recognize a `superset` of a language, and then reject non-conforming programs through a subsequent analysis of the resulting parse tree.
+
+`Java` and `Python` were both designed to be `LL(1)` "pseudo-parseable".
+
 ### concepts related to code optimization
 - `peephole optimization` is a kind of optimization performed over a very small set of instructions in a segment of generated code. The set is called a "peephole" or a "window". It works by recognizing sets of instructions that can be replaced by shorter or faster sets of instructions.
 - `basic block` is a straight-line code sequence with no branches in except to the entry and no branches out except at the exit. This restricted form makes a basic block highly amenable to analysis. Compilers usually decompose programs into their basic blocks as a first step in the analysis process. `Basic blocks` form the vertices or nodes in a control flow graph.
 - `static single assignment` form (often abbreviated as SSA form or simply SSA) is a property of an intermediate representation (IR), which requires that each variable is assigned exactly once, and every variable is defined before it is used.
 - `induction variable` is a variable that gets increased or decreased by a fixed amount on every iteration of a loop or is a linear function of another induction variable.
 
+## language classification
+[Comparison of parser generators](https://en.wikipedia.org/wiki/Comparison_of_parser_generators)
+1. Regular languages
+2. Deterministic context-free languages
+3. Parsing expression grammars, deterministic boolean grammars
+4. General context-free, conjunctive, or boolean languages
+5. Context-sensitive grammars
 
+`Chomsky hierarchy` (occasionally referred to as the Chomsky–Schützenberger hierarchy) is a containment hierarchy of classes of `formal grammars`.
+- Type-0 Recursively enumerable
+    - include all formal grammars. They generate exactly all languages that can be recognized by a Turing machine
+- Type-1 Context-sensitive
+- Type-2 Context-free
+- Type-3 Regular(Regular languages)
+    - `Regular expressions` describe `regular languages` in `formal language theory`. They have the same expressive power as `regular grammars`.
 
+- The `deterministic context-free languages` are a proper subset of the `context-free languages` which can be efficiently parsed by `deterministic pushdown automata`. Many computer languages belong to this class of languages.
+- `parsing expression grammar (PEG)`.
+    - `PEGs` look similar to `context-free grammars (CFGs)`, but they have a different interpretation: the `choice` operator selects the first match in `PEG`, while it is ambiguous in `CFG`.
+    - `PEG` use `scannerless parsers`: they do not need a separate lexer, or lexical analysis phase.
+- `Conjunctive grammars` extend the basic type of grammars, the `context-free grammars`, with a `conjunction` operation.
+- `boolean grammars`: extend the basic type of grammars, the `context-free grammars`, with `conjunction` and `negation` operations.
+- `parser combinator` is a higher-order function that accepts several parsers as input and returns a new parser as its output.
 

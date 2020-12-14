@@ -10,6 +10,10 @@
 
 强制中止session：`SELECT pg_terminate_backend(?) from dual`
 
+自动启动
+- `systemctl list-unit-files`: To list all units installed on the system.
+- `systemctl enable xxx`
+
 ### 忘记密码：
 - 更改`pg_hba.conf`，添加`host  all   all  127.0.0.1/32  trust`
 - `sudo /etc/init.d/postgresql restart`

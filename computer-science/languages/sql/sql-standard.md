@@ -1,3 +1,6 @@
+## misc
+`Turing completeness` in `declarative SQL` is implemented through `recursive common table expressions`. Unsurprisingly, `procedural extensions to SQL` (`PLSQL`, etc.) are also `Turing-complete`.
+
 ## ISO & IEC
 `ISO` (the International Organization for Standardization) and `IEC` (the International Electrotechnical Commission) form the specialized system for worldwide standardization. ISO and IEC technical committees collaborate in fields of mutual interest. In the field of `information technology`, ISO and IEC have established a joint technical committee, `ISO/IEC JTC 1`.
 

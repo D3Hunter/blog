@@ -1,3 +1,6 @@
+### concepts
+- `Congruence modulo`: A common way of expressing that two values are in the same slice, is to say they are in the same `equivalence class`. The way we express this mathematically for mod C is: `A≡B (mod C)`, 即`A - B = kC`. The above expression is pronounced A is congruent to B modulo C.
+
 ### Moving Average:
 SMA
 EMA

@@ -4,6 +4,9 @@
 
 `fragment`里的作为逻辑词法结构，不会作为独立的token
 
+### concepts
+- `combined grammar` that specifies both the parser and lexer rules
+
 ### setting up
 - `export CLASSPATH=".:/usr/local/lib/antlr-4.0-complete.jar:$CLASSPATH"`
 - `alias antlr4='java -jar /usr/local/lib/antlr-4.0-complete.jar'`

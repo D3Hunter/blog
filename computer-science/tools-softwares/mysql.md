@@ -16,6 +16,9 @@ execution plan also known as the `EXPLAIN` plan： `explain select * from users;
 
 `mysql`命令行执行`-v`可以查看结果,`v`越多越详细`-vvv`
 
+连接`MySQL 8.0`需要使用`Connector/J 8.0`，否则会报各种奇葩错误，文档上写的使用`5.1`版本也可以，应该是文档错误
+
+
 ### my.cnf位置
 mysql --help可查看my.cnf的位置即读取顺序
 

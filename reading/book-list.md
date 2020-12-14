@@ -181,3 +181,6 @@
 26. 李光耀论中国与世界；Graham Allison，Robert D. Blackwill，Ali Wyne
 27. 大乘妙法莲华经
 28. 印度佛教史；平川彰
+29. 美国反对美国；王沪宁
+30. 凡人修仙传；妄语
+
