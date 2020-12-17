@@ -133,7 +133,7 @@ Finally, the `positive closure`, denoted `L+`, is the same as the `Kleene closur
 
 Both `deterministic` and `nondeterministic` finite automata are capable of recognizing the same languages. In fact these languages are exactly the same languages, called the `regular languages`.
 
-`deterministic nite automaton (DFA)` is a special case of an `NFA`.
+`deterministic finite automaton (DFA)` is a special case of an `NFA`.
 1. There are no moves on input `ε`, and
 2. For each state `s` and input symbol `a`, there is exactly one edge out of `s` labeled `a`.
 
