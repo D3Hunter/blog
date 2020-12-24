@@ -1,0 +1,18 @@
+- `Cryptography`(密码学) is the practice and study of techniques for `secure communication` in the presence of third parties called `adversaries`.
+    - `Classical Cryptography`
+        - `Transposition Cipher`
+        - `Substitution Cipher`
+    - `Modern Cryptography`
+        - `Symmetric key Cryptography`
+            - `Stream Cipher`: RC4
+            - `Block Cipher`: DES、AES（replaces DES）
+        - `Asymmetric key Cryptography` (popularly known as `public key cryptography`).
+            - RSA、ECC
+- `Cryptographic hash function (CHF)` is a mathematical algorithm that maps data of arbitrary size (often called the "message") to a bit array of a fixed size (`hash value`、`hash`、`message digest`、`(digital) fingerprints`、`checksums`). It is a `one-way function` which is practically infeasible to invert.
+    - have many information-security applicationno
+    - tably
+    - digital signatures`, `message authentication codes (MACs)`, and other forms of `authentication`. They can also be used as `ordinary hash functions`, to index data in hash tables, for `fingerprinting`, to `detect duplicate` data or uniquely identify files, and as `checksums` to detect accidental data corruption.
+    - MD5/SHA-1/SHA-2/SHA-3
+- `Digital signature` is a mathematical scheme for verifying the authenticity of digital messages or documents.
+    - Almost all `digital signature schemes` require a `cryptographic hash` to be calculated over the message. This allows the signature calculation to be performed on the relatively small, statically sized hash digest. 如`RSA+SHA`方案（当然RSA本身就可以做数字签名）
+    - 不同于信息安全传输场景，数字签名是用于认证某个信息是由私钥拥有者发出的

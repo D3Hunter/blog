@@ -7,3 +7,7 @@
 - `Mojibake` means `"character transformation"` in Japanese. The word is composed of 文字, "character" and 化け "transform".
 - In Chinese, the same phenomenon is called `Luàn mǎ` (乱码, meaning chaotic code)
 
+The `Unicode collation algorithm (UCA)` is an algorithm defined in `Unicode Technical Report #10`, which is a customizable method to produce binary keys from strings representing text in any writing system and language that can be represented with `Unicode`. These keys can then be efficiently byte-by-byte compared in order to `collate` or `sort` them according to the rules of the language, with options for ignoring case, accents, etc.
+- Default Unicode Collation Element Table (DUCET)
+- International Components for Unicode, ICU
+

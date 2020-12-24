@@ -99,3 +99,12 @@
     - 一种方案是新开一个`remote repo`，然后`push`到remote
 - 如果历史中多了一个`refs/original/refs/heads/master`，可通过如下命令删除
     - `git update-ref -d refs/original/refs/heads/master`
+
+### 常见问题
+1. `git status`中文字符显示为8进制数
+
+By default, git will print non-ASCII file names in quoted octal notation, i.e. "`\nnn\nnn...`". This can be disabled with:
+```
+git config core.quotepath off
+```
+
