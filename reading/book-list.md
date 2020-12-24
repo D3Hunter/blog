@@ -185,4 +185,6 @@
 30. 凡人修仙传；妄语
 31. 大型网站技术架构；李智慧
 32. Web Scalability for startup engineers；Artur Ejsmont
+33. Patterns of Enterprise Application Architecture；Martin Fowler
+34. Compilers: Principles, Techniques, and Tools；Alfred Aho, Ravi Sethi, Jeffrey Ullman, Monica S. Lam
 
