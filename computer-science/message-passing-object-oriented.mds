@@ -1,0 +1,20 @@
+## message passing VS object-oriented programming
+从更抽象的角度描述`调用行为`（无论是本地还是远程）。由于message passing也可以跨进程处理，就产生了分布式对象（分布式调用，远程调用。。注意这跟RESTful API还有区别，前者是`function centric`，后者一般是`data centric`）
+
+In computer science, `message passing` is a technique for `invoking behavior` (i.e., `running a program`) on a computer. The invoking program sends a `message` to a `process` (which may be an `actor` or `object`) and relies on that process and its supporting infrastructure to then select and run some appropriate code. `Message passing` differs from conventional programming where a process, subroutine, or function is `directly invoked by name`. `Message passing` is key to some models of `concurrency` and `object-oriented programming`.
+
+`Message passing` is used ubiquitously in modern computer software. It is used as a way for the objects that make up a program to work with each other and as a means for objects and systems running on different computers (e.g., the Internet) to interact.
+
+- Synchronous message passing
+- Asynchronous message passing
+
+`Message-passing` systems use either:
+- Local Objects
+- Distributed objects
+    - Examples of systems that support distributed objects: CORBA, Java RMI, DCOM, SOAP
+
+### sender, receiver
+In `OO(Object Oriented)`, "`making a call`", "`invoking a method`", and "`sending a message`" are equivalent concepts. Similarly "`being called`", "`having one's method invoked`", and "`receiving a message`" are equivalent.
+
+When talking about a `message`, there's a natural "`sender`" and "`receiver`" of the message. The `sender` is `the object which invokes a method`, the `receiver` is `the object whose method is invoked`. 访问object的`property`同理也是发送一个`message`。
+

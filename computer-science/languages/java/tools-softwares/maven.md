@@ -112,3 +112,41 @@ maven执行时仅针对部分module，使用`--projects`或`-pl`:
 - 仅编译module-a: `mvn -pl module-a compile`
 - 不编译module-a: `mvn -pl '!module-a' compile`
 
+### common used configuration 
+#### 在`generate-sources`阶段处理`annotation processiong`
+```xml
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.5</version>
+    <executions>
+        <execution>
+            <id>process-annotations</id>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>compile</goal>
+            </goals>
+            <configuration>
+                <compilerArgs>
+                    <arg>-proc:only</arg>
+                </compilerArgs>
+            </configuration>
+        </execution>
+        <execution>
+            <id>default-compile</id>
+            <phase>compile</phase>
+            <goals>
+                <goal>compile</goal>
+            </goals>
+            <configuration>
+                <compilerArgs>
+                    <arg>-proc:none</arg>
+                </compilerArgs>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+```
+
+
+
