@@ -1,15 +1,11 @@
-class必须放到对应包名的目录下才能由java找到
--Dname=value会将其放到System.properity中
-
-java <class-name>中class-name格式为点分或/分，不包含最后的.class
-
-启动过多线程，会导致很多的cpu花在context switch上
-
-`JSR 223` Scripting for the JavaTM Platform, since `1.6`
+- class必须放到对应包名的目录下才能由java找到
+- -Dname=value会将其放到System.properity中
+- java <class-name>中class-name格式为点分或/分，不包含最后的.class
+- `JSR 223` Scripting for the JavaTM Platform, since `1.6`
+- `ClassLoader.defineClass`不能用来重定义类，如果用来重复定义一个类，会报`attempted  duplicate class definition for name`。还是需要`Instrumentation.redefineClasses`。
 
 ### JDK classes
 ResourceBundle 国际化
-wait notify notifyAll需要获得object的monitor
 
 Pattern && Matcher
 - Matcher.find()可以用来查找所有满足条件的子串，`group(0)`是匹配的整个串，内部的group从`1`开始
@@ -73,8 +69,10 @@ https://www.javacodegeeks.com/2014/03/migrating-from-javaagent-to-jvmti-our-expe
 逆向和代码混淆相关
 - jarjar用来重命名类
 - jd
+- fernflower(intellij-community)
 - bytecodeviewer
 - ZKM(Zelix KlassMaster): java obfuscator
+
 ### Logging Frameworks
 actual: Log4J, JUL, LogBack(kind of Log4J2.0)
 facade: JCL(Spring uses it), SLF4J(Hibernate have changed to)

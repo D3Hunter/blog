@@ -6,6 +6,9 @@
 - server-side routing: server decides, whole page refresh
 - client-side routing: client decides, partical refresh, slow initial load
 
+## misc
+In a regular HTTP response, the `Content-Disposition` response header is a header indicating if the content is expected to be displayed inline in the browser, or as an attachment, that is downloaded and saved locally.
+
 ## RFC 6202
 In order to improve this situation, several `server-push programming`
    mechanisms have been implemented in recent years.  These mechanisms,
@@ -24,6 +27,7 @@ The two most common server-push mechanisms are `HTTP long polling` and
    HTTP Streaming:  The server keeps a request open indefinitely; that
       is, it never terminates the request or closes the connection, even
       after it pushes data to the client.
+
 ### Http Long Pooling
 The server achieves these efficiencies by responding to a request only when a particular event,status, or timeout has occurred.  Once the server sends a long poll response, typically the client immediately sends a new long poll request.
 Life Cycle:
@@ -33,6 +37,7 @@ Life Cycle:
 4.  The client typically sends a new long poll request, either immediately upon receiving a response or after a pause to allow an acceptable latency period.
 
 The HTTP long polling mechanism can be applied to either `persistent` or `non-persistent` HTTP connections.  The use of persistent HTTP connections will avoid the additional overhead of establishing a new TCP/IP connection [TCP] for every long poll request.
+
 #### HTTP Long Polling Issues
 - Header Overhead
 - Maximal Latency: the maximal latency is over three network transits (long poll response, next long poll request, long poll response).
@@ -41,6 +46,7 @@ The HTTP long polling mechanism can be applied to either `persistent` or `non-pe
 - Graceful Degradation:  A long polling client or server that is under load has a natural tendency to gracefully degrade in performance at a cost of message latency.
 - Timeouts:  Long poll requests need to remain pending or "hanging" until the server has something to send to the client.
 - Caching:  Caching mechanisms implemented by intermediate entities can interfere with long poll requests.
+
 ### HTTP Streaming
 The HTTP streaming mechanism keeps a request open indefinitely.  It never terminates the request or closes the connection, even after the server pushes data to the client.
 Life Cycle:
@@ -54,6 +60,7 @@ An HTTP response content length can be defined using three options:
 - Transfer-Encoding header:  The 'chunked' valued in this header indicates the message will break into chunks of known size if needed.
 - End of File (EOF):The main issue with EOF is that it is difficult to tell the difference between a connection terminated by a fault and one that is correctly terminated.
 An HTTP/1.0 server can use only EOF as a streaming mechanism.  In contrast, both EOF and "chunked transfer" are available to an HTTP/1.1 server.
+
 #### HTTP Streaming Issues
 - Network Intermediaries: There is no requirement for an intermediary to immediately forward a partial response, and it is legal for the intermediary to buffer the entire response before sending any data to the client
 - Maximal Latency:

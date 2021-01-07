@@ -2,6 +2,8 @@
 - 设置默认maven：`File->Others Settings->Default Preferences`
 - 如果使用了`Scanner.java`，`mac`上需要用`⌘-D`来输入`EOF`
 - IDEA DEBUG时默认是用idea自己的编译系统，如果对maven有依赖可以使用maven来编译`Maven -> Runner -> Delegate build and run actions to Maven`
+- IDEA Debug asynchronous code：在`worker thread`断点触发时，自动关联对应`schedule thread`调度时的stack，默认对`Swing`和`Java Concurrency API`都有效，也可通过`@Async.Schedule`和`@Async.Execute`来定义相关触发点，或添加自定义触发点。该功能通过`instrumenting agent`实现（也支持完全由`Debugger`处理，但性能较差），远程调试需要添加对应`javaagent`。IDEA 2020版本默认开启
+
 
 ### 超大文件IDEA不做语法标记：
 idea.properties
