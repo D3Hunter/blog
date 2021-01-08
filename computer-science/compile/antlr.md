@@ -4,6 +4,8 @@
 
 `fragment`里的作为逻辑词法结构，不会作为独立的token
 
+`rrd-antlr4`: 自动将antlr g4转为`railroad`图，支持跳转，方便查看 https://github.com/bkiers/rrd-antlr4
+
 ### concepts
 - `combined grammar` that specifies both the parser and lexer rules
 
@@ -93,5 +95,28 @@ parser.addErrorListener(new DiagnosticErrorListener());
 `ANTLRErrorListener.reportAmbiguity()`的`ambigAlts`参数值，指的是生成的`parser`中的`alternative`序号，等同于对应`rule`去除左递归后的`alternative`的序号
 
 `RuleContext.getRuleIndex`给出当前Context类对应的`Rule index`，这些index定义在生成的parser中，名称为`RULE_rule_name`。注意，如果对rule内部的production添加label，是不会生成额外的index的。
+
+## Antlr CPP target
+- 需要antlr 4.6+版本
+- 需要c++11
+- 跟macro冲突的关键字名称要更改
+- antlr是case sensitive匹配的，如果目标语言是case insensitive，可使用CaseChangingCharStream（C++的需要单独编写）
+
+## misc
+下面的两个rule是等价的，但前一个在predict时会导致`SLL`失败
+```
+condition_item
+    : condition_base_item
+    | condition_base_item (AND condition_base_item)+
+    ;
+```
+
+```
+condition_item
+    : condition_base_item (AND condition_base_item)*
+    ;
+```
+
+
 
 

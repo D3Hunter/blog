@@ -12,4 +12,4 @@ using back-door APIs
 
 @Data: All together now: A shortcut for @ToString, @EqualsAndHashCode, @Getter on all fields, and @Setter on all non-final fields, and @RequiredArgsConstructor!
 @Builder can generate so-called 'singular' methods for collection parameters/fields. These take 1 element instead of an entire list, and add the element to the list.
-    比如Person.builder().name("Adam Savage").city("San Francisco").job("Mythbusters").job("Unchained Reaction").build();
+    比如Person.builder().name("Savage x").city("San Francisco").job("Mythbusters").job("Unchained Reaction").build();

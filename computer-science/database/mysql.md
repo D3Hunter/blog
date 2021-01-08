@@ -18,6 +18,18 @@ execution plan also known as the `EXPLAIN` plan： `explain select * from users;
 
 连接`MySQL 8.0`需要使用`Connector/J 8.0`，否则会报各种奇葩错误，文档上写的使用`5.1`版本也可以，应该是文档错误
 
+- `DATETIME` 和 `TIMESTAMP` 默认是不带精度的，但可以指定精度
+- `HASH` 分区，只能在一个expr上，该expr需要返回integer值
+- `KEY` 分区，跟HASH类似，但有额外限制，如需包含part or all of 主键
+- `RANGE(expr)`: values less than 部分必须为int类型
+- `RANGE COLUMN`: 最多16列，支持int／string/date等类型
+- mysql的临时表的行为为`on commit preserve rows`
+- mysql的`NDB`引擎支持`generated column`
+- For a view to be updatable, there must be a one-to-one relationship between the rows in the view and the rows in the underlying table. 还有一些其他限制
+- MySQL中存储过程为`stored routine`（Oracle叫`standalone subprogram`），包含`procedure`和`function`。MySQL中`User-defined functions`为通过`shared_library`创建的函数，与`stored function`不同
+- `stored program`除了包含`stored routine`外，还包括`trigger`
+
+
 
 ### my.cnf位置
 mysql --help可查看my.cnf的位置即读取顺序
