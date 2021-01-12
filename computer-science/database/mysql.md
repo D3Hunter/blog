@@ -67,10 +67,12 @@ CREATE USER 'user'@'host' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'user'@'host' WITH GRANT OPTION;
 flush privileges;
 ```
-###忘记mysql密码可按下面的方式：
+### 忘记mysql密码可按下面的方式：
 - 停掉mysql
 - mysqld_safe --user=mysql --skip-grant-tables --skip-networking &
-- 免密登陆，修改密码：update user set Password=PASSWORD('root') where User='root';
+- 免密登陆
+    - `FLUSH PRIVILEGES;`
+    - `ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPass';`
 
 ### import, export
 - `mysqldump -u$user -p$pass -S $socket --all-databases > db_backup.sql`
